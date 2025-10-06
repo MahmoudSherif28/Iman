@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iman/Core/utils/app_themes.dart';
 import 'package:iman/Features/Splash/presentation/views/splash_screen_view.dart';
 
 void main() {
@@ -18,9 +19,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter App',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          ),
+          theme: AppThemes.getLightTheme,
           home: const Splash(),
         );
       },
