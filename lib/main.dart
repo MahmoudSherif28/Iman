@@ -17,9 +17,11 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter App',
+          title: 'Iman App',
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            fontFamily: 'IBM Plex Sans Arabic',
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+            useMaterial3: true,
           ),
           home: const Splash(),
         );
