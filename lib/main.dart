@@ -19,11 +19,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Iman App',
-          theme: ThemeData(
-            fontFamily: 'IBM Plex Sans Arabic',
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-            useMaterial3: true,
-          ),
+          theme: AppThemes.getLightTheme,
           home: const Splash(),
         );
       },

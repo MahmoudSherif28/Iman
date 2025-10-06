@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iman/Core/utils/app_colors.dart';
 
 final ThemeData lightTheme = ThemeData(
+  fontFamily: 'IBM Plex Sans Arabic',
   scaffoldBackgroundColor: AppColors.background,
   brightness: Brightness.light,
   colorScheme: const ColorScheme.light(
