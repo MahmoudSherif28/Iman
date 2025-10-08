@@ -10,8 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_screenutil:
+  flutter_screenutil: null
   cupertino_icons: ^1.0.8
+  intl: ^0.20.2
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +37,5 @@ flutter:
           weight: 600
         - asset: assets/fonts/IBMPlexSansArabic/IBMPlexSansArabic-Bold.ttf
           weight: 700
+flutter_intl:
+  enabled: true

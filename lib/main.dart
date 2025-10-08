@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_themes.dart';
 import 'package:iman/Features/Splash/presentation/views/splash_screen_view.dart';
+import 'package:iman/generated/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,15 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       builder: (context, child) {
-        return MaterialApp(
+        return MaterialApp( 
+          locale: const Locale('ar'),
+           localizationsDelegates: [
+                S.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
           debugShowCheckedModeBanner: false,
           title: 'Iman App',
           theme: AppThemes.getLightTheme,
