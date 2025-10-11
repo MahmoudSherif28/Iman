@@ -53,13 +53,91 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+
+  /// `Everything you need for your prayer: times, adhan, and Qibla direction`
+  String get onboarding_title1 {
+    return Intl.message(
+      'Everything you need for your prayer: times, adhan, and Qibla direction',
+      name: 'onboarding_title1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Everything you need for your prayer: times, adhan, and Qibla direction`
+  String get onboarding_title2 {
+    return Intl.message(
+      'Everything you need for your prayer: times, adhan, and Qibla direction',
+      name: 'onboarding_title2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All your daily adhkar in one place with reminders at the right time`
+  String get onboarding_title3 {
+    return Intl.message(
+      'All your daily adhkar in one place with reminders at the right time',
+      name: 'onboarding_title3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Qur'an`
+  String get home_icon1 {
+    return Intl.message('Qur\'an', name: 'home_icon1', desc: '', args: []);
+  }
+
+  /// `Qur'an Recitation`
+  String get home_icon2 {
+    return Intl.message(
+      'Qur\'an Recitation',
+      name: 'home_icon2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Qur'an Listening`
+  String get home_icon3 {
+    return Intl.message(
+      'Qur\'an Listening',
+      name: 'home_icon3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dhikr & Tasbeeh`
+  String get home_icon4 {
+    return Intl.message(
+      'Dhikr & Tasbeeh',
+      name: 'home_icon4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prayer Times`
+  String get home_icon5 {
+    return Intl.message('Prayer Times', name: 'home_icon5', desc: '', args: []);
+  }
+
+  /// `Qibla`
+  String get home_icon6 {
+    return Intl.message('Qibla', name: 'home_icon6', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   const AppLocalizationDelegate();
 
   List<Locale> get supportedLocales {
-    return const <Locale>[Locale.fromSubtags(languageCode: 'en')];
+    return const <Locale>[
+      Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'ar'),
+    ];
   }
 
   @override

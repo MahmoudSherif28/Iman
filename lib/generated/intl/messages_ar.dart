@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a ar locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,24 +18,24 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'ar';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "home_icon1": MessageLookupByLibrary.simpleMessage("Qur\'an"),
-    "home_icon2": MessageLookupByLibrary.simpleMessage("Qur\'an Recitation"),
-    "home_icon3": MessageLookupByLibrary.simpleMessage("Qur\'an Listening"),
-    "home_icon4": MessageLookupByLibrary.simpleMessage("Dhikr & Tasbeeh"),
-    "home_icon5": MessageLookupByLibrary.simpleMessage("Prayer Times"),
-    "home_icon6": MessageLookupByLibrary.simpleMessage("Qibla"),
+    "home_icon1": MessageLookupByLibrary.simpleMessage("القرآن "),
+    "home_icon2": MessageLookupByLibrary.simpleMessage("تسميع القرآن "),
+    "home_icon3": MessageLookupByLibrary.simpleMessage("استماع القرآن"),
+    "home_icon4": MessageLookupByLibrary.simpleMessage("ائكار و تسبيح"),
+    "home_icon5": MessageLookupByLibrary.simpleMessage("مواعيد الصلاة"),
+    "home_icon6": MessageLookupByLibrary.simpleMessage("القبلة"),
     "onboarding_title1": MessageLookupByLibrary.simpleMessage(
-      "Everything you need for your prayer: times, adhan, and Qibla direction",
+      "كل ما تحتاجه لصلاتك: مواقيت، أذان، واتجاه القبلة",
     ),
     "onboarding_title2": MessageLookupByLibrary.simpleMessage(
-      "Everything you need for your prayer: times, adhan, and Qibla direction",
+      "كل ما تحتاجه لصلاتك: مواقيت، أذان، واتجاه القبلة",
     ),
     "onboarding_title3": MessageLookupByLibrary.simpleMessage(
-      "All your daily adhkar in one place with reminders at the right time",
+      "كل أذكارك في مكان واحد مع تذكيرك بها في وقتها",
     ),
   };
 }
