@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
-
-class Splash extends StatefulWidget {
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iman/Features/onboard/presentation/views/onboard_view.dart';
+class Splash extends StatelessWidget {
   const Splash({super.key});
-
-  @override
-  State<Splash> createState() => _SplashState();
-}
-
-class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return AnimatedSplashScreen(
+      splash: Center(
+        child: Image.asset(
+          'assets/icon.png',
+          width: 150.w,
+          height: 150.w,
+        ),
+      ),
+      nextScreen: const Onboard(), // navigate after animation
+      splashIconSize: 200.w,
+      duration: 2000, // 2 seconds
+      splashTransition: SplashTransition.scaleTransition,
+      animationDuration: const Duration(milliseconds: 1200),
+    );
   }
 }
