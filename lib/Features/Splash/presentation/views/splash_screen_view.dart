@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:iman/Features/onboard/presentation/views/onboard_view.dart';
+import 'package:iman/Features/onboard/presentation/views/widgets/onboard_view_body.dart';
 class Splash extends StatelessWidget {
   const Splash({super.key});
   @override
@@ -15,7 +15,7 @@ class Splash extends StatelessWidget {
           height: 150.w,
         ),
       ),
-      nextScreen: const Onboard(), // navigate after animation
+      nextScreen: const OnBoardViewBody(), // navigate after animation
       splashIconSize: 200.w,
       duration: 2000, // 2 seconds
       splashTransition: SplashTransition.fadeTransition,
