@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iman/Core/services/shared_prefrences_sengelton.dart';
+import 'package:iman/Features/home/presentation/views/home_view.dart';
+import 'package:iman/constants.dart';
 
 class OnBoardViewBody extends StatefulWidget {
   const OnBoardViewBody({super.key});
@@ -47,8 +50,12 @@ class _OnBoardViewBodyState extends State<OnBoardViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    final String titleText = translate(onboardingData[currentIndex]['title_key']!);
-    final String subtitleText = translate(onboardingData[currentIndex]['subtitle_key']!);
+    final String titleText = translate(
+      onboardingData[currentIndex]['title_key']!,
+    );
+    final String subtitleText = translate(
+      onboardingData[currentIndex]['subtitle_key']!,
+    );
 
     return Scaffold(
       body: Stack(
@@ -118,17 +125,14 @@ class _OnBoardViewBodyState extends State<OnBoardViewBody> {
                   Text(
                     subtitleText,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 18.sp,
-                    ),
+                    style: TextStyle(color: Colors.white70, fontSize: 18.sp),
                   ),
                   SizedBox(height: 25.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
                       onboardingData.length,
-                          (index) => Container(
+                      (index) => Container(
                         margin: EdgeInsets.symmetric(horizontal: 4.w),
                         height: 8.h,
                         width: currentIndex == index ? 24.w : 8.w,
@@ -154,6 +158,13 @@ class _OnBoardViewBodyState extends State<OnBoardViewBody> {
                       ),
                       onPressed: () {
                         if (currentIndex == onboardingData.length - 1) {
+                          Prefs.setBool(isOnboadingViewSeenKey, true);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeView(),
+                            ),
+                          );
                         } else {
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 400),

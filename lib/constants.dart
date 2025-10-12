@@ -1,0 +1,1 @@
+const isOnboadingViewSeenKey = 'is_onboarding_view_seen';
