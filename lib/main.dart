@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_themes.dart';
 import 'package:iman/Features/Splash/presentation/views/splash_screen_view.dart';
+import 'package:iman/Features/home/presentation/views/home_view.dart';
 import 'package:iman/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Iman App',
           theme: AppThemes.getLightTheme,
-          home: const Splash(),
+          home: const HomeView(),
         );
       },
     );
