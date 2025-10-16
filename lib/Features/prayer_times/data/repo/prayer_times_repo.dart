@@ -1,5 +1,5 @@
-import '../../service/prayer_times_service.dart';
-import '../models/prayer_times_model.dart';
+import 'package:iman/Features/prayer_times/service/prayer_times_service.dart';
+import 'package:iman/Features/prayer_times/data/models/prayer_times_model.dart';
 
 class PrayerTimesRepo {
   final PrayerTimesService service;

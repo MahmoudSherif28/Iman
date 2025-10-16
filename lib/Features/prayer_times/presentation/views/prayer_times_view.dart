@@ -24,11 +24,19 @@ class _PrayerTimesViewState extends State<PrayerTimesView> {
 
   Future<void> fetchPrayerTimes() async {
     final repo = PrayerTimesRepo(PrayerTimesService());
-    final data = await repo.getPrayerTimes();
-    setState(() {
-      prayerTimes = data;
-      isLoading = false;
-    });
+    try {
+      final data = await repo.getPrayerTimes();
+      setState(() {
+        prayerTimes = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching prayer times: $e'); // طباعة الخطأ
+      // يمكن إضافة عرض رسالة خطأ للمستخدم هنا
+      setState(() {
+        isLoading = false; // إيقاف التحميل حتى لو حدث خطأ
+      });
+    }
   }
 
   @override
@@ -42,6 +50,8 @@ class _PrayerTimesViewState extends State<PrayerTimesView> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
+          : (prayerTimes == null)
+          ? const Center(child: Text('فشل في جلب البيانات. يرجى التأكد من الأذونات والاتصال بالإنترنت.'))
           : Padding(
         padding: EdgeInsets.symmetric(vertical: 20.h),
         child: Column(
