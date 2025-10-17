@@ -38,5 +38,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboarding_title3": MessageLookupByLibrary.simpleMessage(
       "All your daily adhkar in one place with reminders at the right time",
     ),
+    "pointTowardsQibla": MessageLookupByLibrary.simpleMessage(
+      "Point your device towards the Qibla",
+    ),
+    "qibla": MessageLookupByLibrary.simpleMessage("Qibla"),
+    "qiblaAngle": MessageLookupByLibrary.simpleMessage("Qibla Angle"),
+    "qiblaDirection": MessageLookupByLibrary.simpleMessage("Qibla Direction"),
+    "retry": MessageLookupByLibrary.simpleMessage("Retry"),
   };
 }

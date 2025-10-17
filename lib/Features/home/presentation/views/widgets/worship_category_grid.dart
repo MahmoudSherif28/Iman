@@ -15,7 +15,7 @@ class WorshipCategoriesGrid extends StatelessWidget {
       title: 'مواقيت الصلاة',
       iconImage: 'assets/images/tasbeh.png',
     ),
-    WorshipCategory(title: 'القبلة', iconImage: 'assets/images/tasbeh.png'),
+    WorshipCategory(title: 'القبلة', iconImage: 'assets/images/bosla.png'),
     WorshipCategory(title: 'تسبيح و ادعه', iconImage: 'assets/images/doaa.png'),
   ];
   @override

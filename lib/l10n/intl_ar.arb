@@ -8,5 +8,10 @@
 "home_icon4": "ائكار و تسبيح",
 "home_icon5": "مواعيد الصلاة",
 "home_icon6": "القبلة",
-"next_prayer": "الصلاة القادمة"
+"next_prayer": "الصلاة القادمة",
+"qibla": "القبلة",
+"qiblaDirection": "اتجاه القبلة",
+"pointTowardsQibla": "وجه هاتفك نحو القبلة",
+"qiblaAngle": "زاوية القبلة",
+"retry": "إعادة المحاولة"
 }

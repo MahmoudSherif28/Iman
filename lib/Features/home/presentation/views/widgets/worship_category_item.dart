@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
 import 'package:iman/Features/home/data/models/worship_category.dart';
 import '../../../../prayer_times/presentation/views/prayer_times_view.dart';
+import '../../../../qibla/view/qibla_screen.dart';
+import 'package:geolocator/geolocator.dart';
 class WorshipCategoryItem extends StatelessWidget {
   final WorshipCategory category;
 
@@ -11,13 +13,44 @@ class WorshipCategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-
+      onTap: () async {
         if (category.title == 'مواقيت الصلاة') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const PrayerTimesView()),
           );
+        } else if (category.title == 'القبلة') {
+          bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+          if (!serviceEnabled) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('يرجى تفعيل خدمات الموقع')),
+              );
+            }
+            return;
+          }
+
+          LocationPermission permission = await Geolocator.checkPermission();
+          if (permission == LocationPermission.denied) {
+            permission = await Geolocator.requestPermission();
+          }
+          
+
+          if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('السماح بالوصول إلى الموقع مطلوب لتحديد القبلة')),
+              );
+            }
+            return;
+          }
+
+          if (context.mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const QiblaScreen()),
+            );
+          }
         }
       },
       borderRadius: BorderRadius.circular(20.0.r),
