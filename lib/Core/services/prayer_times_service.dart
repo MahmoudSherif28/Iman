@@ -1,28 +1,26 @@
-import 'package:iman/Features/prayer_times/data/models/prayer_times_model.dart';
-import 'package:iman/Features/prayer_times/data/repo/prayer_times_repo.dart';
-import 'package:iman/Features/prayer_times/service/prayer_times_service.dart';
-import 'package:iman/Features/home/data/models/payer_time_model.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
+import 'package:iman/Features/prayer_times/data/models/prayer_times_model.dart';
+import 'package:iman/Features/home/data/models/payer_time_model.dart';
+import 'package:iman/Core/services/api_service.dart';
+import 'package:iman/Core/errors/failure.dart';
 
-/// خدمة مشتركة لتخزين أوقات الصلاة في الذاكرة المؤقتة
-/// تستخدم لتجنب طلب البيانات من API مرتين
-class PrayerTimesCacheService {
-  static final PrayerTimesCacheService _instance = PrayerTimesCacheService._internal();
+/// خدمة شاملة لإدارة أوقات الصلاة
+/// تتضمن جلب البيانات من API، التخزين المؤقت، وتحويل البيانات للعرض
+class PrayerTimesService {
+  static final PrayerTimesService _instance = PrayerTimesService._internal();
   
-  factory PrayerTimesCacheService() {
+  factory PrayerTimesService() {
     return _instance;
   }
   
-  PrayerTimesCacheService._internal();
-  
-  // مثيل واحد من الريبو لاستخدامه في جميع أنحاء التطبيق
-  final PrayerTimesRepo _repo = PrayerTimesRepo(PrayerTimesService());
+  PrayerTimesService._internal();
   
   // تخزين البيانات في الذاكرة المؤقتة
   PrayerTimesModel? _cachedPrayerTimes;
   DateTime? _lastFetchTime;
   
-  // الحصول على أوقات الصلاة من الذاكرة المؤقتة أو من API
+  /// جلب أوقات الصلاة من الذاكرة المؤقتة أو من API
   Future<PrayerTimesModel> getPrayerTimes() async {
     // إذا كانت البيانات موجودة في الذاكرة المؤقتة وتم جلبها خلال الساعة الماضية
     final now = DateTime.now();
@@ -36,7 +34,7 @@ class PrayerTimesCacheService {
     
     // جلب البيانات من API إذا لم تكن موجودة في الذاكرة المؤقتة أو قديمة
     try {
-      final data = await _repo.getPrayerTimes();
+      final data = await _fetchPrayerTimesFromAPI();
       _cachedPrayerTimes = data;
       _lastFetchTime = now;
       return data;
@@ -49,8 +47,50 @@ class PrayerTimesCacheService {
       rethrow;
     }
   }
+
+  /// جلب أوقات الصلاة من API
+  Future<PrayerTimesModel> _fetchPrayerTimesFromAPI() async {
+    // التأكد من تشغيل خدمة الموقع
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) throw Exception('خدمة الموقع غير مفعلة');
+
+    // التحقق من الأذونات
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception('تم رفض إذن الوصول للموقع');
+      }
+    }
+
+    // الحصول على الإحداثيات
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    // استخدام خدمة API الموحدة
+    try {
+      final apiService = ApiService();
+      final url = 'https://api.aladhan.com/v1/timings?latitude=${position.latitude}&longitude=${position.longitude}&method=5';
+      
+      final data = await apiService.get(url);
+      
+      if (data['data'] == null || data['data']['timings'] == null) {
+        throw Exception('البيانات المستلمة غير صالحة');
+      }
+      
+      return PrayerTimesModel.fromJson(data['data']['timings']);
+    } catch (e) {
+      // إعادة رمي الاستثناء مع رسالة واضحة
+      if (e is ServerFailure) {
+        rethrow;
+      } else {
+        throw Exception('خطأ في جلب أوقات الصلاة: $e');
+      }
+    }
+  }
   
-  // تحويل نموذج PrayerTimesModel إلى قائمة من PrayerTime للاستخدام في الشاشة الرئيسية
+  /// تحويل نموذج PrayerTimesModel إلى قائمة من PrayerTime للاستخدام في الشاشة الرئيسية
   List<PrayerTime> convertToPrayerTimeList(PrayerTimesModel model) {
     final now = TimeOfDay.now();
     final currentTimeInMinutes = now.hour * 60 + now.minute;
@@ -119,7 +159,7 @@ class PrayerTimesCacheService {
     ];
   }
   
-  // تحويل النص إلى دقائق منذ منتصف الليل
+  /// تحويل النص إلى دقائق منذ منتصف الليل
   int _parseTime(String timeStr) {
     final parts = timeStr.split(':');
     if (parts.length < 2) return 0;

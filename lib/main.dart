@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iman/Core/services/getit_service.dart';
 import 'package:iman/Core/services/shared_prefrences_sengelton.dart';
 import 'package:iman/Core/utils/app_themes.dart';
 import 'package:iman/Features/Splash/presentation/views/splash_screen_view.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Prefs.init();
+  setupGetIt();
   runApp(const MyApp());
 }
 

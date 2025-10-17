@@ -1,63 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:iman/Core/services/prayer_times_cache_service.dart';
+import 'package:iman/Core/services/getit_service.dart';
+import 'package:iman/Features/prayer_times/data/repo/prayer_times_repo.dart';
+import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_cubit.dart';
+import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_states.dart';
 import 'package:iman/Features/prayer_times/presentation/widget/prayer_time_card.dart';
-import '../../data/models/prayer_times_model.dart';
 
-class PrayerTimesView extends StatefulWidget {
+class PrayerTimesView extends StatelessWidget {
   const PrayerTimesView({super.key});
 
   @override
-  State<PrayerTimesView> createState() => _PrayerTimesViewState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          PrayerTimesCubit(getIt<PrayerTimesRepo>())..getPrayerTimes(),
+      child: const _PrayerTimesViewBody(),
+    );
+  }
 }
 
-class _PrayerTimesViewState extends State<PrayerTimesView> {
-  PrayerTimesModel? prayerTimes;
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchPrayerTimes();
-  }
-
-  String? errorMessage;
-
-  Future<void> fetchPrayerTimes() async {
-    final cacheService = PrayerTimesCacheService();
-    try {
-      final data = await cacheService.getPrayerTimes();
-      setState(() {
-        prayerTimes = data;
-        isLoading = false;
-        errorMessage = null;
-      });
-    } catch (e) {
-      print('Error fetching prayer times: $e'); // طباعة الخطأ
-      String message = 'فشل في جلب البيانات';
-      
-      // تحديد نوع الخطأ بشكل أكثر تفصيلاً
-      if (e.toString().contains('خدمة الموقع غير مفعلة')) {
-        message = 'خدمة الموقع غير مفعلة. يرجى تفعيل خدمة الموقع في إعدادات الجهاز.';
-      } else if (e.toString().contains('تم رفض إذن الوصول للموقع')) {
-        message = 'تم رفض إذن الوصول للموقع. يرجى السماح للتطبيق بالوصول إلى موقعك.';
-      } else if (e.toString().contains('انتهت مهلة الاتصال')) {
-        message = 'انتهت مهلة الاتصال. يرجى التحقق من اتصالك بالإنترنت وإعادة المحاولة.';
-      } else if (e.toString().contains('البيانات المستلمة غير صالحة')) {
-        message = 'البيانات المستلمة من الخادم غير صالحة. يرجى إعادة المحاولة لاحقاً.';
-      } else if (e.toString().contains('خطأ في الاتصال بالإنترنت')) {
-        message = 'خطأ في الاتصال بالإنترنت. يرجى التحقق من اتصالك وإعادة المحاولة.';
-      } else if (e.toString().contains('فشل في جلب البيانات')) {
-        message = 'فشل في جلب البيانات من الخادم. يرجى التحقق من اتصالك بالإنترنت.';
-      }
-      
-      setState(() {
-        isLoading = false; // إيقاف التحميل حتى لو حدث خطأ
-        errorMessage = message;
-      });
-    }
-  }
+class _PrayerTimesViewBody extends StatelessWidget {
+  const _PrayerTimesViewBody();
 
   @override
   Widget build(BuildContext context) {
@@ -68,96 +33,119 @@ class _PrayerTimesViewState extends State<PrayerTimesView> {
         centerTitle: true,
         backgroundColor: Colors.green,
         actions: [
+          BlocBuilder<PrayerTimesCubit, PrayerTimesStates>(
+            builder: (context, state) {
+              return IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: state is! PrayerTimesLoading
+                    ? () =>
+                          context.read<PrayerTimesCubit>().refreshPrayerTimes()
+                    : null,
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () async {
-              // فتح إعدادات الموقع
               await Geolocator.openLocationSettings();
             },
           ),
         ],
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : (prayerTimes == null)
-          ? Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.error_outline, size: 60, color: Colors.red),
-                    SizedBox(height: 20),
-                    Text(
-                      errorMessage ?? 'فشل في جلب البيانات. يرجى التأكد من الأذونات والاتصال بالإنترنت.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            fetchPrayerTimes();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                          ),
-                          child: Text('إعادة المحاولة'),
-                        ),
-                        SizedBox(width: 10),
-                        if (errorMessage != null && 
-                            (errorMessage!.contains('خدمة الموقع غير مفعلة') || 
-                             errorMessage!.contains('تم رفض إذن الوصول للموقع')))
-                          ElevatedButton(
-                            onPressed: () async {
-                              await Geolocator.openLocationSettings();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                            ),
-                            child: Text('فتح الإعدادات'),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
+      body: BlocConsumer<PrayerTimesCubit, PrayerTimesStates>(
+        listener: (context, state) {
+          if (state is PrayerTimesError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 5),
               ),
-            )
-          : Padding(
-        padding: EdgeInsets.symmetric(vertical: 20.h),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is PrayerTimesLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is PrayerTimesRefreshing) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is PrayerTimesError) {
+            return _buildErrorWidget(context, state.errorMessage);
+          }
+
+          if (state is PrayerTimesLoaded) {
+            return _buildPrayerTimesList(context, state);
+          }
+
+          return const Center(child: Text('لم يتم جلب البيانات بعد'));
+        },
+      ),
+    );
+  }
+
+  Widget _buildErrorWidget(BuildContext context, String errorMessage) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            PrayerTimeCard(
-              name: 'الفجر',
-              time: prayerTimes!.fajr,
-              icon: Icons.wb_twighlight,
+            const Icon(Icons.error_outline, size: 60, color: Colors.red),
+            const SizedBox(height: 20),
+            Text(
+              errorMessage,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
             ),
-            PrayerTimeCard(
-              name: 'الظهر',
-              time: prayerTimes!.dhuhr,
-              icon: Icons.wb_sunny,
-            ),
-            PrayerTimeCard(
-              name: 'العصر',
-              time: prayerTimes!.asr,
-              icon: Icons.wb_cloudy,
-            ),
-            PrayerTimeCard(
-              name: 'المغرب',
-              time: prayerTimes!.maghrib,
-              icon: Icons.nightlight_round,
-            ),
-            PrayerTimeCard(
-              name: 'العشاء',
-              time: prayerTimes!.isha,
-              icon: Icons.dark_mode,
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () =>
+                      context.read<PrayerTimesCubit>().getPrayerTimes(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                  child: const Text('إعادة المحاولة'),
+                ),
+                const SizedBox(width: 10),
+                if (errorMessage.contains('خدمة الموقع غير مفعلة') ||
+                    errorMessage.contains('تم رفض إذن الوصول للموقع'))
+                  ElevatedButton(
+                    onPressed: () async {
+                      await Geolocator.openLocationSettings();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                    ),
+                    child: const Text('فتح الإعدادات'),
+                  ),
+              ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPrayerTimesList(BuildContext context, PrayerTimesLoaded state) {
+    return RefreshIndicator(
+      onRefresh: () => context.read<PrayerTimesCubit>().refreshPrayerTimes(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        child: Column(
+          children: state.prayerTimesList.map((prayerTime) {
+            return PrayerTimeCard(
+              name: prayerTime.name,
+              time: prayerTime.time,
+              icon: prayerTime.icon,
+            );
+          }).toList(),
         ),
       ),
     );

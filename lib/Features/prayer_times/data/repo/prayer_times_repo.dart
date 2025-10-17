@@ -1,13 +1,9 @@
-import 'package:iman/Features/prayer_times/service/prayer_times_service.dart';
+import 'package:dartz/dartz.dart';
+import 'package:iman/Core/errors/failure.dart';
 import 'package:iman/Features/prayer_times/data/models/prayer_times_model.dart';
+import 'package:iman/Features/home/data/models/payer_time_model.dart';
 
-class PrayerTimesRepo {
-  final PrayerTimesService service;
-
-  PrayerTimesRepo(this.service);
-
-  Future<PrayerTimesModel> getPrayerTimes() async {
-    final data = await service.fetchPrayerTimes();
-    return PrayerTimesModel.fromJson(data);
-  }
+abstract class PrayerTimesRepo {
+  Future<Either<Failure, PrayerTimesModel>> getPrayerTimes();
+  Future<Either<Failure, List<PrayerTime>>> getPrayerTimesForDisplay();
 }

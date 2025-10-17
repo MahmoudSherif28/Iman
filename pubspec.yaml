@@ -21,6 +21,10 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.2.1
   shared_preferences: ^2.5.3
+  flutter_bloc: ^9.1.1
+  dartz: ^0.10.1
+  equatable: ^2.0.5
+  get_it: ^8.2.0
 
 dev_dependencies:
   flutter_test:

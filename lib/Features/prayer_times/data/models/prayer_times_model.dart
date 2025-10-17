@@ -1,5 +1,6 @@
 class PrayerTimesModel {
   final String fajr;
+  final String sunrise;
   final String dhuhr;
   final String asr;
   final String maghrib;
@@ -7,6 +8,7 @@ class PrayerTimesModel {
 
   PrayerTimesModel({
     required this.fajr,
+    required this.sunrise,
     required this.dhuhr,
     required this.asr,
     required this.maghrib,
@@ -16,6 +18,7 @@ class PrayerTimesModel {
   factory PrayerTimesModel.fromJson(Map<String, dynamic> json) {
     return PrayerTimesModel(
       fajr: json['Fajr'] ?? '',
+      sunrise: json['Sunrise'] ?? '',
       dhuhr: json['Dhuhr'] ?? '',
       asr: json['Asr'] ?? '',
       maghrib: json['Maghrib'] ?? '',
