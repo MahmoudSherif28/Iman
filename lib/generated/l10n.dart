@@ -133,6 +133,41 @@ class S {
   String get next_prayer {
     return Intl.message('Next Prayer', name: 'next_prayer', desc: '', args: []);
   }
+
+  /// `Qibla`
+  String get qibla {
+    return Intl.message('Qibla', name: 'qibla', desc: '', args: []);
+  }
+
+  /// `Qibla Direction`
+  String get qiblaDirection {
+    return Intl.message(
+      'Qibla Direction',
+      name: 'qiblaDirection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point your device towards the Qibla`
+  String get pointTowardsQibla {
+    return Intl.message(
+      'Point your device towards the Qibla',
+      name: 'pointTowardsQibla',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Qibla Angle`
+  String get qiblaAngle {
+    return Intl.message('Qibla Angle', name: 'qiblaAngle', desc: '', args: []);
+  }
+
+  /// `Retry`
+  String get retry {
+    return Intl.message('Retry', name: 'retry', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

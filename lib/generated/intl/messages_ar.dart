@@ -38,5 +38,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboarding_title3": MessageLookupByLibrary.simpleMessage(
       "كل أذكارك في مكان واحد مع تذكيرك بها في وقتها",
     ),
+    "pointTowardsQibla": MessageLookupByLibrary.simpleMessage(
+      "وجه هاتفك نحو القبلة",
+    ),
+    "qibla": MessageLookupByLibrary.simpleMessage("القبلة"),
+    "qiblaAngle": MessageLookupByLibrary.simpleMessage("زاوية القبلة"),
+    "qiblaDirection": MessageLookupByLibrary.simpleMessage("اتجاه القبلة"),
+    "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
   };
 }

@@ -8,5 +8,10 @@
   "home_icon4": "Dhikr & Tasbeeh",
   "home_icon5": "Prayer Times",
   "home_icon6": "Qibla",
-  "next_prayer": "Next Prayer"
+  "next_prayer": "Next Prayer",
+  "qibla": "Qibla",
+  "qiblaDirection": "Qibla Direction",
+  "pointTowardsQibla": "Point your device towards the Qibla",
+  "qiblaAngle": "Qibla Angle",
+  "retry": "Retry"
 }
