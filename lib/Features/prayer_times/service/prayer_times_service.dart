@@ -23,16 +23,34 @@ class PrayerTimesService {
     );
 
     // طلب API
-    final url = Uri.parse(
-      'https://api.aladhan.com/v1/timings?latitude=${position.latitude}&longitude=${position.longitude}&method=5',
-    );
+    try {
+      final url = Uri.parse(
+        'https://api.aladhan.com/v1/timings?latitude=${position.latitude}&longitude=${position.longitude}&method=5',
+      );
 
-    final response = await http.get(url);
-    if (response.statusCode != 200) {
-      throw Exception('فشل في جلب البيانات');
+      final response = await http.get(url).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw Exception('انتهت مهلة الاتصال. يرجى التحقق من اتصالك بالإنترنت.');
+        },
+      );
+      
+      if (response.statusCode != 200) {
+        throw Exception('فشل في جلب البيانات من الخادم: ${response.statusCode}');
+      }
+
+      final data = jsonDecode(response.body);
+      if (data['data'] == null || data['data']['timings'] == null) {
+        throw Exception('البيانات المستلمة غير صالحة');
+      }
+      
+      return data['data']['timings'];
+    } catch (e) {
+      if (e is Exception) {
+        rethrow;
+      } else {
+        throw Exception('خطأ في الاتصال بالإنترنت. يرجى التحقق من اتصالك.');
+      }
     }
-
-    final data = jsonDecode(response.body);
-    return data['data']['timings'];
   }
 }
