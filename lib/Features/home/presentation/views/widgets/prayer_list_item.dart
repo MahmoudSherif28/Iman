@@ -18,7 +18,7 @@ class PrayerTimeListItem extends StatelessWidget {
       decoration: isHighlighted
           ? BoxDecoration(
               color: highlightColor,
-              borderRadius: BorderRadius.circular(5.0.r),
+              borderRadius: BorderRadius.circular(8.0.r),
               boxShadow: [
                 BoxShadow(
                   color: highlightColor.withOpacity(0.5),
@@ -27,7 +27,17 @@ class PrayerTimeListItem extends StatelessWidget {
                 ),
               ],
             )
-          : null,
+          : BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5.0.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  blurRadius: 5.r,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
 
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "home_icon4": MessageLookupByLibrary.simpleMessage("ائكار و تسبيح"),
     "home_icon5": MessageLookupByLibrary.simpleMessage("مواعيد الصلاة"),
     "home_icon6": MessageLookupByLibrary.simpleMessage("القبلة"),
+    "next_prayer": MessageLookupByLibrary.simpleMessage("الصلاة القادمة"),
     "onboarding_title1": MessageLookupByLibrary.simpleMessage(
       "كل ما تحتاجه لصلاتك: مواقيت، أذان، واتجاه القبلة",
     ),

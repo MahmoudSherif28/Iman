@@ -128,6 +128,11 @@ class S {
   String get home_icon6 {
     return Intl.message('Qibla', name: 'home_icon6', desc: '', args: []);
   }
+
+  /// `Next Prayer`
+  String get next_prayer {
+    return Intl.message('Next Prayer', name: 'next_prayer', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

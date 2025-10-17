@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:iman/Core/services/prayer_times_cache_service.dart';
 import 'package:iman/Features/prayer_times/presentation/widget/prayer_time_card.dart';
 import '../../data/models/prayer_times_model.dart';
-import '../../data/repo/prayer_times_repo.dart';
-import '../../service/prayer_times_service.dart';
 
 class PrayerTimesView extends StatefulWidget {
   const PrayerTimesView({super.key});
@@ -26,9 +25,9 @@ class _PrayerTimesViewState extends State<PrayerTimesView> {
   String? errorMessage;
 
   Future<void> fetchPrayerTimes() async {
-    final repo = PrayerTimesRepo(PrayerTimesService());
+    final cacheService = PrayerTimesCacheService();
     try {
-      final data = await repo.getPrayerTimes();
+      final data = await cacheService.getPrayerTimes();
       setState(() {
         prayerTimes = data;
         isLoading = false;

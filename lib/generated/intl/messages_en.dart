@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "home_icon4": MessageLookupByLibrary.simpleMessage("Dhikr & Tasbeeh"),
     "home_icon5": MessageLookupByLibrary.simpleMessage("Prayer Times"),
     "home_icon6": MessageLookupByLibrary.simpleMessage("Qibla"),
+    "next_prayer": MessageLookupByLibrary.simpleMessage("Next Prayer"),
     "onboarding_title1": MessageLookupByLibrary.simpleMessage(
       "Everything you need for your prayer: times, adhan, and Qibla direction",
     ),

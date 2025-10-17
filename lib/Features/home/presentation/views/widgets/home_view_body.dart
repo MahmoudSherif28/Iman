@@ -9,18 +9,27 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 30.0.h),
-          const PrayerList(),
-          SizedBox(height: 16.0.h),
-          Text('التصنيفات', style: AppTextStyles.bold15),
-          SizedBox(height: 16.0.h),
-          WorshipCategoriesGrid(),
-        ],
+    return Container(
+      color: const Color(0xFFF5F5F5),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 30.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20.0.h),
+            // شريط الصلوات
+            const PrayerList(),
+            SizedBox(height: 24.0.h),
+            // عنوان التصنيفات
+            Container(
+              padding: EdgeInsets.only(right: 8.w),
+              child: Text('التصنيفات', style: AppTextStyles.bold15),
+            ),
+            SizedBox(height: 16.0.h),
+            // شبكة التصنيفات
+            WorshipCategoriesGrid(),
+          ],
+        ),
       ),
     );
   }
