@@ -454,7 +454,7 @@ abstract class S {
   /// No description provided for @azkar_general_1.
   ///
   /// In ar, this message translates to:
-  /// **'سُبْحَانَ اللهِ وَبِحَمْدِهِ'**
+  /// **'اللهم أصبحنا نشهدك ونشهد حملة عرشك وملائكتك وجميع خلقك أنك أنت الله، لا إله إلا أنت وحدك لا شريك لك، وأن محمدًا عبدك ورسولك،'**
   String get azkar_general_1;
 
   /// No description provided for @azkar_general_2.
