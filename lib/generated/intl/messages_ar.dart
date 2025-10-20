@@ -110,7 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم (3 مرات)",
     ),
     "azkar_general_1": MessageLookupByLibrary.simpleMessage(
-      "سُبْحَانَ اللهِ وَبِحَمْدِهِ",
+      "اللهم أصبحنا نشهدك ونشهد حملة عرشك وملائكتك وجميع خلقك أنك أنت الله، لا إله إلا أنت وحدك لا شريك لك، وأن محمدًا عبدك ورسولك،",
     ),
     "azkar_general_2": MessageLookupByLibrary.simpleMessage(
       "لا إلهَ إلاّ اللهُ وحدَهُ لا شريكَ لهُ، لهُ المُلكُ ولهُ الحمدُ وهوَ على كلّ شيءٍ قديرٌ",
