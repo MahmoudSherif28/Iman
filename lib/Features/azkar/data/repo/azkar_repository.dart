@@ -223,20 +223,44 @@ class AzkarRepository {
           AzkarItem(
             id: 'after_prayer_1',
             categoryId: categoryId,
-            textKey: localizations.azkar_after_prayer_1,
-            count: 1,
+            textKey: _getAfterPrayerAzkarText(1),
+            count: 3,
           ),
           AzkarItem(
             id: 'after_prayer_2',
             categoryId: categoryId,
-            textKey: localizations.azkar_after_prayer_2,
+            textKey: _getAfterPrayerAzkarText(2),
             count: 1,
           ),
           AzkarItem(
             id: 'after_prayer_3',
             categoryId: categoryId,
-            textKey: localizations.azkar_after_prayer_3,
+            textKey: _getAfterPrayerAzkarText(3),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'after_prayer_4',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(4),
             count: 33,
+          ),
+          AzkarItem(
+            id: 'after_prayer_5',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(5),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'after_prayer_6',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(6),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'after_prayer_7',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(7),
+            count: 1,
           ),
         ];
       case 'before_sleep':
@@ -373,6 +397,27 @@ class AzkarRepository {
         return "سبحان الله وبحمده (100 مرة)";
       case 14:
         return "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير (100 مرة)";
+      default:
+        return "";
+    }
+  }
+
+  String _getAfterPrayerAzkarText(int index) {
+    switch (index) {
+      case 1:
+        return "الاستغفار\n\nأستغفر الله (3)";
+      case 2:
+        return "الدعاء\n\nاللهم أنت السلام، ومنك السلام، تباركت يا ذا الجلال والإكرام.";
+      case 3:
+        return "التوحيد\n\nلا إله إلا الله وحده لا شريك له،\nله الملك وله الحمد وهو على كل شيء قدير،\nاللهم لا مانع لما أعطيت، ولا معطي لما منعت،\nولا ينفع ذا الجد منك الجد.";
+      case 4:
+        return "تسبيح دبر كل صلاة\n\nسبحان الله (33 مرة)\nالحمد لله (33 مرة)\nالله أكبر (33 مرة)\nلا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير (1 مرة).";
+      case 5:
+        return "آية الكرسي\n\nاللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ\nلَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ\nلَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ\nمَنْ ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ\nيَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ\nوَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ\nوَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ\nوَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ\n(البقرة: 255)";
+      case 6:
+        return "سور الإخلاص والمعوذتين\n\nسورة الإخلاص\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ\nاللَّهُ الصَّمَدُ\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nوَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ\n\nسورة الفلق\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ\nمِن شَرِّ مَا خَلَقَ\nوَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ\nوَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ\nوَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\n\nسورة الناس\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nمَلِكِ النَّاسِ\nإِلَٰهِ النَّاسِ\nمِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nمِنَ الْجِنَّةِ وَالنَّاسِ\n\n(تقال بعد كل صلاة مرة، وبعد الفجر والمغرب ثلاث مرات)";
+      case 7:
+        return "ذكر بعد الصلاة\n\nلا إله إلا الله وحده لا شريك له،\nله الملك وله الحمد،\nيحيي ويميت وهو على كل شيء قدير.";
       default:
         return "";
     }
