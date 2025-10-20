@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iman/generated/l10n.dart';
 import '../models/azkar_model.dart';
+import '../services/custom_azkar_service.dart';
 
 class AzkarRepository {
   List<AzkarCategory> getCategories(BuildContext context) {
@@ -37,10 +38,15 @@ class AzkarRepository {
         titleKey: localizations.azkar_category_dua,
         imageAsset: 'assets/images/doaa.png',
       ),
+      AzkarCategory(
+        id: 'my_azkar',
+        titleKey: 'أذكارى',
+        imageAsset: 'assets/images/doaa.png',
+      ),
     ];
   }
 
-  List<AzkarItem> getAzkarItems(BuildContext context, String categoryId) {
+  Future<List<AzkarItem>> getAzkarItems(BuildContext context, String categoryId) async {
     final localizations = S.of(context);
     
     switch (categoryId) {
@@ -621,9 +627,17 @@ class AzkarRepository {
             count: 100,
           ),
         ];
+      case 'my_azkar':
+        return await _getCustomAzkarItems(categoryId);
       default:
         return [];
     }
+  }
+
+  Future<List<AzkarItem>> _getCustomAzkarItems(String categoryId) async {
+    final customAzkarService = CustomAzkarService();
+    final customAzkarList = await customAzkarService.getCustomAzkarList();
+    return customAzkarService.convertToAzkarItems(customAzkarList);
   }
 
   // دوال للحصول على النصوص العربية مباشرة

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/generated/l10n.dart';
 import '../../data/models/azkar_model.dart';
 import '../../data/repo/azkar_repository.dart';
+import '../screens/add_azkar_screen.dart';
 import 'azkar_items_screen.dart';
 
 class AzkarCategoriesScreen extends StatelessWidget {
@@ -12,6 +14,23 @@ class AzkarCategoriesScreen extends StatelessWidget {
     final repository = AzkarRepository();
     final categories = repository.getCategories(context);
     final localizations = S.of(context);
+
+    final reorderedCategories = <dynamic>[];
+// البحث عن فئة "أذكارى" ووضعها أولاً
+    AzkarCategory? myAzkarCategory;
+    try {
+      myAzkarCategory = categories.firstWhere((cat) => cat.id == 'my_azkar');
+      reorderedCategories.add(myAzkarCategory);
+    } catch (e) {
+      // إذا لم توجد فئة "أذكارى"، لا نفعل شيئاً
+    }
+    
+    // إضافة باقي الفئات
+    reorderedCategories.addAll(
+      categories.where((cat) => cat.id != 'my_azkar'),
+    );
+    
+    reorderedCategories.add('add_button');
 
     return Scaffold(
       appBar: AppBar(
@@ -26,10 +45,14 @@ class AzkarCategoriesScreen extends StatelessWidget {
           mainAxisSpacing: 16,
           childAspectRatio: 1,
         ),
-        itemCount: categories.length,
+        itemCount: reorderedCategories.length,
         itemBuilder: (context, index) {
-          final category = categories[index];
-          return _buildCategoryCard(context, category);
+          final item = reorderedCategories[index];
+          if (item == 'add_button') {
+            return _buildAddAzkarCard(context);
+          } else {
+            return _buildCategoryCard(context, item);
+          }
         },
       ),
     );
@@ -65,6 +88,51 @@ class AzkarCategoriesScreen extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddAzkarCard(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddAzkarScreen(),
+          ),
+        );
+        if (result == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('تم حفظ ذكرك')),
+          );
+        }
+      },
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(32),
+        ),
+        color: const Color(0xFF277022),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.add,
+              size: 64,
+              color: Colors.white,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'أضف ذكرك',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
           ],

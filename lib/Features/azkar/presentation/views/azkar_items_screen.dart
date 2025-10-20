@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iman/generated/l10n.dart';
 import '../../data/models/azkar_model.dart';
 import '../../data/repo/azkar_repository.dart';
-import '../screens/add_azkar_screen.dart';
+import '../../data/services/custom_azkar_service.dart';
 import 'azkar_detail_screen.dart';
 
 class AzkarItemsScreen extends StatefulWidget {
@@ -42,37 +42,6 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
           
           return Column(
             children: [
-              // إضافة زر "أضف ذكرك" لفئة "أذكاري"
-              if (widget.categoryId == 'my_azkar')
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddAzkarScreen(),
-                        ),
-                      );
-                      if (result == true) {
-                        setState(() {}); // إعادة تحميل القائمة
-                      }
-                    },
-                    icon: const Icon(Icons.add, color: Colors.white),
-                    label: const Text(
-                      'أضف ذكرك',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1B5E20),
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-              // قائمة الأذكار
               Expanded(
                 child: items.isEmpty
                     ? const Center(
@@ -118,6 +87,29 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (item.categoryId == 'my_azkar')
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () async {
+                        final service = CustomAzkarService();
+                        final success = await service.deleteCustomAzkar(item.id);
+                        if (success) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('تم حذف الذكر')),
+                          );
+                          setState(() {});
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('تعذر حذف الذكر')),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               Text(
                 item.textKey,
                 style: const TextStyle(
