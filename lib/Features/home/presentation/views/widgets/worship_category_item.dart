@@ -4,6 +4,7 @@ import 'package:iman/Core/utils/app_text_style.dart';
 import 'package:iman/Features/home/data/models/worship_category.dart';
 import '../../../../prayer_times/presentation/views/prayer_times_view.dart';
 import '../../../../qibla/view/qibla_screen.dart';
+import '../../../../azkar/presentation/views/azkar_categories_screen.dart';
 import 'package:geolocator/geolocator.dart';
 class WorshipCategoryItem extends StatelessWidget {
   final WorshipCategory category;
@@ -51,6 +52,11 @@ class WorshipCategoryItem extends StatelessWidget {
               MaterialPageRoute(builder: (context) => const QiblaScreen()),
             );
           }
+        } else if (category.title == 'تسبيح و ادعه') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AzkarCategoriesScreen()),
+          );
         }
       },
       borderRadius: BorderRadius.circular(20.0.r),
