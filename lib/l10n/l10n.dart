@@ -99,326 +99,392 @@ abstract class S {
 
   /// No description provided for @onboarding_title1.
   ///
-  /// In en, this message translates to:
-  /// **'Everything you need for your prayer: times, adhan, and Qibla direction'**
+  /// In ar, this message translates to:
+  /// **'كل ما تحتاجه لصلاتك: مواقيت، أذان، واتجاه القبلة'**
   String get onboarding_title1;
 
   /// No description provided for @onboarding_title2.
   ///
-  /// In en, this message translates to:
-  /// **'Everything you need for your prayer: times, adhan, and Qibla direction'**
+  /// In ar, this message translates to:
+  /// **'كل ما تحتاجه لصلاتك: مواقيت، أذان، واتجاه القبلة'**
   String get onboarding_title2;
 
   /// No description provided for @onboarding_title3.
   ///
-  /// In en, this message translates to:
-  /// **'All your daily adhkar in one place with reminders at the right time'**
+  /// In ar, this message translates to:
+  /// **'كل أذكارك في مكان واحد مع تذكيرك بها في وقتها'**
   String get onboarding_title3;
 
   /// No description provided for @home_icon1.
   ///
-  /// In en, this message translates to:
-  /// **'Qur\'an'**
+  /// In ar, this message translates to:
+  /// **'القرآن '**
   String get home_icon1;
 
   /// No description provided for @home_icon2.
   ///
-  /// In en, this message translates to:
-  /// **'Qur\'an Recitation'**
+  /// In ar, this message translates to:
+  /// **'تسميع القرآن '**
   String get home_icon2;
 
   /// No description provided for @home_icon3.
   ///
-  /// In en, this message translates to:
-  /// **'Qur\'an Listening'**
+  /// In ar, this message translates to:
+  /// **'استماع القرآن'**
   String get home_icon3;
 
   /// No description provided for @home_icon4.
   ///
-  /// In en, this message translates to:
-  /// **'Dhikr & Tasbeeh'**
+  /// In ar, this message translates to:
+  /// **'أذكار و تسبيح'**
   String get home_icon4;
 
   /// No description provided for @home_icon5.
   ///
-  /// In en, this message translates to:
-  /// **'Prayer Times'**
+  /// In ar, this message translates to:
+  /// **'مواعيد الصلاة'**
   String get home_icon5;
 
   /// No description provided for @home_icon6.
   ///
-  /// In en, this message translates to:
-  /// **'Qibla'**
+  /// In ar, this message translates to:
+  /// **'القبلة'**
   String get home_icon6;
 
   /// No description provided for @next_prayer.
   ///
-  /// In en, this message translates to:
-  /// **'Next Prayer'**
+  /// In ar, this message translates to:
+  /// **'الصلاة القادمة'**
   String get next_prayer;
 
   /// No description provided for @qibla.
   ///
-  /// In en, this message translates to:
-  /// **'Qibla'**
+  /// In ar, this message translates to:
+  /// **'القبلة'**
   String get qibla;
 
   /// No description provided for @qiblaDirection.
   ///
-  /// In en, this message translates to:
-  /// **'Qibla Direction'**
+  /// In ar, this message translates to:
+  /// **'اتجاه القبلة'**
   String get qiblaDirection;
 
   /// No description provided for @pointTowardsQibla.
   ///
-  /// In en, this message translates to:
-  /// **'Point your device towards the Qibla'**
+  /// In ar, this message translates to:
+  /// **'وجه هاتفك نحو القبلة'**
   String get pointTowardsQibla;
 
   /// No description provided for @qiblaAngle.
   ///
-  /// In en, this message translates to:
-  /// **'Qibla Angle'**
+  /// In ar, this message translates to:
+  /// **'زاوية القبلة'**
   String get qiblaAngle;
 
   /// No description provided for @retry.
   ///
-  /// In en, this message translates to:
-  /// **'Retry'**
+  /// In ar, this message translates to:
+  /// **'إعادة المحاولة'**
   String get retry;
 
   /// No description provided for @azkar_title.
   ///
-  /// In en, this message translates to:
-  /// **'Adhkar & Duas'**
+  /// In ar, this message translates to:
+  /// **'الأذكار والأدعية'**
   String get azkar_title;
 
   /// No description provided for @azkar_counter.
   ///
-  /// In en, this message translates to:
-  /// **'Counter'**
+  /// In ar, this message translates to:
+  /// **'العداد'**
   String get azkar_counter;
 
   /// No description provided for @azkar_reset.
   ///
-  /// In en, this message translates to:
-  /// **'Reset'**
+  /// In ar, this message translates to:
+  /// **'إعادة ضبط'**
   String get azkar_reset;
 
   /// No description provided for @azkar_complete.
   ///
-  /// In en, this message translates to:
-  /// **'Done'**
+  /// In ar, this message translates to:
+  /// **'تم'**
   String get azkar_complete;
 
   /// No description provided for @azkar_category_morning.
   ///
-  /// In en, this message translates to:
-  /// **'Morning Adhkar'**
+  /// In ar, this message translates to:
+  /// **'أذكار الصباح'**
   String get azkar_category_morning;
 
   /// No description provided for @azkar_category_evening.
   ///
-  /// In en, this message translates to:
-  /// **'Evening Adhkar'**
+  /// In ar, this message translates to:
+  /// **'أذكار المساء'**
   String get azkar_category_evening;
 
   /// No description provided for @azkar_category_after_prayer.
   ///
-  /// In en, this message translates to:
-  /// **'After Prayer Adhkar'**
+  /// In ar, this message translates to:
+  /// **'أذكار بعد الصلاة'**
   String get azkar_category_after_prayer;
 
   /// No description provided for @azkar_category_before_sleep.
   ///
-  /// In en, this message translates to:
-  /// **'Before Sleep Adhkar'**
+  /// In ar, this message translates to:
+  /// **'أذكار قبل النوم'**
   String get azkar_category_before_sleep;
 
   /// No description provided for @azkar_category_general.
   ///
-  /// In en, this message translates to:
-  /// **'General Adhkar'**
+  /// In ar, this message translates to:
+  /// **'أذكار عامة'**
   String get azkar_category_general;
 
   /// No description provided for @azkar_category_dua.
   ///
-  /// In en, this message translates to:
-  /// **'Duas'**
+  /// In ar, this message translates to:
+  /// **'أدعية مأثورة'**
   String get azkar_category_dua;
 
   /// No description provided for @azkar_morning_1.
   ///
-  /// In en, this message translates to:
-  /// **'Ayat al-Kursi (The Throne Verse)\n\nAllah! There is no deity except Him, the Ever-Living, the Sustainer of existence.\nNeither drowsiness overtakes Him nor sleep.\nTo Him belongs whatever is in the heavens and whatever is on the earth.\nWho is it that can intercede with Him except by His permission?\nHe knows what is before them and what will be after them,\nand they encompass not a thing of His knowledge except for what He wills.\nHis Kursi extends over the heavens and the earth,\nand their preservation tires Him not. And He is the Most High, the Most Great.\n(Al-Baqarah: 255)'**
+  /// In ar, this message translates to:
+  /// **'آية الكرسي\n\nاللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ\nلَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ\nلَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ\nمَنْ ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ\nيَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ\nوَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ\nوَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ\nوَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ\n(البقرة: 255)'**
   String get azkar_morning_1;
 
   /// No description provided for @azkar_morning_2.
   ///
-  /// In en, this message translates to:
-  /// **'Last two verses of Surah Al-Baqarah\n\nThe Messenger has believed in what was revealed to him from his Lord, and the believers.\nAll of them have believed in Allah and His angels and His books and His messengers.\nWe make no distinction between any of His messengers.\nAnd they say, \'We hear and we obey. Your forgiveness, our Lord, and to You is the return.\'\nAllah does not charge a soul except with that within its capacity.\nIt will have what it has gained, and it will bear what it has lost.\nOur Lord, do not impose blame upon us if we have forgotten or erred.\nOur Lord, and lay not upon us a burden like that which You laid upon those before us.\nOur Lord, and burden us not with that which we have no ability to bear.\nAnd pardon us; and forgive us; and have mercy upon us.\nYou are our protector, so give us victory over the disbelieving people.\n(Al-Baqarah: 285-286)'**
+  /// In ar, this message translates to:
+  /// **'آخر آيتين من سورة البقرة\n\nآمَنَ الرَّسُولُ بِمَا أُنزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ\nكُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ\nلَا نُفَرِّقُ بَيْنَ أَحَدٍ مِّن رُّسُلِهِ\nوَقَالُوا سَمِعْنَا وَأَطَعْنَا\nغُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ\nلَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا\nلَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ\nرَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا\nرَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا\nرَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ\nوَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا\nأَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ\n(البقرة: 285-286)'**
   String get azkar_morning_2;
 
   /// No description provided for @azkar_morning_3.
   ///
-  /// In en, this message translates to:
-  /// **'Surah Al-Ikhlas and Al-Mu\'awwidhatain (3 times)\n\nSay, \'He is Allah, [who is] One.\'\nSay, \'I seek refuge in the Lord of daybreak.\'\nSay, \'I seek refuge in the Lord of mankind.\''**
+  /// In ar, this message translates to:
+  /// **'سورة الإخلاص والمعوذتين (3 مرات)\n\nسورة الإخلاص\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ\nاللَّهُ الصَّمَدُ\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nوَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ\n\nسورة الفلق\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ\nمِن شَرِّ مَا خَلَقَ\nوَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ\nوَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ\nوَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\n\nسورة الناس\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nمَلِكِ النَّاسِ\nإِلَٰهِ النَّاسِ\nمِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nمِنَ الْجِنَّةِ وَالنَّاسِ'**
   String get azkar_morning_3;
 
   /// No description provided for @azkar_morning_4.
   ///
-  /// In en, this message translates to:
-  /// **'We have reached the morning and at this very time all sovereignty belongs to Allah\n\nWe have reached the morning and at this very time all sovereignty belongs to Allah, and all praise is for Allah.\nNone has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise and He is over all things omnipotent.\nO Lord, I ask You for the good of this day and the good of what follows it.\nAnd I seek refuge in You from the evil of this day and the evil of what follows it.\nO Lord, I seek refuge in You from laziness and old age.\nO Lord, I seek refuge in You from punishment in the Fire and punishment in the grave.'**
+  /// In ar, this message translates to:
+  /// **'أصبحنا وأصبح الملك لله\n\nأصبحنا وأصبح الملك لله، والحمد لله،\nلا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير،\nرب أسألك خير هذا اليوم وخير ما بعده،\nوأعوذ بك من شر هذا اليوم وشر ما بعده،\nرب أعوذ بك من الكسل وسوء الكبر،\nرب أعوذ بك من عذاب في النار وعذاب في القبر.'**
   String get azkar_morning_4;
 
   /// No description provided for @azkar_morning_5.
   ///
-  /// In en, this message translates to:
-  /// **'O Allah, by You we have reached the morning and by You we have reached the evening\n\nO Allah, by You we have reached the morning and by You we have reached the evening, and by You we live and by You we die, and to You is the return.'**
+  /// In ar, this message translates to:
+  /// **'اللهم بك أصبحنا وبك أمسينا\n\nاللهم بك أصبحنا وبك أمسينا، وبك نحيا وبك نموت وإليك النشور.'**
   String get azkar_morning_5;
 
   /// No description provided for @azkar_morning_6.
   ///
-  /// In en, this message translates to:
-  /// **'O Allah, I have reached the morning bearing witness to You (4 times)\n\nO Allah, I have reached the morning bearing witness to You, and bearing witness to the bearers of Your Throne,\nand Your angels and all of Your creation, that You are Allah,\nthere is no deity except You, alone, without partner,\nand that Muhammad is Your servant and Your messenger.'**
+  /// In ar, this message translates to:
+  /// **'اللهم إني أصبحت أشهدك (4 مرات)\n\nاللهم إني أصبحت أشهدك، وأشهد حملة عرشك،\nوملائكتك وجميع خلقك أنك أنت الله،\nلا إله إلا أنت وحدك لا شريك لك،\nوأن محمداً عبدك ورسولك.'**
   String get azkar_morning_6;
 
   /// No description provided for @azkar_morning_7.
   ///
-  /// In en, this message translates to:
-  /// **'O Allah, whatever blessing I have reached this morning\n\nO Allah, whatever blessing I have reached this morning or any of Your creation has reached, it is from You alone, without partner, so for You is all praise and unto You all thanks.'**
+  /// In ar, this message translates to:
+  /// **'اللهم ما أصبح بي من نعمة\n\nاللهم ما أصبح بي من نعمة أو بأحد من خلقك فمنك وحدك لا شريك لك،\nفلك الحمد ولك الشكر.'**
   String get azkar_morning_7;
 
   /// No description provided for @azkar_morning_8.
   ///
-  /// In en, this message translates to:
-  /// **'Allah is sufficient for me, there is no deity except Him, upon Him I rely and He is the Lord of the Great Throne (7 times)'**
+  /// In ar, this message translates to:
+  /// **'حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم (7 مرات)'**
   String get azkar_morning_8;
 
   /// No description provided for @azkar_morning_9.
   ///
-  /// In en, this message translates to:
-  /// **'In the name of Allah, with whose name nothing can harm on earth or in heaven, and He is the Hearing, the Knowing (3 times)'**
+  /// In ar, this message translates to:
+  /// **'بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم (3 مرات)'**
   String get azkar_morning_9;
 
   /// No description provided for @azkar_morning_10.
   ///
-  /// In en, this message translates to:
-  /// **'I am pleased with Allah as a Lord, and with Islam as a religion, and with Muhammad as a Prophet (3 times)'**
+  /// In ar, this message translates to:
+  /// **'رضيت بالله رباً وبالإسلام ديناً وبمحمد ﷺ نبياً (3 مرات)'**
   String get azkar_morning_10;
 
   /// No description provided for @azkar_morning_11.
   ///
-  /// In en, this message translates to:
-  /// **'O Ever-Living, O Self-Sustaining, by Your mercy I seek help\n\nSet right for me all my affairs, and do not leave me to myself for the blink of an eye.'**
+  /// In ar, this message translates to:
+  /// **'يا حي يا قيوم برحمتك أستغيث\n\nأصلح لي شأني كله، ولا تكلني إلى نفسي طرفة عين.'**
   String get azkar_morning_11;
 
   /// No description provided for @azkar_morning_12.
   ///
-  /// In en, this message translates to:
-  /// **'We have reached the morning upon the natural religion of Islam\n\nWe have reached the morning upon the natural religion of Islam,\nand upon the word of sincerity,\nand upon the religion of our Prophet Muhammad,\nand upon the religion of our father Abraham, inclining toward truth, and he was not of the polytheists.'**
+  /// In ar, this message translates to:
+  /// **'أصبحنا على فطرة الإسلام\n\nأصبحنا على فطرة الإسلام،\nوعلى كلمة الإخلاص،\nوعلى دين نبينا محمد ﷺ،\nوعلى ملة أبينا إبراهيم حنيفاً مسلماً وما كان من المشركين.'**
   String get azkar_morning_12;
 
   /// No description provided for @azkar_morning_13.
   ///
-  /// In en, this message translates to:
-  /// **'Glory is to Allah and praise is to Him (100 times)'**
+  /// In ar, this message translates to:
+  /// **'سبحان الله وبحمده (100 مرة)'**
   String get azkar_morning_13;
 
   /// No description provided for @azkar_morning_14.
   ///
-  /// In en, this message translates to:
-  /// **'None has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise and He is over all things omnipotent (100 times)'**
+  /// In ar, this message translates to:
+  /// **'لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير (100 مرة)'**
   String get azkar_morning_14;
 
   /// No description provided for @azkar_evening_1.
   ///
-  /// In en, this message translates to:
-  /// **'We have reached the evening and at this very time all sovereignty belongs to Allah. Praise is to Allah. None has the right to be worshipped except Allah, alone, without partner. To Him belongs all sovereignty and praise, and He is over all things omnipotent.'**
+  /// In ar, this message translates to:
+  /// **'آية الكرسي\n\nاللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ\nلَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ\nلَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ\nمَنْ ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ\nيَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ\nوَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ\nوَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ\nوَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ\n(البقرة: 255)'**
   String get azkar_evening_1;
 
   /// No description provided for @azkar_evening_2.
   ///
-  /// In en, this message translates to:
-  /// **'O Allah, what blessing I or any of Your creation have risen upon, is from You alone, without partner, so for You is all praise and unto You all thanks.'**
+  /// In ar, this message translates to:
+  /// **'آخر آيتين من سورة البقرة\n\nآمَنَ الرَّسُولُ بِمَا أُنزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ\nكُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ\nلَا نُفَرِّقُ بَيْنَ أَحَدٍ مِّن رُّسُلِهِ\nوَقَالُوا سَمِعْنَا وَأَطَعْنَا\nغُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ\nلَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا\nلَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ\nرَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا\nرَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا\nرَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ\nوَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا\nأَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ\n(البقرة: 285-286)'**
   String get azkar_evening_2;
 
   /// No description provided for @azkar_evening_3.
   ///
-  /// In en, this message translates to:
-  /// **'O Allah, I take refuge in You from anxiety and sorrow, weakness and laziness, miserliness and cowardice, the burden of debts and from being overpowered by men.'**
+  /// In ar, this message translates to:
+  /// **'سورة الإخلاص والمعوذتين (3 مرات)\n\nسورة الإخلاص\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ\nاللَّهُ الصَّمَدُ\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nوَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ\n\nسورة الفلق\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ\nمِن شَرِّ مَا خَلَقَ\nوَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ\nوَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ\nوَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\n\nسورة الناس\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nمَلِكِ النَّاسِ\nإِلَٰهِ النَّاسِ\nمِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nمِنَ الْجِنَّةِ وَالنَّاسِ'**
   String get azkar_evening_3;
+
+  /// No description provided for @azkar_evening_4.
+  ///
+  /// In ar, this message translates to:
+  /// **'أمسينا وأمسى الملك لله\n\nأمسينا وأمسى الملك لله، والحمد لله،\nلا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير،\nرب أسألك خير هذه الليلة وخير ما بعدها،\nوأعوذ بك من شر هذه الليلة وشر ما بعدها،\nرب أعوذ بك من الكسل وسوء الكبر،\nرب أعوذ بك من عذاب في النار وعذاب في القبر.'**
+  String get azkar_evening_4;
+
+  /// No description provided for @azkar_evening_5.
+  ///
+  /// In ar, this message translates to:
+  /// **'اللهم بك أمسينا وبك أصبحنا\n\nاللهم بك أمسينا وبك أصبحنا، وبك نحيا وبك نموت وإليك المصير.'**
+  String get azkar_evening_5;
+
+  /// No description provided for @azkar_evening_6.
+  ///
+  /// In ar, this message translates to:
+  /// **'اللهم إني أمسيت أشهدك (4 مرات)\n\nاللهم إني أمسيت أشهدك، وأشهد حملة عرشك،\nوملائكتك وجميع خلقك أنك أنت الله،\nلا إله إلا أنت وحدك لا شريك لك،\nوأن محمداً عبدك ورسولك.'**
+  String get azkar_evening_6;
+
+  /// No description provided for @azkar_evening_7.
+  ///
+  /// In ar, this message translates to:
+  /// **'اللهم ما أمسى بي من نعمة\n\nاللهم ما أمسى بي من نعمة أو بأحد من خلقك فمنك وحدك لا شريك لك،\nفلك الحمد ولك الشكر.'**
+  String get azkar_evening_7;
+
+  /// No description provided for @azkar_evening_8.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم (7 مرات)'**
+  String get azkar_evening_8;
+
+  /// No description provided for @azkar_evening_9.
+  ///
+  /// In ar, this message translates to:
+  /// **'بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم (3 مرات)'**
+  String get azkar_evening_9;
+
+  /// No description provided for @azkar_evening_10.
+  ///
+  /// In ar, this message translates to:
+  /// **'رضيت بالله رباً وبالإسلام ديناً وبمحمد ﷺ نبياً (3 مرات)'**
+  String get azkar_evening_10;
+
+  /// No description provided for @azkar_evening_11.
+  ///
+  /// In ar, this message translates to:
+  /// **'يا حي يا قيوم برحمتك أستغيث\n\nأصلح لي شأني كله، ولا تكلني إلى نفسي طرفة عين.'**
+  String get azkar_evening_11;
+
+  /// No description provided for @azkar_evening_12.
+  ///
+  /// In ar, this message translates to:
+  /// **'أمسينا على فطرة الإسلام\n\nأمسينا على فطرة الإسلام،\nوعلى كلمة الإخلاص،\nوعلى دين نبينا محمد ﷺ،\nوعلى ملة أبينا إبراهيم حنيفاً مسلماً وما كان من المشركين.'**
+  String get azkar_evening_12;
+
+  /// No description provided for @azkar_evening_13.
+  ///
+  /// In ar, this message translates to:
+  /// **'سبحان الله وبحمده (100 مرة)'**
+  String get azkar_evening_13;
+
+  /// No description provided for @azkar_evening_14.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير (100 مرة)'**
+  String get azkar_evening_14;
 
   /// No description provided for @azkar_after_prayer_1.
   ///
-  /// In en, this message translates to:
-  /// **'I ask Allah for forgiveness (three times). O Allah, You are As-Salam and from You is all peace, blessed are You, O Possessor of majesty and honor.'**
+  /// In ar, this message translates to:
+  /// **'أَسْتَغْفِرُ اللهَ (ثلاثاً) اللَّهُمَّ أَنْتَ السَّلاَمُ، وَمِنْكَ السَّلاَمُ، تَبَارَكْتَ يَا ذَا الْجَلاَلِ وَالإِكْرَامِ'**
   String get azkar_after_prayer_1;
 
   /// No description provided for @azkar_after_prayer_2.
   ///
-  /// In en, this message translates to:
-  /// **'None has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise and He is over all things omnipotent. O Allah, none can prevent what You have willed to bestow and none can bestow what You have willed to prevent, and no wealth or majesty can benefit anyone, as from You is all wealth and majesty.'**
+  /// In ar, this message translates to:
+  /// **'لاَ إِلَهَ إِلاَّ اللهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، اللَّهُمَّ لاَ مَانِعَ لِمَا أَعْطَيْتَ، وَلاَ مُعْطِيَ لِمَا مَنَعْتَ، وَلاَ يَنْفَعُ ذَا الْجَدِّ مِنْكَ الْجَدُّ'**
   String get azkar_after_prayer_2;
 
   /// No description provided for @azkar_after_prayer_3.
   ///
-  /// In en, this message translates to:
-  /// **'Glory is to Allah (33 times). Praise is to Allah (33 times). Allah is the greatest (33 times). None has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise and He is over all things omnipotent.'**
+  /// In ar, this message translates to:
+  /// **'سُبْحَانَ اللهِ (٣٣ مرة) الْحَمْدُ لِلهِ (٣٣ مرة) اللهُ أَكْبَرُ (٣٣ مرة) لاَ إِلَهَ إِلاَّ اللهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ'**
   String get azkar_after_prayer_3;
 
   /// No description provided for @azkar_before_sleep_1.
   ///
-  /// In en, this message translates to:
-  /// **'In Your name O Allah, I die and I live.'**
+  /// In ar, this message translates to:
+  /// **'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا'**
   String get azkar_before_sleep_1;
 
   /// No description provided for @azkar_before_sleep_2.
   ///
-  /// In en, this message translates to:
-  /// **'O Allah, protect me from Your punishment on the day Your servants are resurrected.'**
+  /// In ar, this message translates to:
+  /// **'اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ'**
   String get azkar_before_sleep_2;
 
   /// No description provided for @azkar_before_sleep_3.
   ///
-  /// In en, this message translates to:
-  /// **'Glory is to Allah (33 times). Praise is to Allah (33 times). Allah is the greatest (34 times).'**
+  /// In ar, this message translates to:
+  /// **'سُبْحَانَ اللَّهِ (٣٣ مرة) الْحَمْدُ لِلَّهِ (٣٣ مرة) اللَّهُ أَكْبَرُ (٣٤ مرة)'**
   String get azkar_before_sleep_3;
 
   /// No description provided for @azkar_general_1.
   ///
-  /// In en, this message translates to:
-  /// **'Glory is to Allah and praise is to Him.'**
+  /// In ar, this message translates to:
+  /// **'سُبْحَانَ اللهِ وَبِحَمْدِهِ'**
   String get azkar_general_1;
 
   /// No description provided for @azkar_general_2.
   ///
-  /// In en, this message translates to:
-  /// **'None has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise and He is over all things omnipotent.'**
+  /// In ar, this message translates to:
+  /// **'لا إلهَ إلاّ اللهُ وحدَهُ لا شريكَ لهُ، لهُ المُلكُ ولهُ الحمدُ وهوَ على كلّ شيءٍ قديرٌ'**
   String get azkar_general_2;
 
   /// No description provided for @azkar_general_3.
   ///
-  /// In en, this message translates to:
-  /// **'Glory is to Allah and praise is to Him, Glory is to Allah the Greatest.'**
+  /// In ar, this message translates to:
+  /// **'سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ العَظِيمِ'**
   String get azkar_general_3;
 
   /// No description provided for @azkar_dua_1.
   ///
-  /// In en, this message translates to:
-  /// **'Our Lord, give us in this world that which is good and in the Hereafter that which is good and protect us from the punishment of the Fire.'**
+  /// In ar, this message translates to:
+  /// **'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ'**
   String get azkar_dua_1;
 
   /// No description provided for @azkar_dua_2.
   ///
-  /// In en, this message translates to:
-  /// **'O Allah, I ask You for guidance, piety, chastity and contentment.'**
+  /// In ar, this message translates to:
+  /// **'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى، وَالْعَفَافَ وَالْغِنَى'**
   String get azkar_dua_2;
 
   /// No description provided for @azkar_dua_3.
   ///
-  /// In en, this message translates to:
-  /// **'O Allah, forgive me, have mercy upon me, guide me, give me health and grant me sustenance.'**
+  /// In ar, this message translates to:
+  /// **'اللَّهُمَّ اغْفِرْ لِي، وَارْحَمْنِي، وَاهْدِنِي، وَعَافِنِي، وَارْزُقْنِي'**
   String get azkar_dua_3;
 }
 
