@@ -93,7 +93,14 @@ class _OnBoardViewBodyState extends State<OnBoardViewBody> {
             top: 50.h,
             right: 24.w,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeView(),
+                  ),
+                );
+              },
               child: Text(
                 translate("skip"),
                 style: TextStyle(

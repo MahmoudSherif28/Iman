@@ -15,22 +15,36 @@ class AzkarCategoriesScreen extends StatelessWidget {
     final categories = repository.getCategories(context);
     final localizations = S.of(context);
 
+    // ترتيب الفئات حسب المطلوب
+    final orderedIds = [
+      'morning',
+      'evening',
+      'after_prayer',
+      'before_sleep',
+      'general',
+      'dua',
+    ];
+
     final reorderedCategories = <dynamic>[];
-// البحث عن فئة "أذكارى" ووضعها أولاً
-    AzkarCategory? myAzkarCategory;
-    try {
-      myAzkarCategory = categories.firstWhere((cat) => cat.id == 'my_azkar');
-      reorderedCategories.add(myAzkarCategory);
-    } catch (e) {
-      // إذا لم توجد فئة "أذكارى"، لا نفعل شيئاً
+
+    for (final id in orderedIds) {
+      try {
+        reorderedCategories.add(
+          categories.firstWhere((cat) => cat.id == id),
+        );
+      } catch (_) {}
     }
-    
-    // إضافة باقي الفئات
-    reorderedCategories.addAll(
-      categories.where((cat) => cat.id != 'my_azkar'),
-    );
-    
+
+    // زر "أضف ذكرك" على يمين الصف الأخير (RTL)
     reorderedCategories.add('add_button');
+
+    // "أذكارى" على يسار الصف الأخير
+    try {
+      reorderedCategories.add(
+        categories.firstWhere((cat) => cat.id == 'my_azkar'),
+      );
+    } catch (_) {}
+
 
     return Scaffold(
       appBar: AppBar(
