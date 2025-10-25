@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
 import 'package:iman/Features/home/data/models/worship_category.dart';
+import 'package:iman/Features/qibla/presentation/views/qiblah_view.dart';
 import '../../../../prayer_times/presentation/views/prayer_times_view.dart';
-import '../../../../qibla/view/qibla_screen.dart';
 import '../../../../azkar/presentation/views/azkar_categories_screen.dart';
 import 'package:geolocator/geolocator.dart';
 class WorshipCategoryItem extends StatelessWidget {
@@ -49,7 +49,7 @@ class WorshipCategoryItem extends StatelessWidget {
           if (context.mounted) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const QiblaScreen()),
+              MaterialPageRoute(builder: (context) => const QiblahView()),
             );
           }
         } else if (category.title == 'تسبيح و ادعه') {

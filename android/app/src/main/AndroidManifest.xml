@@ -3,6 +3,15 @@
     <!-- الأذونات المطلوبة للوصول إلى الموقع الجغرافي (تم إضافتها هنا ) -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-feature 
+        android:name="android.hardware.location.gps" 
+        android:required="false" />
+    <uses-feature 
+        android:name="android.hardware.sensor.accelerometer" 
+        android:required="true" />
+    <uses-feature 
+        android:name="android.hardware.sensor.compass" 
+        android:required="true" />
     <!-- **************************************************** -->
     <application
         android:label="iman"
