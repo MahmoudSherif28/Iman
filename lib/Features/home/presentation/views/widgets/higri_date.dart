@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hijri/hijri_calendar.dart';
+import 'package:iman/Core/utils/app_text_style.dart';
 
 class HijriDateWidget extends StatelessWidget {
   const HijriDateWidget({super.key});
@@ -34,11 +35,7 @@ class HijriDateWidget extends StatelessWidget {
           SizedBox(width: 8.w),
           Text(
             hijriDate,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.green[800],
-            ),
+            style: AppTextStyles.semiBold16.copyWith(color: Colors.green[700]),
           ),
         ],
       ),
