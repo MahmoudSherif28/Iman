@@ -29,6 +29,7 @@ dependencies:
   equatable: ^2.0.5
   get_it: ^8.2.0
   permission_handler: ^11.3.0
+  hijri: ^3.0.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.14.4"

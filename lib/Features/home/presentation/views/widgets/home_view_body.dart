@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
+import 'package:iman/Features/home/presentation/views/widgets/higri_date.dart';
 import 'package:iman/Features/home/presentation/views/widgets/prayer_list.dart';
 import 'package:iman/Features/home/presentation/views/widgets/worship_category_grid.dart';
 
@@ -16,6 +17,7 @@ class HomeViewBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const HijriDateWidget(),
             SizedBox(height: 20.0.h),
             // شريط الصلوات
             const PrayerList(),
