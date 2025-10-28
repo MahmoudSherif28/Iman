@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/generated/l10n.dart';
 import '../../data/models/azkar_model.dart';
 import '../../data/repo/azkar_repository.dart';

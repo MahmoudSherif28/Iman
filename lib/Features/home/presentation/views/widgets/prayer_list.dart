@@ -173,7 +173,7 @@ class _PrayerListBody extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
+                color: Colors.grey.withValues(alpha: 0.1),
                 blurRadius: 8.r,
                 offset: const Offset(0, 2),
               ),

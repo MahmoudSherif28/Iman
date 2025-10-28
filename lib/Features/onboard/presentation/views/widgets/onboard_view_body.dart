@@ -80,7 +80,7 @@ class _OnBoardViewBodyState extends State<OnBoardViewBody> {
                       begin: Alignment.bottomCenter,
                       end: Alignment.center,
                       colors: [
-                        Colors.black.withOpacity(0.65),
+                        Colors.black.withValues(alpha: 0.65),
                         Colors.transparent,
                       ],
                     ),

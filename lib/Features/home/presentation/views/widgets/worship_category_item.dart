@@ -67,7 +67,7 @@ class WorshipCategoryItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).shadowColor.withOpacity(0.5),
+              color: Theme.of(context).shadowColor.withValues(alpha: 0.5),
               spreadRadius: 1,
               blurRadius: 1.r,
               offset: const Offset(0, 3),

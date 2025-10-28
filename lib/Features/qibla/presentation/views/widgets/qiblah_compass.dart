@@ -118,7 +118,7 @@ class _QiblaCompassState extends State<QiblaCompass>
         gradient: RadialGradient(colors: [Colors.white, Colors.grey.shade100]),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -169,7 +169,7 @@ class _QiblaCompassState extends State<QiblaCompass>
         color: Colors.white,
         border: Border.all(color: Colors.green.shade700, width: 3),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 8),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 8),
         ],
       ),
       child: Center(

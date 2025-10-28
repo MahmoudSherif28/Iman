@@ -21,7 +21,7 @@ class PrayerTimeListItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0.r),
               boxShadow: [
                 BoxShadow(
-                  color: highlightColor.withOpacity(0.5),
+                  color: highlightColor.withValues(alpha: 0.5),
                   blurRadius: 10.r,
                   offset: const Offset(0, 4),
                 ),
@@ -32,7 +32,7 @@ class PrayerTimeListItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(5.0.r),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Colors.grey.withValues(alpha: 0.2),
                   blurRadius: 5.r,
                   offset: const Offset(0, 2),
                 ),

@@ -6,7 +6,7 @@ import '../services/custom_azkar_service.dart';
 class AzkarRepository {
   List<AzkarCategory> getCategories(BuildContext context) {
     final localizations = S.of(context);
-    
+
     return [
       AzkarCategory(
         id: 'morning',
@@ -46,9 +46,10 @@ class AzkarRepository {
     ];
   }
 
-  Future<List<AzkarItem>> getAzkarItems(BuildContext context, String categoryId) async {
-    final localizations = S.of(context);
-    
+  Future<List<AzkarItem>> getAzkarItems(
+    BuildContext context,
+    String categoryId,
+  ) async {
     switch (categoryId) {
       case 'morning':
         return [
@@ -363,50 +364,53 @@ class AzkarRepository {
           ),
         ];
       case 'general':
-         return [
-           AzkarItem(
-             id: 'general_1',
-             categoryId: categoryId,
-             textKey: "استغفر الله",
-             count: 100,
-           ),
-           AzkarItem(
-             id: 'general_2',
-             categoryId: categoryId,
-             textKey: "الحمد لله",
-             count: 100,
-           ),
-           AzkarItem(
-             id: 'general_3',
-             categoryId: categoryId,
-             textKey: "لَا إِلَهَ إِلَّا اللَّهُ",
-             count: 100,
-           ),
-           AzkarItem(
-             id: 'general_4',
-             categoryId: categoryId,
-             textKey: "سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ العَظِيمِ",
-             count: 100,
-           ),
-           AzkarItem(
-             id: 'general_5',
-             categoryId: categoryId,
-             textKey: "اللهم أصبحنا نشهدك ونشهد حملة عرشك وملائكتك وجميع خلقك أنك أنت الله، لا إله إلا أنت وحدك لا شريك لك، وأن محمدًا عبدك ورسولك،",
-             count: 100,
-           ),
-           AzkarItem(
-             id: 'general_6',
-             categoryId: categoryId,
-             textKey: "لا إلهَ إلاّ اللهُ وحدَهُ لا شريكَ لهُ، لهُ المُلكُ ولهُ الحمدُ وهوَ على كلّ شيءٍ قديرٌ",
-             count: 100,
-           ),
-           AzkarItem(
-             id: 'general_7',
-             categoryId: categoryId,
-             textKey: "اللهم صل وسلم وبارك على سيدنا محمد وعلى آله وصحبه أجمعين وسلم تسليما كثيرا إلى يوم الدين",
-             count: 100,
-           ),
-         ];
+        return [
+          AzkarItem(
+            id: 'general_1',
+            categoryId: categoryId,
+            textKey: "استغفر الله",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_2',
+            categoryId: categoryId,
+            textKey: "الحمد لله",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_3',
+            categoryId: categoryId,
+            textKey: "لَا إِلَهَ إِلَّا اللَّهُ",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_4',
+            categoryId: categoryId,
+            textKey: "سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ العَظِيمِ",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_5',
+            categoryId: categoryId,
+            textKey:
+                "اللهم أصبحنا نشهدك ونشهد حملة عرشك وملائكتك وجميع خلقك أنك أنت الله، لا إله إلا أنت وحدك لا شريك لك، وأن محمدًا عبدك ورسولك،",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_6',
+            categoryId: categoryId,
+            textKey:
+                "لا إلهَ إلاّ اللهُ وحدَهُ لا شريكَ لهُ، لهُ المُلكُ ولهُ الحمدُ وهوَ على كلّ شيءٍ قديرٌ",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_7',
+            categoryId: categoryId,
+            textKey:
+                "اللهم صل وسلم وبارك على سيدنا محمد وعلى آله وصحبه أجمعين وسلم تسليما كثيرا إلى يوم الدين",
+            count: 100,
+          ),
+        ];
       case 'dua':
         return [
           AzkarItem(
