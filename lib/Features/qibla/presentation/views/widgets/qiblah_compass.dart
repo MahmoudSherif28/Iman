@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+
 class QiblaCompass extends StatefulWidget {
-  /// زاوية البوصلة الحالية (اتجاه الجهاز من الشمال)
   final double compassHeading;
-
-  /// زاوية القبلة من الشمال الحقيقي
   final double qiblaBearing;
-
-  /// حجم البوصلة
   final double size;
 
   const QiblaCompass({
@@ -159,28 +155,7 @@ class _QiblaCompassState extends State<QiblaCompass>
   Widget _buildNorthIndicator() {
     return Positioned(
       top: 10,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: Colors.red.shade700,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.red.withOpacity(0.3),
-              blurRadius: 8,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        child: const Text(
-          'ش',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      child: Image.asset('assets/images/kaaba.png', width: 60, height: 60),
     );
   }
 
@@ -209,7 +184,6 @@ class _QiblaCompassState extends State<QiblaCompass>
   }
 }
 
-/// رسام وردة البوصلة
 class _CompassRosePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -321,9 +295,9 @@ class _QiblaArrowPainter extends CustomPainter {
     final Path path = Path();
 
     // رسم السهم المثلثي
-    path.moveTo(size.width / 2, 0); // قمة السهم
-    path.lineTo(0, size.height); // زاوية يسار
-    path.lineTo(size.width, size.height); // زاوية يمين
+    path.moveTo(size.width / 2, 0);
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
     path.close();
 
     canvas.drawPath(path, paint);
