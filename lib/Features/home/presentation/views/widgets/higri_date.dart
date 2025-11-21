@@ -37,7 +37,7 @@ class HijriDateWidget extends StatelessWidget {
           SizedBox(width: 8.w),
           Text(
             hijriDate,
-            style: AppTextStyles.semiBold16.copyWith(color: Colors.green[700]),
+            style: AppTextStyles.semiBold16.copyWith(color: Colors.black),
           ),
         ],
       ),
