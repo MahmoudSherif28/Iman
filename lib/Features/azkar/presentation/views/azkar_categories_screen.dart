@@ -49,6 +49,7 @@ class AzkarCategoriesScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(localizations.azkar_title),
         centerTitle: true,
+        backgroundColor: Colors.green.shade700,
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(16),

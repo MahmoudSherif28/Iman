@@ -41,6 +41,7 @@ class _AzkarDetailScreenState extends State<AzkarDetailScreen> {
       appBar: AppBar(
         title: Text(localizations.azkar_title),
         centerTitle: true,
+        backgroundColor: Colors.green.shade700,
       ),
       body: Center(
         child: Column(

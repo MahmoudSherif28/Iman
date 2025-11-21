@@ -5,6 +5,7 @@ import 'package:iman/Features/home/data/models/worship_category.dart';
 import 'package:iman/Features/qibla/presentation/views/qiblah_view.dart';
 import '../../../../prayer_times/presentation/views/prayer_times_view.dart';
 import '../../../../azkar/presentation/views/azkar_categories_screen.dart';
+import '../../../../quran_audio/presentation/views/reciters_list_view.dart';
 import 'package:geolocator/geolocator.dart';
 class WorshipCategoryItem extends StatelessWidget {
   final WorshipCategory category;
@@ -56,6 +57,11 @@ class WorshipCategoryItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AzkarCategoriesScreen()),
+          );
+        } else if (category.title == 'سماع قرأن' || category.title == 'سماع القرآن') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const RecitersListView()),
           );
         }
       },

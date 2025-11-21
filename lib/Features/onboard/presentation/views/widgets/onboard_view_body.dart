@@ -31,6 +31,11 @@ class _OnBoardViewBodyState extends State<OnBoardViewBody> {
       "title_key": "onboarding_title3",
       "subtitle_key": "onboarding_subtitle3",
     },
+    {
+      "image": "assets/images/onboarding4.png",
+      "title_key": "onboarding_title4",
+      "subtitle_key": "onboarding_subtitle4",
+    },
   ];
 
   String translate(String key) {
@@ -41,6 +46,8 @@ class _OnBoardViewBodyState extends State<OnBoardViewBody> {
       "onboarding_subtitle2": "مع تذكيرك بها في وقتها",
       "onboarding_title3": "قرآنك دائماً معك",
       "onboarding_subtitle3": "استمع وتدبّر بسهولة",
+      "onboarding_title4": "تجربة أفضل مع موقعك",
+      "onboarding_subtitle4": "لا تنسَ تشغيل خدمة الموقع للحصول على تجربة أدق وأفضل",
       "skip": "تخطي",
       "next": "التالي",
       "start_now": "ابدأ الآن",

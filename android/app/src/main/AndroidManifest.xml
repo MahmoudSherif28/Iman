@@ -3,6 +3,10 @@
     <!-- الأذونات المطلوبة للوصول إلى الموقع الجغرافي (تم إضافتها هنا ) -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- الأذونات المطلوبة للإشعارات والتشغيل في الخلفية -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-feature 
         android:name="android.hardware.location.gps" 
         android:required="false" />

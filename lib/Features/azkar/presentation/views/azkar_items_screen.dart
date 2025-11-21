@@ -26,6 +26,7 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
       appBar: AppBar(
         title: Text(category.titleKey),
         centerTitle: true,
+        backgroundColor: Colors.green.shade700,
       ),
       body: FutureBuilder<List<AzkarItem>>(
         future: repository.getAzkarItems(context, widget.categoryId),

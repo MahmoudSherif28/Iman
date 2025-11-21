@@ -243,4 +243,20 @@ class SEn extends S {
   @override
   String get azkar_dua_3 =>
       'O Allah, forgive me, have mercy upon me, guide me, give me health and grant me sustenance.';
+
+  @override
+  String get onboarding_title4 => 'A better experience with your location';
+
+  @override
+  String get onboarding_subtitle4 =>
+      'Don\'t forget to enable location service for a more accurate experience';
+
+  @override
+  String get onboarding_skip => 'Skip';
+
+  @override
+  String get onboarding_next => 'Next';
+
+  @override
+  String get onboarding_start_now => 'Start Now';
 }

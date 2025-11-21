@@ -6,6 +6,8 @@ import 'package:iman/Features/qibla/data/repos/location%20repos/location_repo.da
 import 'package:iman/Features/qibla/data/repos/location%20repos/location_repo_impl.dart';
 import 'package:iman/Features/qibla/data/repos/qiblah%20calaculator%20repos/qiblah_calculator_repo.dart';
 import 'package:iman/Features/qibla/data/repos/qiblah%20calaculator%20repos/qiblah_calculator_repo_impl.dart';
+import 'package:iman/Features/quran_audio/data/repo/quran_audio_repo.dart';
+import 'package:iman/Features/quran_audio/data/repo/quran_audio_repo_impl.dart';
 
 final getIt = GetIt.instance;
 
@@ -21,5 +23,10 @@ void setupGetIt() {
   // Services
   getIt.registerLazySingleton<QiblaCalculatorService>(
     () => QiblaCalculatorServiceImpl(),
+  );
+
+  // Quran Audio
+  getIt.registerLazySingleton<QuranAudioRepo>(
+    () => QuranAudioRepoImpl(ApiService()),
   );
 }

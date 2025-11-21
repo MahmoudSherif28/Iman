@@ -6,14 +6,14 @@ class WorshipCategoriesGrid extends StatelessWidget {
   WorshipCategoriesGrid({super.key});
   final List<WorshipCategory> allCategories = [
     WorshipCategory(
-      title: 'سماع قرأن',
+      title: 'سماع القرآن',
       iconImage: 'assets/images/samaa_quraan.png',
     ),
-    WorshipCategory(title: 'تسميع قرأن', iconImage: 'assets/images/adaaya.png'),
-    WorshipCategory(title: 'القرآن الكريم', iconImage: 'assets/images/tasbeh.png'),
+    WorshipCategory(title: 'تسميع قرأن', iconImage: 'assets/images/tasmea_elquraan.png'),
+    WorshipCategory(title: 'القرآن الكريم', iconImage: 'assets/images/alquraan_alkareem.png'),
     WorshipCategory(
       title: 'مواقيت الصلاة',
-      iconImage: 'assets/images/tasbeh.png',
+      iconImage: 'assets/images/mwaket_elsallah.png',
     ),
     WorshipCategory(title: 'القبلة', iconImage: 'assets/images/bosla.png'),
     WorshipCategory(title: 'تسبيح و ادعه', iconImage: 'assets/images/doaa.png'),

@@ -69,7 +69,7 @@ class _AddAzkarScreenState extends State<AddAzkarScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('إضافة ذكر جديد'),
-        backgroundColor: const Color(0xFF1B5E20),
+        backgroundColor: Colors.green.shade700,
         foregroundColor: Colors.white,
       ),
       body: Padding(

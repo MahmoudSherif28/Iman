@@ -648,6 +648,46 @@ class S {
       args: [],
     );
   }
+
+  /// `A better experience with your location`
+  String get onboarding_title4 {
+    return Intl.message(
+      'A better experience with your location',
+      name: 'onboarding_title4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't forget to enable location service for a more accurate experience`
+  String get onboarding_subtitle4 {
+    return Intl.message(
+      'Don\'t forget to enable location service for a more accurate experience',
+      name: 'onboarding_subtitle4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Skip`
+  String get onboarding_skip {
+    return Intl.message('Skip', name: 'onboarding_skip', desc: '', args: []);
+  }
+
+  /// `Next`
+  String get onboarding_next {
+    return Intl.message('Next', name: 'onboarding_next', desc: '', args: []);
+  }
+
+  /// `Start Now`
+  String get onboarding_start_now {
+    return Intl.message(
+      'Start Now',
+      name: 'onboarding_start_now',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

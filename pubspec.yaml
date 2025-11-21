@@ -30,6 +30,10 @@ dependencies:
   get_it: ^8.2.0
   permission_handler: ^11.3.0
   hijri: ^3.0.0
+  just_audio: ^0.9.40
+  audio_service: ^0.18.12
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.14.4"

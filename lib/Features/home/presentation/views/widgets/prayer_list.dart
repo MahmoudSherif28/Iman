@@ -159,7 +159,7 @@ class _PrayerListBody extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF05B576),
+                    color:  Colors.black,
                   ),
                 ),
               ],

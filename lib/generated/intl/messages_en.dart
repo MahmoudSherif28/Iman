@@ -169,6 +169,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "home_icon5": MessageLookupByLibrary.simpleMessage("Prayer Times"),
     "home_icon6": MessageLookupByLibrary.simpleMessage("Qibla"),
     "next_prayer": MessageLookupByLibrary.simpleMessage("Next Prayer"),
+    "onboarding_next": MessageLookupByLibrary.simpleMessage("Next"),
+    "onboarding_skip": MessageLookupByLibrary.simpleMessage("Skip"),
+    "onboarding_start_now": MessageLookupByLibrary.simpleMessage("Start Now"),
+    "onboarding_subtitle4": MessageLookupByLibrary.simpleMessage(
+      "Don\'t forget to enable location service for a more accurate experience",
+    ),
     "onboarding_title1": MessageLookupByLibrary.simpleMessage(
       "Everything you need for your prayer: times, adhan, and Qibla direction",
     ),
@@ -177,6 +183,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "onboarding_title3": MessageLookupByLibrary.simpleMessage(
       "All your daily adhkar in one place with reminders at the right time",
+    ),
+    "onboarding_title4": MessageLookupByLibrary.simpleMessage(
+      "A better experience with your location",
     ),
     "pointTowardsQibla": MessageLookupByLibrary.simpleMessage(
       "Point your device towards the Qibla",

@@ -71,5 +71,11 @@
 
   "azkar_dua_1": "Our Lord, give us in this world that which is good and in the Hereafter that which is good and protect us from the punishment of the Fire.",
   "azkar_dua_2": "O Allah, I ask You for guidance, piety, chastity and contentment.",
-  "azkar_dua_3": "O Allah, forgive me, have mercy upon me, guide me, give me health and grant me sustenance."
+  "azkar_dua_3": "O Allah, forgive me, have mercy upon me, guide me, give me health and grant me sustenance.",
+
+  "onboarding_title4": "A better experience with your location",
+  "onboarding_subtitle4": "Don't forget to enable location service for a more accurate experience",
+  "onboarding_skip": "Skip",
+  "onboarding_next": "Next",
+  "onboarding_start_now": "Start Now"
 }
