@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:iman/Core/services/getit_service.dart';
+import 'package:iman/Core/services/shared_prefrences_sengelton.dart';
 import 'package:iman/Features/prayer_times/data/repo/prayer_times_repo.dart';
 import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_cubit.dart';
 import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_states.dart';
 import 'package:iman/Features/prayer_times/presentation/widget/prayer_time_card.dart';
+import 'package:iman/Features/prayer_times/presentation/adhan_scheduler.dart';
 
 class PrayerTimesView extends StatelessWidget {
   const PrayerTimesView({super.key});
@@ -21,15 +23,28 @@ class PrayerTimesView extends StatelessWidget {
   }
 }
 
-class _PrayerTimesViewBody extends StatelessWidget {
+class _PrayerTimesViewBody extends StatefulWidget {
   const _PrayerTimesViewBody();
+
+  @override
+  State<_PrayerTimesViewBody> createState() => _PrayerTimesViewBodyState();
+}
+
+class _PrayerTimesViewBodyState extends State<_PrayerTimesViewBody> {
+  bool _enableAdhan = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _enableAdhan = Prefs.getBool(kEnableAdhanPrefKey);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: const Text('مواقيت الصلاة'),
+        title: const Text('مواقيت الأذان'),
         centerTitle: true,
         backgroundColor: Colors.green,
         actions: [
@@ -62,6 +77,11 @@ class _PrayerTimesViewBody extends StatelessWidget {
                 duration: const Duration(seconds: 5),
               ),
             );
+          }
+          if (state is PrayerTimesLoaded) {
+            if (Prefs.getBool(kEnableAdhanPrefKey)) {
+              AdhanScheduler().scheduleForToday(state.prayerTimes);
+            }
           }
         },
         builder: (context, state) {
@@ -139,13 +159,44 @@ class _PrayerTimesViewBody extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 20.h),
         child: Column(
-          children: state.prayerTimesList.map((prayerTime) {
-            return PrayerTimeCard(
-              name: prayerTime.name,
-              time: prayerTime.time,
-              icon: prayerTime.icon,
-            );
-          }).toList(),
+          children: [
+            ...state.prayerTimesList.map((prayerTime) {
+              return PrayerTimeCard(
+                name: prayerTime.name,
+                time: prayerTime.time,
+                icon: prayerTime.icon,
+              );
+            }).toList(),
+            Padding(
+              padding: EdgeInsets.only(top: 24.h, left: 16.w, right: 16.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'تشغيل الأذان تلقائيًا',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Switch(
+                    value: _enableAdhan,
+                    onChanged: (val) async {
+                      setState(() {
+                        _enableAdhan = val;
+                      });
+                      await Prefs.setBool(kEnableAdhanPrefKey, val);
+                      if (val) {
+                        await AdhanScheduler().scheduleForToday(state.prayerTimes);
+                      } else {
+                        await AdhanScheduler().cancelAll();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

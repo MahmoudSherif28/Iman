@@ -210,7 +210,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('المشغل'),
         centerTitle: true,
@@ -237,7 +237,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
             SizedBox(height: 16.h),
             Text(
               _errorMessage!,
-              style: AppTextStyles.regular16.copyWith(color: Colors.white),
+              style: AppTextStyles.regular16.copyWith(color: Colors.black),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),
@@ -253,7 +253,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
 
   Widget _buildLoadingView() {
     return const Center(
-      child: CircularProgressIndicator(color: Colors.white),
+      child: CircularProgressIndicator(color: Colors.black),
     );
   }
 
@@ -271,11 +271,11 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                     width: 250.w,
                     height: 250.w,
                     decoration: BoxDecoration(
-                      color: Colors.grey[800],
+                      color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(20.r),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
+                          color: Colors.black.withValues(alpha: 0.3),
                           blurRadius: 20,
                           spreadRadius: 5,
                         ),
@@ -284,11 +284,11 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.r),
                       child: Container(
-                        color: Colors.grey[800],
+                        color: Colors.grey[200],
                         child: Icon(
                           Icons.music_note,
                           size: 100.sp,
-                          color: Colors.white54,
+                          color: Colors.black38,
                         ),
                       ),
                     ),
@@ -297,14 +297,14 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                   // اسم القارئ
                   Text(
                     widget.reciterName,
-                    style: AppTextStyles.semiBold24.copyWith(color: Colors.white),
+                    style: AppTextStyles.semiBold24.copyWith(color: Colors.black),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 8.h),
                   // اسم السورة
                   Text(
                     widget.surah.arabicName,
-                    style: AppTextStyles.semiBold20.copyWith(color: Colors.white70),
+                    style: AppTextStyles.semiBold20.copyWith(color: Colors.black87),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 40.h),
@@ -320,8 +320,8 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                       onChanged: (value) {
                         _seekTo(Duration(milliseconds: value.toInt()));
                       },
-                      activeColor: Colors.white,
-                      inactiveColor: Colors.white30,
+                      activeColor: Colors.black,
+                      inactiveColor: Colors.black26,
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -330,11 +330,11 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                         children: [
                           Text(
                             _formatDuration(_position),
-                            style: AppTextStyles.regular14.copyWith(color: Colors.white70),
+                            style: AppTextStyles.regular14.copyWith(color: Colors.black54),
                           ),
                           Text(
                             _formatDuration(_duration!),
-                            style: AppTextStyles.regular14.copyWith(color: Colors.white70),
+                            style: AppTextStyles.regular14.copyWith(color: Colors.black54),
                           ),
                         ],
                       ),
@@ -345,11 +345,15 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // السورة السابقة
+                      // السورة التالية (تم تبديل الموضع)
                       IconButton(
-                        icon: Icon(Icons.skip_previous, size: 40.sp),
-                        color: widget.currentIndex > 0 ? Colors.white : Colors.white30,
-                        onPressed: widget.currentIndex > 0 ? _loadPreviousSurah : null,
+                        icon: Icon(Icons.skip_next, size: 40.sp),
+                        color: widget.currentIndex < widget.totalSurahs - 1
+                            ? Colors.black
+                            : Colors.black26,
+                        onPressed: widget.currentIndex < widget.totalSurahs - 1
+                            ? _loadNextSurah
+                            : null,
                       ),
                       SizedBox(width: 16.w),
                       // Play/Pause
@@ -369,15 +373,11 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                         ),
                       ),
                       SizedBox(width: 16.w),
-                      // السورة التالية
+                      // السورة السابقة (تم تبديل الموضع)
                       IconButton(
-                        icon: Icon(Icons.skip_next, size: 40.sp),
-                        color: widget.currentIndex < widget.totalSurahs - 1
-                            ? Colors.white
-                            : Colors.white30,
-                        onPressed: widget.currentIndex < widget.totalSurahs - 1
-                            ? _loadNextSurah
-                            : null,
+                        icon: Icon(Icons.skip_previous, size: 40.sp),
+                        color: widget.currentIndex > 0 ? Colors.black : Colors.black26,
+                        onPressed: widget.currentIndex > 0 ? _loadPreviousSurah : null,
                       ),
                     ],
                   ),
@@ -423,21 +423,21 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
-          color: isActive ? Colors.white.withOpacity(0.2) : Colors.transparent,
+          color: isActive ? Colors.black.withValues(alpha: 0.08) : Colors.transparent,
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: Colors.white.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.15),
             width: 1,
           ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Colors.white, size: 24.sp),
+            Icon(icon, color: Colors.black, size: 24.sp),
             SizedBox(height: 4.h),
             Text(
               label,
-              style: AppTextStyles.regular12.copyWith(color: Colors.white70),
+              style: AppTextStyles.regular12.copyWith(color: Colors.black54),
             ),
           ],
         ),

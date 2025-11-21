@@ -16,7 +16,7 @@ class WorshipCategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        if (category.title == 'مواقيت الصلاة') {
+        if (category.title == 'مواقيت الأذان') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const PrayerTimesView()),

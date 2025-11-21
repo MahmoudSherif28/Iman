@@ -9,10 +9,10 @@ class WorshipCategoriesGrid extends StatelessWidget {
       title: 'سماع القرآن',
       iconImage: 'assets/images/samaa_quraan.png',
     ),
-    WorshipCategory(title: 'تسميع قرأن', iconImage: 'assets/images/tasmea_elquraan.png'),
+    WorshipCategory(title: 'تسميع القرأن', iconImage: 'assets/images/tasmea_elquraan.png'),
     WorshipCategory(title: 'القرآن الكريم', iconImage: 'assets/images/alquraan_alkareem.png'),
     WorshipCategory(
-      title: 'مواقيت الصلاة',
+      title: 'مواقيت الأذان',
       iconImage: 'assets/images/mwaket_elsallah.png',
     ),
     WorshipCategory(title: 'القبلة', iconImage: 'assets/images/bosla.png'),
