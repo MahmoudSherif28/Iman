@@ -1,83 +1,26 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
 import 'package:iman/Features/quran_audio/data/services/simple_audio_service.dart';
-import 'package:audio_service/audio_service.dart';
+import 'package:iman/Features/quran_audio/presentation/cubit/audio_player_cubit.dart';
+import 'package:iman/Features/quran_audio/presentation/cubit/audio_player_state.dart';
 
-class AudioPlayerView extends StatefulWidget {
+class AudioPlayerView extends StatelessWidget {
   const AudioPlayerView({super.key});
 
   @override
-  State<AudioPlayerView> createState() => _AudioPlayerViewState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AudioPlayerCubit(SimpleAudioService()),
+      child: const _AudioPlayerViewBody(),
+    );
+  }
 }
 
-class _AudioPlayerViewState extends State<AudioPlayerView> {
-  final SimpleAudioService _audioService = SimpleAudioService();
-  late StreamSubscription<MediaItem?> _mediaItemSubscription;
-  late StreamSubscription<PlayerState> _playerStateSubscription;
-
-  MediaItem? _mediaItem;
-  bool _isLoading = true;
-  String? _errorMessage;
-
-  @override
-  void initState() {
-    super.initState();
-    _setupListeners();
-  }
-
-  void _setupListeners() {
-    // Listen to media item changes to update UI
-    _mediaItemSubscription = _audioService.mediaItemStream.listen(
-      (mediaItem) {
-        if (mounted) {
-          setState(() {
-            _mediaItem = mediaItem;
-          });
-        }
-      },
-      onError: (error) {
-        if (mounted) {
-          setState(() {
-            _errorMessage = 'حدث خطأ في جلب بيانات السورة.';
-            _isLoading = false;
-          });
-        }
-      },
-    );
-
-    // Listen to player state to show loading indicator
-    _playerStateSubscription = _audioService.playerStateStream.listen(
-      (state) {
-        if (mounted) {
-          final isLoading = state.processingState == ProcessingState.loading ||
-              state.processingState == ProcessingState.buffering;
-          if (_isLoading != isLoading) {
-            setState(() {
-              _isLoading = isLoading;
-            });
-          }
-        }
-      },
-      onError: (error) {
-        if (mounted) {
-          setState(() {
-            _errorMessage = 'حدث خطأ في المشغل.';
-            _isLoading = false;
-          });
-        }
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _mediaItemSubscription.cancel();
-    _playerStateSubscription.cancel();
-    super.dispose();
-  }
+class _AudioPlayerViewBody extends StatelessWidget {
+  const _AudioPlayerViewBody();
 
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
@@ -101,33 +44,26 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
         backgroundColor: Colors.green.shade700,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: const Icon(Icons.keyboard_arrow_down),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
-      body: StreamBuilder<MediaItem?>(
-        stream: _audioService.mediaItemStream,
-        builder: (context, mediaItemSnapshot) {
-          if (_errorMessage != null) return _buildErrorView();
-          if (!mediaItemSnapshot.hasData || _mediaItem == null) return _buildLoadingView();
-
-          final mediaItem = mediaItemSnapshot.data!;
-
-          return StreamBuilder<PlayerState>(
-            stream: _audioService.playerStateStream,
-            builder: (context, playerStateSnapshot) {
-              final playerState = playerStateSnapshot.data;
-              final isPlaying = playerState?.playing ?? false;
-              final processingState = playerState?.processingState;
-              final isLoading = processingState == ProcessingState.loading ||
-                  processingState == ProcessingState.buffering;
-
-              return _buildPlayerView(mediaItem, isPlaying, isLoading);
-            },
-          );
+      body: BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
+        builder: (context, state) {
+          if (state.status == PlayerStatus.initial || state.mediaItem == null) {
+            return const Center(child: CircularProgressIndicator(color: Colors.black));
+          }
+          if (state.status == PlayerStatus.error) {
+            return _buildErrorView(state.errorMessage);
+          }
+          return _buildPlayerView(context, state);
         },
       ),
     );
   }
 
-  Widget _buildErrorView() {
+  Widget _buildErrorView(String? message) {
     return Center(
       child: Padding(
         padding: EdgeInsets.all(24.w),
@@ -137,7 +73,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
             Icon(Icons.error_outline, size: 64.sp, color: Colors.red),
             SizedBox(height: 16.h),
             Text(
-              _errorMessage!,
+              message ?? 'An unknown error occurred.',
               style: AppTextStyles.regular16.copyWith(color: Colors.black),
               textAlign: TextAlign.center,
             ),
@@ -147,13 +83,11 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
     );
   }
 
-  Widget _buildLoadingView() {
-    return const Center(
-      child: CircularProgressIndicator(color: Colors.black),
-    );
-  }
+  Widget _buildPlayerView(BuildContext context, AudioPlayerState state) {
+    final mediaItem = state.mediaItem!;
+    final isLoading = state.status == PlayerStatus.loading;
+    final isPlaying = state.status == PlayerStatus.playing;
 
-  Widget _buildPlayerView(MediaItem mediaItem, bool isPlaying, bool isLoading) {
     return SafeArea(
       child: Column(
         children: [
@@ -197,58 +131,13 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                   ),
                   SizedBox(height: 40.h),
                   // Seekbar and duration
-                  StreamBuilder<Duration?>(
-                    stream: _audioService.durationStream,
-                    builder: (context, durationSnapshot) {
-                      final duration = durationSnapshot.data ?? Duration.zero;
-                      return StreamBuilder<Duration>(
-                        stream: _audioService.positionStream,
-                        builder: (context, positionSnapshot) {
-                          final position = positionSnapshot.data ?? Duration.zero;
-                          return Column(
-                            children: [
-                              Slider(
-                                value: position.inMilliseconds
-                                    .toDouble()
-                                    .clamp(0.0, duration.inMilliseconds.toDouble()),
-                                min: 0.0,
-                                max: duration.inMilliseconds.toDouble(),
-                                onChanged: (value) {
-                                  _audioService.seek(Duration(milliseconds: value.toInt()));
-                                },
-                                activeColor: Colors.black,
-                                inactiveColor: Colors.black26,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      _formatDuration(position),
-                                      style: AppTextStyles.regular14
-                                          .copyWith(color: Colors.black54),
-                                    ),
-                                    Text(
-                                      _formatDuration(duration),
-                                      style: AppTextStyles.regular14
-                                          .copyWith(color: Colors.black54),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
+                  _buildSeekbar(context, state),
                   SizedBox(height: 40.h),
                   // Controls
-                  _buildControls(isPlaying, isLoading),
+                  _buildControls(context, isPlaying, isLoading),
                   SizedBox(height: 32.h),
                   // Loop mode
-                  _buildLoopButton(),
+                  _buildLoopButton(context, state.loopMode),
                 ],
               ),
             ),
@@ -258,14 +147,50 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
     );
   }
 
-  Widget _buildControls(bool isPlaying, bool isLoading) {
+  Widget _buildSeekbar(BuildContext context, AudioPlayerState state) {
+    return Column(
+      children: [
+        Slider(
+          value: state.position.inMilliseconds.toDouble().clamp(
+                0.0,
+                state.duration.inMilliseconds.toDouble(),
+              ),
+          min: 0.0,
+          max: state.duration.inMilliseconds.toDouble(),
+          onChanged: (value) {
+            context.read<AudioPlayerCubit>().seek(Duration(milliseconds: value.toInt()));
+          },
+          activeColor: Colors.black,
+          inactiveColor: Colors.black26,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _formatDuration(state.position),
+                style: AppTextStyles.regular14.copyWith(color: Colors.black54),
+              ),
+              Text(
+                _formatDuration(state.duration),
+                style: AppTextStyles.regular14.copyWith(color: Colors.black54),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildControls(BuildContext context, bool isPlaying, bool isLoading) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
           icon: Icon(Icons.skip_previous, size: 40.sp),
           color: Colors.black,
-          onPressed: isLoading ? null : _audioService.previous,
+          onPressed: isLoading ? null : () => context.read<AudioPlayerCubit>().previous(),
         ),
         SizedBox(width: 16.w),
         SizedBox(
@@ -280,7 +205,9 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                       size: 48.sp,
                       color: Colors.black,
                     ),
-                    onPressed: isPlaying ? _audioService.pause : _audioService.play,
+                    onPressed: isPlaying
+                        ? () => context.read<AudioPlayerCubit>().pause()
+                        : () => context.read<AudioPlayerCubit>().play(),
                     padding: EdgeInsets.zero,
                   ),
           ),
@@ -289,32 +216,26 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
         IconButton(
           icon: Icon(Icons.skip_next, size: 40.sp),
           color: Colors.black,
-          onPressed: isLoading ? null : _audioService.next,
+          onPressed: isLoading ? null : () => context.read<AudioPlayerCubit>().next(),
         ),
       ],
     );
   }
 
-  Widget _buildLoopButton() {
-    return StreamBuilder<LoopMode>(
-      stream: _audioService.loopModeStream,
-      builder: (context, snapshot) {
-        final loopMode = snapshot.data ?? LoopMode.off;
-        final icons = [Icons.repeat, Icons.repeat_one, Icons.repeat];
-        final labels = ['إيقاف', 'واحد', 'الكل'];
-        final currentIndex = loopMode == LoopMode.off ? 0 : (loopMode == LoopMode.one ? 1 : 2);
+  Widget _buildLoopButton(BuildContext context, LoopMode loopMode) {
+    final icons = [Icons.repeat, Icons.repeat_one, Icons.repeat];
+    final labels = ['إيقاف', 'واحد', 'الكل'];
+    final currentIndex = loopMode == LoopMode.off ? 0 : (loopMode == LoopMode.one ? 1 : 2);
 
-        return _buildControlButton(
-          icon: icons[currentIndex],
-          label: labels[currentIndex],
-          isActive: loopMode != LoopMode.off,
-          onTap: () {
-            final nextMode = loopMode == LoopMode.off
-                ? LoopMode.all
-                : (loopMode == LoopMode.all ? LoopMode.one : LoopMode.off);
-            _audioService.setLoopMode(nextMode);
-          },
-        );
+    return _buildControlButton(
+      icon: icons[currentIndex],
+      label: labels[currentIndex],
+      isActive: loopMode != LoopMode.off,
+      onTap: () {
+        final nextMode = loopMode == LoopMode.off
+            ? LoopMode.all
+            : (loopMode == LoopMode.all ? LoopMode.one : LoopMode.off);
+        context.read<AudioPlayerCubit>().setLoopMode(nextMode);
       },
     );
   }
@@ -347,3 +268,4 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
     );
   }
 }
+
