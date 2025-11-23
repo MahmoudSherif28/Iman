@@ -3,29 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
-import 'package:iman/Features/quran_audio/data/models/moshaf_model.dart';
-import 'package:iman/Features/quran_audio/data/models/surah_model.dart';
 import 'package:iman/Features/quran_audio/data/services/simple_audio_service.dart';
+import 'package:audio_service/audio_service.dart';
 
 class AudioPlayerView extends StatefulWidget {
-  final int reciterId;
-  final String reciterName;
-  final SurahModel surah;
-  final String surahUrl;
-  final int currentIndex;
-  final int totalSurahs;
-  final MoshafModel moshaf;
-
-  const AudioPlayerView({
-    super.key,
-    required this.reciterId,
-    required this.reciterName,
-    required this.surah,
-    required this.surahUrl,
-    required this.currentIndex,
-    required this.totalSurahs,
-    required this.moshaf,
-  });
+  const AudioPlayerView({super.key});
 
   @override
   State<AudioPlayerView> createState() => _AudioPlayerViewState();
@@ -33,94 +15,66 @@ class AudioPlayerView extends StatefulWidget {
 
 class _AudioPlayerViewState extends State<AudioPlayerView> {
   final SimpleAudioService _audioService = SimpleAudioService();
-  late StreamSubscription<Duration> _positionSubscription;
-  late StreamSubscription<Duration?> _durationSubscription;
-  late StreamSubscription<bool> _playingSubscription;
+  late StreamSubscription<MediaItem?> _mediaItemSubscription;
   late StreamSubscription<PlayerState> _playerStateSubscription;
 
-  Duration _position = Duration.zero;
-  Duration? _duration;
-  bool _isPlaying = false;
+  MediaItem? _mediaItem;
   bool _isLoading = true;
-  LoopMode _loopMode = LoopMode.off;
   String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    _initializePlayer();
     _setupListeners();
   }
 
-  Future<void> _initializePlayer() async {
-    try {
-      setState(() {
-        _isLoading = true;
-        _errorMessage = null;
-      });
-
-      await _audioService.loadSurah(
-        widget.surahUrl,
-        widget.surah.number,
-        widget.reciterId,
-        reciterName: widget.reciterName,
-        surahName: widget.surah.arabicName,
-      );
-
-      _loopMode = _audioService.loopMode;
-
-      setState(() {
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _errorMessage = 'فشل تحميل السورة: $e';
-      });
-    }
-  }
-
   void _setupListeners() {
-    _positionSubscription = _audioService.positionStream.listen((position) {
-      if (mounted) {
-        setState(() {
-          _position = position;
-        });
-      }
-    });
+    // Listen to media item changes to update UI
+    _mediaItemSubscription = _audioService.mediaItemStream.listen(
+      (mediaItem) {
+        if (mounted) {
+          setState(() {
+            _mediaItem = mediaItem;
+          });
+        }
+      },
+      onError: (error) {
+        if (mounted) {
+          setState(() {
+            _errorMessage = 'حدث خطأ في جلب بيانات السورة.';
+            _isLoading = false;
+          });
+        }
+      },
+    );
 
-    _durationSubscription = _audioService.durationStream.listen((duration) {
-      if (mounted) {
-        setState(() {
-          _duration = duration;
-        });
-      }
-    });
-
-    _playingSubscription = _audioService.playingStream.listen((playing) {
-      if (mounted) {
-        setState(() {
-          _isPlaying = playing;
-        });
-      }
-    });
-
-    _playerStateSubscription =
-        _audioService.playerStateStream.listen((state) {
-      if (mounted) {
-        setState(() {
-          _isLoading = state.processingState == ProcessingState.loading ||
+    // Listen to player state to show loading indicator
+    _playerStateSubscription = _audioService.playerStateStream.listen(
+      (state) {
+        if (mounted) {
+          final isLoading = state.processingState == ProcessingState.loading ||
               state.processingState == ProcessingState.buffering;
-        });
-      }
-    });
+          if (_isLoading != isLoading) {
+            setState(() {
+              _isLoading = isLoading;
+            });
+          }
+        }
+      },
+      onError: (error) {
+        if (mounted) {
+          setState(() {
+            _errorMessage = 'حدث خطأ في المشغل.';
+            _isLoading = false;
+          });
+        }
+      },
+    );
   }
 
   @override
   void dispose() {
-    _positionSubscription.cancel();
-    _durationSubscription.cancel();
-    _playingSubscription.cancel();
+    _mediaItemSubscription.cancel();
     _playerStateSubscription.cancel();
     super.dispose();
   }
@@ -137,76 +91,6 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
     return '${twoDigits(minutes)}:${twoDigits(seconds)}';
   }
 
-  Future<void> _togglePlayPause() async {
-    if (_isPlaying) {
-      await _audioService.pause();
-    } else {
-      await _audioService.play();
-    }
-  }
-
-  Future<void> _seekTo(Duration position) async {
-    await _audioService.seek(position);
-  }
-
-  Future<void> _toggleLoopMode() async {
-    final modes = [LoopMode.off, LoopMode.one, LoopMode.all];
-    final currentIndex = modes.indexOf(_loopMode);
-    final nextIndex = (currentIndex + 1) % modes.length;
-    await _audioService.setLoopMode(modes[nextIndex]);
-    setState(() {
-      _loopMode = modes[nextIndex];
-    });
-  }
-
-  Future<void> _loadNextSurah() async {
-    if (widget.currentIndex < widget.totalSurahs - 1) {
-      final sortedSurahs = List<int>.from(widget.moshaf.surahList)..sort();
-      final nextSurahNumber = sortedSurahs[widget.currentIndex + 1];
-      final nextSurah = SurahModel.fromNumber(nextSurahNumber);
-      final nextUrl = widget.moshaf.getSurahUrl(nextSurahNumber);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AudioPlayerView(
-            reciterId: widget.reciterId,
-            reciterName: widget.reciterName,
-            surah: nextSurah,
-            surahUrl: nextUrl,
-            currentIndex: widget.currentIndex + 1,
-            totalSurahs: widget.totalSurahs,
-            moshaf: widget.moshaf,
-          ),
-        ),
-      );
-    }
-  }
-
-  Future<void> _loadPreviousSurah() async {
-    if (widget.currentIndex > 0) {
-      final sortedSurahs = List<int>.from(widget.moshaf.surahList)..sort();
-      final prevSurahNumber = sortedSurahs[widget.currentIndex - 1];
-      final prevSurah = SurahModel.fromNumber(prevSurahNumber);
-      final prevUrl = widget.moshaf.getSurahUrl(prevSurahNumber);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AudioPlayerView(
-            reciterId: widget.reciterId,
-            reciterName: widget.reciterName,
-            surah: prevSurah,
-            surahUrl: prevUrl,
-            currentIndex: widget.currentIndex - 1,
-            totalSurahs: widget.totalSurahs,
-            moshaf: widget.moshaf,
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,11 +102,31 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: _errorMessage != null
-          ? _buildErrorView()
-          : _isLoading
-              ? _buildLoadingView()
-              : _buildPlayerView(),
+      body: StreamBuilder<MediaItem?>(
+        stream: _audioService.mediaItemStream,
+        builder: (context, mediaItemSnapshot) {
+          if (_errorMessage != null) return _buildErrorView();
+          if (!mediaItemSnapshot.hasData || _mediaItem == null) return _buildLoadingView();
+
+          final mediaItem = mediaItemSnapshot.data!;
+
+          return StreamBuilder<PlayerState>(
+            stream: _audioService.playerStateStream,
+            builder: (context, playerStateSnapshot) {
+              final playerState = playerStateSnapshot.data;
+              final isPlaying = playerState?.playing ?? false;
+              final processingState = playerState?.processingState;
+
+              if (processingState == ProcessingState.loading ||
+                  processingState == ProcessingState.buffering) {
+                return _buildLoadingView();
+              }
+
+              return _buildPlayerView(mediaItem, isPlaying);
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -240,11 +144,6 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
               style: AppTextStyles.regular16.copyWith(color: Colors.black),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 24.h),
-            ElevatedButton(
-              onPressed: _initializePlayer,
-              child: const Text('إعادة المحاولة'),
-            ),
           ],
         ),
       ),
@@ -257,7 +156,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
     );
   }
 
-  Widget _buildPlayerView() {
+  Widget _buildPlayerView(MediaItem mediaItem, bool isPlaying) {
     return SafeArea(
       child: Column(
         children: [
@@ -266,7 +165,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
               padding: EdgeInsets.all(24.w),
               child: Column(
                 children: [
-                  // صورة القارئ أو placeholder
+                  // Placeholder for album art
                   Container(
                     width: 250.w,
                     height: 250.w,
@@ -275,7 +174,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                       borderRadius: BorderRadius.circular(20.r),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.3),
+                          color: Colors.black.withOpacity(0.1),
                           blurRadius: 20,
                           spreadRadius: 5,
                         ),
@@ -283,131 +182,132 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.r),
-                      child: Container(
-                        color: Colors.grey[200],
-                        child: Icon(
-                          Icons.music_note,
-                          size: 100.sp,
-                          color: Colors.black38,
-                        ),
-                      ),
+                      child: Icon(Icons.music_note, size: 100.sp, color: Colors.black38),
                     ),
                   ),
                   SizedBox(height: 40.h),
-                  // اسم القارئ
+                  // Reciter and Surah Name
                   Text(
-                    widget.reciterName,
+                    mediaItem.artist ?? 'قارئ غير معروف',
                     style: AppTextStyles.semiBold24.copyWith(color: Colors.black),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 8.h),
-                  // اسم السورة
                   Text(
-                    widget.surah.arabicName,
+                    mediaItem.title,
                     style: AppTextStyles.semiBold20.copyWith(color: Colors.black87),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 40.h),
-                  // Seekbar
-                  if (_duration != null) ...[
-                    Slider(
-                      value: _position.inMilliseconds.toDouble().clamp(
-                            0.0,
-                            _duration!.inMilliseconds.toDouble(),
-                          ),
-                      min: 0.0,
-                      max: _duration!.inMilliseconds.toDouble(),
-                      onChanged: (value) {
-                        _seekTo(Duration(milliseconds: value.toInt()));
-                      },
-                      activeColor: Colors.black,
-                      inactiveColor: Colors.black26,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Seekbar and duration
+                  StreamBuilder<Duration>(
+                    stream: _audioService.positionStream,
+                    builder: (context, positionSnapshot) {
+                      final position = positionSnapshot.data ?? Duration.zero;
+                      final duration = mediaItem.duration ?? Duration.zero;
+                      return Column(
                         children: [
-                          Text(
-                            _formatDuration(_position),
-                            style: AppTextStyles.regular14.copyWith(color: Colors.black54),
+                          Slider(
+                            value: position.inMilliseconds.toDouble().clamp(
+                                  0.0,
+                                  duration.inMilliseconds.toDouble(),
+                                ),
+                            min: 0.0,
+                            max: duration.inMilliseconds.toDouble(),
+                            onChanged: (value) {
+                              _audioService.seek(Duration(milliseconds: value.toInt()));
+                            },
+                            activeColor: Colors.black,
+                            inactiveColor: Colors.black26,
                           ),
-                          Text(
-                            _formatDuration(_duration!),
-                            style: AppTextStyles.regular14.copyWith(color: Colors.black54),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _formatDuration(position),
+                                  style: AppTextStyles.regular14.copyWith(color: Colors.black54),
+                                ),
+                                Text(
+                                  _formatDuration(duration),
+                                  style: AppTextStyles.regular14.copyWith(color: Colors.black54),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
-                      ),
-                    ),
-                  ],
+                      );
+                    },
+                  ),
                   SizedBox(height: 40.h),
-                  // أزرار التحكم
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // السورة التالية (تم تبديل الموضع)
-                      IconButton(
-                        icon: Icon(Icons.skip_next, size: 40.sp),
-                        color: widget.currentIndex < widget.totalSurahs - 1
-                            ? Colors.black
-                            : Colors.black26,
-                        onPressed: widget.currentIndex < widget.totalSurahs - 1
-                            ? _loadNextSurah
-                            : null,
-                      ),
-                      SizedBox(width: 16.w),
-                      // Play/Pause
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            _isPlaying ? Icons.pause : Icons.play_arrow,
-                            size: 48.sp,
-                            color: Colors.black,
-                          ),
-                          onPressed: _togglePlayPause,
-                          padding: EdgeInsets.all(16.w),
-                        ),
-                      ),
-                      SizedBox(width: 16.w),
-                      // السورة السابقة (تم تبديل الموضع)
-                      IconButton(
-                        icon: Icon(Icons.skip_previous, size: 40.sp),
-                        color: widget.currentIndex > 0 ? Colors.black : Colors.black26,
-                        onPressed: widget.currentIndex > 0 ? _loadPreviousSurah : null,
-                      ),
-                    ],
-                  ),
+                  // Controls
+                  _buildControls(isPlaying),
                   SizedBox(height: 32.h),
-                  // زر التكرار
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildControlButton(
-                        icon: _loopMode == LoopMode.off
-                            ? Icons.repeat
-                            : _loopMode == LoopMode.one
-                                ? Icons.repeat_one
-                                : Icons.repeat,
-                        label: _loopMode == LoopMode.off
-                            ? 'إيقاف'
-                            : _loopMode == LoopMode.one
-                                ? 'واحد'
-                                : 'الكل',
-                        onTap: _toggleLoopMode,
-                        isActive: _loopMode != LoopMode.off,
-                      ),
-                    ],
-                  ),
+                  // Loop mode
+                  _buildLoopButton(),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildControls(bool isPlaying) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: Icon(Icons.skip_previous, size: 40.sp),
+          color: Colors.black,
+          onPressed: _audioService.previous,
+        ),
+        SizedBox(width: 16.w),
+        Container(
+          decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+          child: IconButton(
+            icon: Icon(
+              isPlaying ? Icons.pause : Icons.play_arrow,
+              size: 48.sp,
+              color: Colors.black,
+            ),
+            onPressed: isPlaying ? _audioService.pause : _audioService.play,
+            padding: EdgeInsets.all(16.w),
+          ),
+        ),
+        SizedBox(width: 16.w),
+        IconButton(
+          icon: Icon(Icons.skip_next, size: 40.sp),
+          color: Colors.black,
+          onPressed: _audioService.next,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoopButton() {
+    return StreamBuilder<LoopMode>(
+      stream: _audioService.loopModeStream,
+      builder: (context, snapshot) {
+        final loopMode = snapshot.data ?? LoopMode.off;
+        final icons = [Icons.repeat, Icons.repeat_one, Icons.repeat];
+        final labels = ['إيقاف', 'واحد', 'الكل'];
+        final currentIndex = loopMode == LoopMode.off ? 0 : (loopMode == LoopMode.one ? 1 : 2);
+
+        return _buildControlButton(
+          icon: icons[currentIndex],
+          label: labels[currentIndex],
+          isActive: loopMode != LoopMode.off,
+          onTap: () {
+            final nextMode = loopMode == LoopMode.off
+                ? LoopMode.all
+                : (loopMode == LoopMode.all ? LoopMode.one : LoopMode.off);
+            _audioService.setLoopMode(nextMode);
+          },
+        );
+      },
     );
   }
 
@@ -423,26 +323,19 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
-          color: isActive ? Colors.black.withValues(alpha: 0.08) : Colors.transparent,
+          color: isActive ? Colors.black.withAlpha(20) : Colors.transparent,
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(
-            color: Colors.black.withValues(alpha: 0.15),
-            width: 1,
-          ),
+          border: Border.all(color: Colors.black.withAlpha(38), width: 1),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: Colors.black, size: 24.sp),
             SizedBox(height: 4.h),
-            Text(
-              label,
-              style: AppTextStyles.regular12.copyWith(color: Colors.black54),
-            ),
+            Text(label, style: AppTextStyles.regular12.copyWith(color: Colors.black54)),
           ],
         ),
       ),
     );
   }
 }
-

@@ -3,12 +3,13 @@ import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:iman/Features/quran_audio/data/services/favorite_service.dart';
 
-class QuranAudioHandler extends BaseAudioHandler
-    with QueueHandler, SeekHandler {
+class QuranAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   final AudioPlayer _player = AudioPlayer();
   Timer? _savePositionTimer;
   int? _currentReciterId;
   int? _currentSurahNumber;
+
+  List<MediaItem> _playlist = [];
 
   QuranAudioHandler() {
     _init();
@@ -16,15 +17,33 @@ class QuranAudioHandler extends BaseAudioHandler
 
   void _init() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-    // لا حاجة لتحديث queue هنا لأننا نستخدم single track
+
+    _player.currentIndexStream.listen((index) {
+      if (index != null && queue.value.isNotEmpty && index < queue.value.length) {
+        final mediaItem = queue.value[index];
+        this.mediaItem.add(mediaItem);
+        _updateCurrentIdsFromMediaItem(mediaItem);
+      }
+    });
+
+    _player.processingStateStream.listen((state) {
+      if (state == ProcessingState.completed) {
+        // On completion, we don't stop, just let it move to the next or end.
+      }
+    });
+  }
+
+  void _updateCurrentIdsFromMediaItem(MediaItem item) {
+    _currentReciterId = item.extras?['reciterId'] as int?;
+    _currentSurahNumber = item.extras?['surahNumber'] as int?;
   }
 
   PlaybackState _transformEvent(PlaybackEvent event) {
     return PlaybackState(
       controls: [
-        MediaControl.skipToPrevious,
+        if (_player.hasPrevious) MediaControl.skipToPrevious,
         if (_player.playing) MediaControl.pause else MediaControl.play,
-        MediaControl.skipToNext,
+        if (_player.hasNext) MediaControl.skipToNext,
         MediaControl.stop,
       ],
       systemActions: const {
@@ -49,33 +68,17 @@ class QuranAudioHandler extends BaseAudioHandler
   }
 
   @override
-  Future<void> play() async {
-    await _player.play();
-    // تحديث MediaItem عند التشغيل
-    final currentItem = mediaItem.value;
-    if (currentItem != null) {
-      mediaItem.add(currentItem.copyWith(
-        playable: true,
-      ));
-    }
-  }
+  Future<void> play() => _player.play();
 
   @override
-  Future<void> pause() async {
-    await _player.pause();
-    // تحديث MediaItem عند الإيقاف
-    final currentItem = mediaItem.value;
-    if (currentItem != null) {
-      mediaItem.add(currentItem.copyWith(
-        playable: true,
-      ));
-    }
-  }
+  Future<void> pause() => _player.pause();
 
   @override
   Future<void> stop() async {
+    _saveCurrentPosition();
     await _player.stop();
     _savePositionTimer?.cancel();
+    await super.stop();
   }
 
   @override
@@ -87,6 +90,49 @@ class QuranAudioHandler extends BaseAudioHandler
   @override
   Future<void> skipToPrevious() => _player.seekToPrevious();
 
+  Future<void> loadPlaylist(List<MediaItem> playlist, {int initialIndex = 0}) async {
+    _playlist = playlist;
+    queue.add(_playlist);
+
+    final audioSources = _playlist
+        .map((item) => AudioSource.uri(Uri.parse(item.id), tag: item))
+        .toList();
+
+    try {
+      final initialItem = playlist[initialIndex];
+      final reciterId = initialItem.extras!['reciterId'] as int;
+      final surahNumber = initialItem.extras!['surahNumber'] as int;
+      final lastPosition = FavoriteService.getLastPosition(reciterId, surahNumber);
+
+      await _player.setAudioSource(
+        ConcatenatingAudioSource(children: audioSources),
+        initialIndex: initialIndex,
+        initialPosition: lastPosition,
+      );
+
+      mediaItem.add(initialItem);
+      _updateCurrentIdsFromMediaItem(initialItem);
+
+      _savePositionTimer?.cancel();
+      _savePositionTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+        _saveCurrentPosition();
+      });
+    } catch (e) {
+      print('Error loading playlist: $e');
+      rethrow;
+    }
+  }
+
+  void _saveCurrentPosition() {
+    if (_player.playing && _currentReciterId != null && _currentSurahNumber != null) {
+      FavoriteService.saveLastPosition(
+        _currentReciterId!,
+        _currentSurahNumber!,
+        _player.position,
+      );
+    }
+  }
+
   Future<void> loadSurah(
     String url,
     int surahNumber,
@@ -94,42 +140,18 @@ class QuranAudioHandler extends BaseAudioHandler
     String reciterName,
     String surahName,
   ) async {
-    try {
-      _currentReciterId = reciterId;
-      _currentSurahNumber = surahNumber;
+    final item = MediaItem(
+      id: url,
+      title: surahName,
+      artist: reciterName,
+      extras: {'surahNumber': surahNumber, 'reciterId': reciterId},
+    );
+    await loadPlaylist([item]);
+  }
 
-      // جلب آخر موضع
-      final lastPosition = FavoriteService.getLastPosition(reciterId, surahNumber);
-
-      await _player.setUrl(url, initialPosition: lastPosition);
-
-      // تحديث MediaItem للإشعار
-      mediaItem.add(MediaItem(
-        id: url,
-        title: surahName,
-        artist: reciterName,
-        duration: _player.duration,
-        artUri: Uri.parse(''),
-        playable: true,
-      ));
-
-      // حفظ الموضع بشكل دوري
-      _savePositionTimer?.cancel();
-      _savePositionTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-        if (_player.position.inMilliseconds > 0 &&
-            _currentReciterId != null &&
-            _currentSurahNumber != null) {
-          FavoriteService.saveLastPosition(
-            _currentReciterId!,
-            _currentSurahNumber!,
-            _player.position,
-          );
-        }
-      });
-    } catch (e) {
-      print('Error loading surah: $e');
-      rethrow;
-    }
+  @override
+  Future<void> updateQueue(List<MediaItem> newQueue) async {
+    queue.add(newQueue);
   }
 
   AudioPlayer get player => _player;
@@ -143,9 +165,14 @@ class QuranAudioHandler extends BaseAudioHandler
   Duration get position => _player.position;
   Duration? get duration => _player.duration;
 
+  @override
+  Future<void> onTaskRemoved() async {
+    await stop();
+  }
+
   Future<void> disposeHandler() async {
     _savePositionTimer?.cancel();
     await _player.dispose();
+    await super.stop();
   }
 }
-

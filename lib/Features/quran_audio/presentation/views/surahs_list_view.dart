@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
 import 'package:iman/Features/quran_audio/data/models/moshaf_model.dart';
 import 'package:iman/Features/quran_audio/data/models/surah_model.dart';
+import 'package:iman/Features/quran_audio/data/services/simple_audio_service.dart';
 import 'package:iman/Features/quran_audio/presentation/views/audio_player_view.dart';
 
 class SurahsListView extends StatelessWidget {
@@ -19,18 +20,28 @@ class SurahsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // إنشاء قائمة السور
     List<int> sortedSurahs;
-    
+
     if (moshaf.surahList.isNotEmpty) {
-      // إذا كانت القائمة موجودة، استخدمها
       sortedSurahs = List<int>.from(moshaf.surahList)..sort();
     } else if (moshaf.surahTotal > 0) {
-      // إذا كانت القائمة فارغة لكن surahTotal موجود، أنشئ قائمة من 1 إلى surahTotal
       sortedSurahs = List.generate(moshaf.surahTotal, (index) => index + 1);
     } else {
-      // افتراضي: 114 سورة
       sortedSurahs = List.generate(114, (index) => index + 1);
+    }
+
+    void playSurah(int index) {
+      final audioService = SimpleAudioService();
+      audioService.loadAndPlayPlaylist(
+        reciterId: reciterId,
+        reciterName: reciterName,
+        moshaf: moshaf,
+        initialIndex: index,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AudioPlayerView()),
+      );
     }
 
     return Scaffold(
@@ -54,14 +65,12 @@ class SurahsListView extends StatelessWidget {
               itemBuilder: (context, index) {
                 final surahNumber = sortedSurahs[index];
                 final surah = SurahModel.fromNumber(surahNumber);
-                final surahUrl = moshaf.getSurahUrl(surahNumber);
 
                 return _buildSurahCard(
                   context,
                   surah,
-                  surahUrl,
                   index,
-                  sortedSurahs.length,
+                  () => playSurah(index),
                 );
               },
             ),
@@ -71,9 +80,8 @@ class SurahsListView extends StatelessWidget {
   Widget _buildSurahCard(
     BuildContext context,
     SurahModel surah,
-    String surahUrl,
     int index,
-    int totalSurahs,
+    VoidCallback onPlay,
   ) {
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
@@ -98,41 +106,10 @@ class SurahsListView extends StatelessWidget {
         ),
         trailing: IconButton(
           icon: Icon(Icons.play_circle_outline, size: 32.sp),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AudioPlayerView(
-                  reciterId: reciterId,
-                  reciterName: reciterName,
-                  surah: surah,
-                  surahUrl: surahUrl,
-                  currentIndex: index,
-                  totalSurahs: totalSurahs,
-                  moshaf: moshaf,
-                ),
-              ),
-            );
-          },
+          onPressed: onPlay,
         ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AudioPlayerView(
-                reciterId: reciterId,
-                reciterName: reciterName,
-                surah: surah,
-                surahUrl: surahUrl,
-                currentIndex: index,
-                totalSurahs: totalSurahs,
-                moshaf: moshaf,
-              ),
-            ),
-          );
-        },
+        onTap: onPlay,
       ),
     );
   }
 }
-
