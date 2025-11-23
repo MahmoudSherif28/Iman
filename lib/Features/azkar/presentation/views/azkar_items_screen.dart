@@ -94,19 +94,68 @@ class _AzkarItemsScreenState extends State<AzkarItemsScreen> {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () async {
-                        final service = CustomAzkarService();
-                        final success = await service.deleteCustomAzkar(item.id);
-                        if (success) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('تم حذف الذكر')),
-                          );
-                          setState(() {});
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('تعذر حذف الذكر')),
-                          );
-                        }
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('تأكيد الحذف'),
+                            content: const Text('هل أنت متأكد من أنك تريد حذف هذا الذكر؟'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('إلغاء'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pop(context); // Close dialog
+                                  final service = CustomAzkarService();
+                                  final success = await service.deleteCustomAzkar(item.id);
+                                  if (success) {
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Row(
+                                            children: [
+                                              const Icon(Icons.check_circle, color: Colors.white),
+                                              const SizedBox(width: 8),
+                                              const Text('تم حذف الذكر'),
+                                            ],
+                                          ),
+                                          backgroundColor: Colors.green,
+                                          behavior: SnackBarBehavior.floating,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      );
+                                      setState(() {});
+                                    }
+                                  } else {
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Row(
+                                            children: [
+                                              const Icon(Icons.error, color: Colors.white),
+                                              const SizedBox(width: 8),
+                                              const Text('تعذر حذف الذكر'),
+                                            ],
+                                          ),
+                                          backgroundColor: Colors.red,
+                                          behavior: SnackBarBehavior.floating,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                                child: const Text('حذف', style: TextStyle(color: Colors.red)),
+                              ),
+                            ],
+                          ),
+                        );
                       },
                     ),
                   ],

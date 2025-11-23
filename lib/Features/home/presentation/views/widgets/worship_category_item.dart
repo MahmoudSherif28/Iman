@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
 import 'package:iman/Features/home/data/models/worship_category.dart';
-import 'package:iman/Features/quran_text/presentation/views/surah_list_view.dart';
+import 'package:iman/Features/quran_text/presentation/views/mushaf_reader_view.dart';
 import 'package:iman/Features/qibla/presentation/views/qiblah_view.dart';
 import '../../../../prayer_times/presentation/views/prayer_times_view.dart';
 import '../../../../azkar/presentation/views/azkar_categories_screen.dart';
@@ -65,14 +65,18 @@ class WorshipCategoryItem extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const RecitersListView()),
           );
         } else if (category.title == 'تسميع القرأن') {
+          // فتح المصحف مع زر الميكروفون ووضع التسميع (آية ثم الآية التالية)
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const SurahListView(enableTasmee: true)),
+            MaterialPageRoute(
+              builder: (context) => const MushafReaderView(initialPage: 1, enableTasmee: true),
+            ),
           );
         } else if (category.title == 'القرآن الكريم') {
+          // فتح المصحف للقراءة فقط
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const SurahListView(enableTasmee: false)),
+            MaterialPageRoute(builder: (context) => const MushafReaderView(initialPage: 1)),
           );
         }
       },

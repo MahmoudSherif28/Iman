@@ -222,14 +222,9 @@ class _RecitersListViewState extends State<_RecitersListViewBody> {
           reciter.rewaya,
           style: AppTextStyles.regular14,
         ),
-        trailing: IconButton(
-          icon: Icon(
-            isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: isFavorite ? Colors.red : Colors.grey,
-          ),
-          onPressed: () {
-            context.read<QuranAudioCubit>().toggleFavorite(reciter.id);
-          },
+        trailing: FavoriteIconButton(
+          reciter: reciter,
+          cubit: context.read<QuranAudioCubit>(),
         ),
         onTap: () {
           Navigator.push(
@@ -243,4 +238,100 @@ class _RecitersListViewState extends State<_RecitersListViewBody> {
     );
   }
 }
+
+class FavoriteIconButton extends StatefulWidget {
+  final ReciterModel reciter;
+  final QuranAudioCubit cubit;
+
+  const FavoriteIconButton({
+    super.key,
+    required this.reciter,
+    required this.cubit,
+  });
+
+  @override
+  State<FavoriteIconButton> createState() => _FavoriteIconButtonState();
+}
+
+class _FavoriteIconButtonState extends State<FavoriteIconButton> {
+  late bool isFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    isFavorite = FavoriteService.isFavorite(widget.reciter.id);
+  }
+
+  @override
+  void didUpdateWidget(covariant FavoriteIconButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Sync if external change happens (though we rely mostly on local state for speed)
+    isFavorite = FavoriteService.isFavorite(widget.reciter.id);
+  }
+
+  void _toggleFavorite() {
+    if (isFavorite) {
+      // Remove Logic with Dialog
+      showDialog(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: const Text('إزالة من المفضلة'),
+          content: const Text('هل تريد إزالة هذا القارئ من المفضلة؟'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext); // Close dialog
+                setState(() {
+                  isFavorite = false;
+                });
+                widget.cubit.toggleFavorite(widget.reciter.id);
+              },
+              child: const Text('إزالة', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Add Logic with SnackBar
+      setState(() {
+        isFavorite = true;
+      });
+      widget.cubit.toggleFavorite(widget.reciter.id);
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.favorite, color: Colors.white),
+              const SizedBox(width: 8),
+              const Text('تمت الإضافة للمفضلة'),
+            ],
+          ),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        isFavorite ? Icons.favorite : Icons.favorite_border,
+        color: isFavorite ? Colors.red : Colors.grey,
+      ),
+      onPressed: _toggleFavorite,
+    );
+  }
+}
+
 

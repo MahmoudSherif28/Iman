@@ -68,5 +68,9 @@ flutter:
           weight: 600
         - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
           weight: 700
+    # خط مصحف مجمع الملك فهد - عثماني حفص (لعرض نص القرآن)
+    - family: KFGQPC Uthmanic Script HAFS
+      fonts:
+        - asset: assets/fonts/KFGQPC_Uthmanic_Script_HAFS.otf
 flutter_intl:
   enabled: true

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iman/constants.dart';
 import 'package:iman/Features/quran_text/data/models/quran_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -186,13 +187,13 @@ class _SurahDetailViewState extends State<SurahDetailView> {
                   
                   SizedBox(height: 10.h),
 
-                  // Basmalah
+                  // Basmalah (خط عثماني حفص)
                   if (widget.surah.id != 1 && widget.surah.id != 9) ...[
                     Center(
                       child: Text(
                         'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ',
                         style: TextStyle(
-                          fontFamily: 'IBM Plex Sans Arabic',
+                          fontFamily: kQuranFontFamily,
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
@@ -215,7 +216,7 @@ class _SurahDetailViewState extends State<SurahDetailView> {
                               TextSpan(
                                 text: '${verse.text} ',
                                 style: TextStyle(
-                                  fontFamily: 'IBM Plex Sans Arabic',
+                                  fontFamily: kQuranFontFamily,
                                   fontSize: 22.sp,
                                   color: Colors.black87,
                                   height: 2.0,
@@ -277,7 +278,7 @@ class _SurahDetailViewState extends State<SurahDetailView> {
                                   TextSpan(
                                     text: '${verse.text} ',
                                     style: TextStyle(
-                                      fontFamily: 'IBM Plex Sans Arabic',
+                                      fontFamily: kQuranFontFamily,
                                       fontSize: 22.sp,
                                       color: Colors.black87,
                                       height: 2.0,
