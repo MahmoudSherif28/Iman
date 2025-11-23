@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
 import 'package:iman/Features/home/data/models/worship_category.dart';
+import 'package:iman/Features/quran_text/presentation/views/surah_list_view.dart';
 import 'package:iman/Features/qibla/presentation/views/qiblah_view.dart';
 import '../../../../prayer_times/presentation/views/prayer_times_view.dart';
 import '../../../../azkar/presentation/views/azkar_categories_screen.dart';
@@ -62,6 +63,11 @@ class WorshipCategoryItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const RecitersListView()),
+          );
+        } else if (category.title == 'تسميع القرأن') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SurahListView()),
           );
         }
       },
