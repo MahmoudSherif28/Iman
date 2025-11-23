@@ -116,13 +116,10 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
               final playerState = playerStateSnapshot.data;
               final isPlaying = playerState?.playing ?? false;
               final processingState = playerState?.processingState;
+              final isLoading = processingState == ProcessingState.loading ||
+                  processingState == ProcessingState.buffering;
 
-              if (processingState == ProcessingState.loading ||
-                  processingState == ProcessingState.buffering) {
-                return _buildLoadingView();
-              }
-
-              return _buildPlayerView(mediaItem, isPlaying);
+              return _buildPlayerView(mediaItem, isPlaying, isLoading);
             },
           );
         },
@@ -156,7 +153,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
     );
   }
 
-  Widget _buildPlayerView(MediaItem mediaItem, bool isPlaying) {
+  Widget _buildPlayerView(MediaItem mediaItem, bool isPlaying, bool isLoading) {
     return SafeArea(
       child: Column(
         children: [
@@ -174,7 +171,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                       borderRadius: BorderRadius.circular(20.r),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withAlpha(25),
                           blurRadius: 20,
                           spreadRadius: 5,
                         ),
@@ -248,7 +245,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                   ),
                   SizedBox(height: 40.h),
                   // Controls
-                  _buildControls(isPlaying),
+                  _buildControls(isPlaying, isLoading),
                   SizedBox(height: 32.h),
                   // Loop mode
                   _buildLoopButton(),
@@ -261,33 +258,38 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
     );
   }
 
-  Widget _buildControls(bool isPlaying) {
+  Widget _buildControls(bool isPlaying, bool isLoading) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
           icon: Icon(Icons.skip_previous, size: 40.sp),
           color: Colors.black,
-          onPressed: _audioService.previous,
+          onPressed: isLoading ? null : _audioService.previous,
         ),
         SizedBox(width: 16.w),
-        Container(
-          decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-          child: IconButton(
-            icon: Icon(
-              isPlaying ? Icons.pause : Icons.play_arrow,
-              size: 48.sp,
-              color: Colors.black,
-            ),
-            onPressed: isPlaying ? _audioService.pause : _audioService.play,
-            padding: EdgeInsets.all(16.w),
+        SizedBox(
+          width: 80.w,
+          height: 80.w,
+          child: Center(
+            child: isLoading
+                ? const CircularProgressIndicator(color: Colors.black)
+                : IconButton(
+                    icon: Icon(
+                      isPlaying ? Icons.pause : Icons.play_arrow,
+                      size: 48.sp,
+                      color: Colors.black,
+                    ),
+                    onPressed: isPlaying ? _audioService.pause : _audioService.play,
+                    padding: EdgeInsets.zero,
+                  ),
           ),
         ),
         SizedBox(width: 16.w),
         IconButton(
           icon: Icon(Icons.skip_next, size: 40.sp),
           color: Colors.black,
-          onPressed: _audioService.next,
+          onPressed: isLoading ? null : _audioService.next,
         ),
       ],
     );
