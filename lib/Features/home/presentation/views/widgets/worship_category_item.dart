@@ -67,7 +67,12 @@ class WorshipCategoryItem extends StatelessWidget {
         } else if (category.title == 'تسميع القرأن') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const SurahListView()),
+            MaterialPageRoute(builder: (context) => const SurahListView(enableTasmee: true)),
+          );
+        } else if (category.title == 'القرآن الكريم') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SurahListView(enableTasmee: false)),
           );
         }
       },

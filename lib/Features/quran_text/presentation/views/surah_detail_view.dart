@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Features/quran_text/data/models/quran_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class SurahDetailView extends StatefulWidget {
   final SurahModel surah;
+  final bool enableTasmee;
 
-  const SurahDetailView({super.key, required this.surah});
+  const SurahDetailView({super.key, required this.surah, this.enableTasmee = true});
 
   @override
   State<SurahDetailView> createState() => _SurahDetailViewState();
@@ -54,20 +56,102 @@ class _SurahDetailViewState extends State<SurahDetailView> {
     super.dispose();
   }
 
+  bool _isSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedStatus();
+  }
+
+  Future<void> _loadSavedStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedId = prefs.getInt('hefz_surah_id');
+    if (mounted) {
+      setState(() {
+        _isSaved = savedId == widget.surah.id;
+      });
+    }
+  }
+
+  Future<void> _saveSurah() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('hefz_surah_id', widget.surah.id);
+    if (mounted) {
+      setState(() {
+        _isSaved = true;
+      });
+    }
+  }
+
+  Future<void> _removeSurah() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('hefz_surah_id');
+    if (mounted) {
+      setState(() {
+        _isSaved = false;
+      });
+    }
+  }
+
+  Future<void> _showSaveConfirmDialog() async {
+    final isRemoving = _isSaved;
+    final title = isRemoving ? 'إلغاء الحفظ' : 'تأكيد الحفظ';
+    final content = isRemoving 
+        ? 'هل تريد الغاء الحفظ من سورة ${widget.surah.name}؟' 
+        : 'هل تريد وضع علامة الحفظ علي سورة ${widget.surah.name}؟';
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title, textAlign: TextAlign.center),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(content, textAlign: TextAlign.center),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('لا', style: TextStyle(color: Colors.grey)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('نعم', style: TextStyle(color: Color(0xFF05B576))),
+              onPressed: () {
+                if (isRemoving) {
+                  _removeSurah();
+                } else {
+                  _saveSurah();
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF9F0),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.enableTasmee ? FloatingActionButton(
         onPressed: _toggleTasmeeMode,
-        backgroundColor: const Color(0xFF442712),
+        backgroundColor: const Color(0xFF39210F),
         child: Icon(
           _isTasmeeMode && _revealedVersesCount < widget.surah.verses.length 
               ? Icons.mic 
               : Icons.mic_none_outlined, 
           color: Colors.white,
         ),
-      ),
+      ) : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SafeArea(
         child: Stack(
@@ -248,6 +332,22 @@ class _SurahDetailViewState extends State<SurahDetailView> {
                   },
                   icon: const Icon(Icons.close, color: Colors.red),
                   tooltip: 'إلغاء التسميع',
+                ),
+              ),
+
+             // Hefz Save Button (Only in Reading Mode)
+             if (!widget.enableTasmee)
+              Positioned(
+                top: 20.h,
+                left: 20.w,
+                child: IconButton(
+                  onPressed: _showSaveConfirmDialog,
+                  icon: Icon(
+                    _isSaved ? Icons.bookmark : Icons.bookmark_border,
+                    color: Colors.red,
+                    size: 30.sp,
+                  ),
+                  tooltip: 'حفظ الوصول',
                 ),
               ),
           ],
