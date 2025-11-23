@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
+import 'package:iman/Core/services/getit_service.dart'; // Import getIt
 import 'package:iman/Features/quran_audio/data/services/simple_audio_service.dart';
 import 'package:iman/Features/quran_audio/presentation/cubit/audio_player_cubit.dart';
 import 'package:iman/Features/quran_audio/presentation/cubit/audio_player_state.dart';
+import 'package:just_audio/just_audio.dart';
 
 class AudioPlayerView extends StatelessWidget {
   const AudioPlayerView({super.key});
@@ -13,7 +14,7 @@ class AudioPlayerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AudioPlayerCubit(SimpleAudioService()),
+      create: (context) => AudioPlayerCubit(getIt<SimpleAudioService>()),
       child: const _AudioPlayerViewBody(),
     );
   }

@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:iman/Features/quran_audio/data/services/simple_audio_service.dart';
+import 'package:just_audio/just_audio.dart';
+// No longer in quran_audio, moved to core
 import 'package:iman/Features/quran_audio/presentation/cubit/audio_player_state.dart';
-import 'package:audio_service/audio_service.dart';
+import 'package:audio_service/audio_service.dart'; // Keep this import
+// Import getIt
 
 class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   final SimpleAudioService _audioService;
@@ -18,25 +20,32 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   }
 
   void _listenToPlayer() {
-    _playerStateSubscription = _audioService.playerStateStream.listen((playerState) {
-      final isPlaying = playerState.playing;
-      final processingState = playerState.processingState;
-      PlayerStatus status;
-      if (processingState == ProcessingState.loading ||
-          processingState == ProcessingState.buffering) {
-        status = PlayerStatus.loading;
-      } else if (!isPlaying) {
-        status = PlayerStatus.paused;
-      } else if (processingState == ProcessingState.completed) {
-        status = PlayerStatus.completed;
-      } else {
-        status = PlayerStatus.playing;
-      }
-      emit(state.copyWith(status: status));
-    }, onError: (e) {
-      emit(state.copyWith(
-          status: PlayerStatus.error, errorMessage: 'An error occurred in the player.'));
-    });
+    _playerStateSubscription = _audioService.playerStateStream.listen(
+      (playerState) {
+        final isPlaying = playerState.playing;
+        final processingState = playerState.processingState;
+        PlayerStatus status;
+        if (processingState == ProcessingState.loading ||
+            processingState == ProcessingState.buffering) {
+          status = PlayerStatus.loading;
+        } else if (!isPlaying) {
+          status = PlayerStatus.paused;
+        } else if (processingState == ProcessingState.completed) {
+          status = PlayerStatus.completed;
+        } else {
+          status = PlayerStatus.playing;
+        }
+        emit(state.copyWith(status: status));
+      },
+      onError: (e) {
+        emit(
+          state.copyWith(
+            status: PlayerStatus.error,
+            errorMessage: 'An error occurred in the player.',
+          ),
+        );
+      },
+    );
 
     _mediaItemSubscription = _audioService.mediaItemStream.listen((mediaItem) {
       emit(state.copyWith(mediaItem: mediaItem));
@@ -57,10 +66,12 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
 
   Future<void> play() async => await _audioService.play();
   Future<void> pause() async => await _audioService.pause();
-  Future<void> seek(Duration position) async => await _audioService.seek(position);
+  Future<void> seek(Duration position) async =>
+      await _audioService.seek(position);
   Future<void> next() async => await _audioService.next();
   Future<void> previous() async => await _audioService.previous();
-  Future<void> setLoopMode(LoopMode loopMode) async => await _audioService.setLoopMode(loopMode);
+  Future<void> setLoopMode(LoopMode loopMode) async =>
+      await _audioService.setLoopMode(loopMode);
 
   @override
   Future<void> close() {

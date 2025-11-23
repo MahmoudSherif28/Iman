@@ -8,6 +8,7 @@ import 'package:iman/Features/qibla/data/repos/qiblah%20calaculator%20repos/qibl
 import 'package:iman/Features/qibla/data/repos/qiblah%20calaculator%20repos/qiblah_calculator_repo_impl.dart';
 import 'package:iman/Features/quran_audio/data/repo/quran_audio_repo.dart';
 import 'package:iman/Features/quran_audio/data/repo/quran_audio_repo_impl.dart';
+import 'package:iman/Features/quran_audio/data/services/simple_audio_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -29,4 +30,7 @@ void setupGetIt() {
   getIt.registerLazySingleton<QuranAudioRepo>(
     () => QuranAudioRepoImpl(ApiService()),
   );
+
+  // SimpleAudioService (since it's already a singleton, register it as such)
+  getIt.registerSingleton<SimpleAudioService>(SimpleAudioService());
 }
