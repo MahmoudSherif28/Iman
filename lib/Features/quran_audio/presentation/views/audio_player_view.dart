@@ -200,43 +200,49 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                   ),
                   SizedBox(height: 40.h),
                   // Seekbar and duration
-                  StreamBuilder<Duration>(
-                    stream: _audioService.positionStream,
-                    builder: (context, positionSnapshot) {
-                      final position = positionSnapshot.data ?? Duration.zero;
-                      final duration = mediaItem.duration ?? Duration.zero;
-                      return Column(
-                        children: [
-                          Slider(
-                            value: position.inMilliseconds.toDouble().clamp(
-                                  0.0,
-                                  duration.inMilliseconds.toDouble(),
+                  StreamBuilder<Duration?>(
+                    stream: _audioService.durationStream,
+                    builder: (context, durationSnapshot) {
+                      final duration = durationSnapshot.data ?? Duration.zero;
+                      return StreamBuilder<Duration>(
+                        stream: _audioService.positionStream,
+                        builder: (context, positionSnapshot) {
+                          final position = positionSnapshot.data ?? Duration.zero;
+                          return Column(
+                            children: [
+                              Slider(
+                                value: position.inMilliseconds
+                                    .toDouble()
+                                    .clamp(0.0, duration.inMilliseconds.toDouble()),
+                                min: 0.0,
+                                max: duration.inMilliseconds.toDouble(),
+                                onChanged: (value) {
+                                  _audioService.seek(Duration(milliseconds: value.toInt()));
+                                },
+                                activeColor: Colors.black,
+                                inactiveColor: Colors.black26,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      _formatDuration(position),
+                                      style: AppTextStyles.regular14
+                                          .copyWith(color: Colors.black54),
+                                    ),
+                                    Text(
+                                      _formatDuration(duration),
+                                      style: AppTextStyles.regular14
+                                          .copyWith(color: Colors.black54),
+                                    ),
+                                  ],
                                 ),
-                            min: 0.0,
-                            max: duration.inMilliseconds.toDouble(),
-                            onChanged: (value) {
-                              _audioService.seek(Duration(milliseconds: value.toInt()));
-                            },
-                            activeColor: Colors.black,
-                            inactiveColor: Colors.black26,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  _formatDuration(position),
-                                  style: AppTextStyles.regular14.copyWith(color: Colors.black54),
-                                ),
-                                Text(
-                                  _formatDuration(duration),
-                                  style: AppTextStyles.regular14.copyWith(color: Colors.black54),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                              ),
+                            ],
+                          );
+                        },
                       );
                     },
                   ),
