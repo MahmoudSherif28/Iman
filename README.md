@@ -147,7 +147,7 @@ flutter gen-l10n
 
 ---
 
-## � Download
+## 📱 Download
 
 Download the latest release APK and install it directly on your Android device:
 
