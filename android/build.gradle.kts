@@ -7,9 +7,9 @@ allprojects {
     // Force Kotlin stdlib version to match the Kotlin plugin version
     configurations.all {
         resolutionStrategy {
-            force("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.24")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.24")
+            force("org.jetbrains.kotlin:kotlin-stdlib:2.1.0")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0")
         }
     }
 }
@@ -19,14 +19,13 @@ subprojects {
     afterEvaluate {
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "17"
             }
         }
 
-        // إعداد إضافي لحل مشكلة flutter_qiblah
         tasks.withType<JavaCompile> {
-            sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-            targetCompatibility = JavaVersion.VERSION_1_8.toString()
+            sourceCompatibility = JavaVersion.VERSION_17.toString()
+            targetCompatibility = JavaVersion.VERSION_17.toString()
         }
     }
 }
