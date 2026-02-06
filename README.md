@@ -147,7 +147,7 @@ flutter gen-l10n
 
 ---
 
-## � Download
+## 📱 Download
 
 Download the latest release APK and install it directly on your Android device:
 
@@ -159,6 +159,6 @@ You can also browse all releases on the [Releases page](https://github.com/Mahmo
 
 ---
 
-## �📄 License
+## 📄 License
 
 This project is for educational and personal use. Feel free to fork and adapt it for your own Islamic app projects.
