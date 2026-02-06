@@ -3,7 +3,7 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/services/getit_service.dart';
-import 'package:iman/Core/services/shared_prefrences_sengelton.dart';
+import 'package:iman/Core/services/shared_preferences_singleton.dart';
 import 'package:iman/Core/utils/app_themes.dart';
 import 'package:iman/Features/Splash/presentation/views/splash_screen_view.dart';
 import 'package:iman/generated/l10n.dart';

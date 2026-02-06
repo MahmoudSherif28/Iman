@@ -4,7 +4,7 @@ import 'package:iman/Core/errors/failure.dart';
 import 'package:iman/Core/services/api_service.dart';
 import 'package:iman/Features/prayer_times/data/models/prayer_times_model.dart';
 import 'package:iman/Features/prayer_times/data/repo/prayer_times_repo.dart';
-import 'package:iman/Features/home/data/models/payer_time_model.dart';
+import 'package:iman/Features/home/data/models/prayer_time_model.dart';
 import 'package:dartz/dartz.dart';
 
 class PrayerTimesRepoImpl implements PrayerTimesRepo {
@@ -63,56 +63,39 @@ class PrayerTimesRepoImpl implements PrayerTimesRepo {
 
   Future<PrayerTimesModel> _fetchPrayerTimesFromAPI() async {
     // التأكد من تشغيل خدمة الموقع
-    print('[PRAYER_TIMES] Checking if location service is enabled...');
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    print('[PRAYER_TIMES] Location service enabled: $serviceEnabled');
+    final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) throw Exception('خدمة الموقع غير مفعلة');
 
     // التحقق من الأذونات
-    print('[PRAYER_TIMES] Checking location permissions...');
     LocationPermission permission = await Geolocator.checkPermission();
-    print('[PRAYER_TIMES] Current permission status: $permission');
-    
+
     if (permission == LocationPermission.denied) {
-      print('[PRAYER_TIMES] Permission denied, requesting...');
       permission = await Geolocator.requestPermission();
-      print('[PRAYER_TIMES] Permission after request: $permission');
-      
       if (permission == LocationPermission.denied) {
         throw Exception('تم رفض إذن الوصول للموقع');
       }
     }
 
     // الحصول على الإحداثيات
-    print('[PRAYER_TIMES] Getting current position...');
-    Position position = await Geolocator.getCurrentPosition(
+    final Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-    print('[PRAYER_TIMES] Got position: ${position.latitude}, ${position.longitude}');
 
     // استخدام خدمة API الموحدة
     try {
       final url =
           'https://api.aladhan.com/v1/timings?latitude=${position.latitude}&longitude=${position.longitude}&method=5';
-      
-      print('[PRAYER_TIMES] Making API request to: $url');
 
       final data = await _apiService.get(url);
 
       if (data['data'] == null || data['data']['timings'] == null) {
-        print('[PRAYER_TIMES] Invalid API response data');
         throw Exception('البيانات المستلمة غير صالحة');
       }
 
-      print('[PRAYER_TIMES] Successfully parsed prayer times data');
       return PrayerTimesModel.fromJson(data['data']['timings']);
     } catch (e) {
-      print('[PRAYER_TIMES] API request error: $e');
-      if (e is ServerFailure) {
-        rethrow;
-      } else {
-        throw Exception('خطأ في جلب أوقات الصلاة: $e');
-      }
+      if (e is ServerFailure) rethrow;
+      throw Exception('خطأ في جلب أوقات الصلاة: $e');
     }
   }
 

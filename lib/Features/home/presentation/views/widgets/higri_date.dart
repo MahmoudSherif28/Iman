@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hijri/hijri_calendar.dart';
+import 'package:iman/Core/utils/app_colors.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
 
 class HijriDateWidget extends StatelessWidget {
@@ -15,11 +16,11 @@ class HijriDateWidget extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: AppColors.contentPrimary.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -31,13 +32,13 @@ class HijriDateWidget extends StatelessWidget {
         children: [
           Icon(
             Icons.calendar_today_outlined,
-            color: Colors.green[700],
+            color: AppColors.primary,
             size: 20.w,
           ),
           SizedBox(width: 8.w),
           Text(
             hijriDate,
-            style: AppTextStyles.semiBold16.copyWith(color: Colors.black),
+            style: AppTextStyles.semiBold16.copyWith(color: AppColors.contentPrimary),
           ),
         ],
       ),

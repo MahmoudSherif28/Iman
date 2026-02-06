@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:iman/Core/services/getit_service.dart';
-import 'package:iman/Core/services/shared_prefrences_sengelton.dart';
+import 'package:iman/Core/services/shared_preferences_singleton.dart';
 import 'package:iman/Features/prayer_times/data/repo/prayer_times_repo.dart';
 import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_cubit.dart';
 import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_states.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Represents a single prayer time entry for display purposes.
 class PrayerTime {
   final String name;
   final IconData icon;
@@ -13,3 +14,4 @@ class PrayerTime {
     this.isCurrent = false,
   });
 }
+

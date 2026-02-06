@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:iman/Core/services/shared_prefrences_sengelton.dart';
+import 'package:iman/Core/services/shared_preferences_singleton.dart';
 import 'package:iman/Features/home/presentation/views/home_view.dart';
 import 'package:iman/Features/onboard/presentation/views/onboard_view.dart';
 import 'package:iman/constants.dart';
@@ -19,8 +19,7 @@ class Splash extends StatelessWidget {
           height: 150.w,
         ),
       ),
-      // ignore: unrelated_type_equality_checks
-      nextScreen: (Prefs.getBool(isOnboadingViewSeenKey) == true)
+      nextScreen: Prefs.getBool(isOnboardingViewSeenKey)
           ? const HomeView()
           : const OnBoardView(),
       splashIconSize: 200.w,

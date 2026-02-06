@@ -1,3 +1,4 @@
+/// Types of location-related errors the app can encounter.
 enum LocationErrorType {
   serviceDisabled,
   permissionDenied,
@@ -6,6 +7,7 @@ enum LocationErrorType {
   unknown,
 }
 
+/// Exception thrown when a location operation fails.
 class LocationException implements Exception {
   final String message;
   final LocationErrorType type;
@@ -15,6 +17,7 @@ class LocationException implements Exception {
   @override
   String toString() => 'LocationException: $message';
 
+  /// User-facing localised message for this error.
   String get userMessage {
     switch (type) {
       case LocationErrorType.serviceDisabled:
@@ -30,8 +33,10 @@ class LocationException implements Exception {
     }
   }
 
+  /// Whether this error requires the user to open device/app settings.
   bool get requiresSettings {
     return type == LocationErrorType.serviceDisabled ||
         type == LocationErrorType.permissionDeniedForever;
   }
 }
+

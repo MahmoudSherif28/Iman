@@ -3,8 +3,9 @@ import 'package:iman/Features/home/data/models/worship_category.dart';
 import 'package:iman/Features/home/presentation/views/widgets/worship_category_item.dart';
 
 class WorshipCategoriesGrid extends StatelessWidget {
-  WorshipCategoriesGrid({super.key});
-  final List<WorshipCategory> allCategories = [
+  const WorshipCategoriesGrid({super.key});
+
+  static const List<WorshipCategory> _allCategories = [
     WorshipCategory(
       title: 'سماع القرآن',
       iconImage: 'assets/images/samaa_quraan.png',
@@ -18,12 +19,13 @@ class WorshipCategoriesGrid extends StatelessWidget {
     WorshipCategory(title: 'القبلة', iconImage: 'assets/images/bosla.png'),
     WorshipCategory(title: 'تسبيح و ادعه', iconImage: 'assets/images/doaa.png'),
   ];
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
       primary: false,
       shrinkWrap: true,
-      itemCount: allCategories.length,
+      itemCount: _allCategories.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 0.70,
@@ -31,7 +33,7 @@ class WorshipCategoriesGrid extends StatelessWidget {
         mainAxisSpacing: 30.0,
       ),
       itemBuilder: (context, index) {
-        final category = allCategories[index];
+        final category = _allCategories[index];
         return WorshipCategoryItem(category: category);
       },
     );

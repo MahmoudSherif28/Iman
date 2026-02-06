@@ -187,12 +187,12 @@ class _AudioPlayerViewBody extends StatelessWidget {
   Widget _buildControls(BuildContext context, bool isPlaying, bool isLoading) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: Icon(Icons.skip_previous, size: 40.sp),
-          color: Colors.black,
-          onPressed: isLoading ? null : () => context.read<AudioPlayerCubit>().previous(),
-        ),
+      children: [        IconButton(
+        icon: Icon(Icons.skip_next, size: 40.sp),
+        color: Colors.black,
+        onPressed: isLoading ? null : () => context.read<AudioPlayerCubit>().next(),
+      ),
+
         SizedBox(width: 16.w),
         SizedBox(
           width: 80.w,
@@ -215,9 +215,9 @@ class _AudioPlayerViewBody extends StatelessWidget {
         ),
         SizedBox(width: 16.w),
         IconButton(
-          icon: Icon(Icons.skip_next, size: 40.sp),
+          icon: Icon(Icons.skip_previous, size: 40.sp),
           color: Colors.black,
-          onPressed: isLoading ? null : () => context.read<AudioPlayerCubit>().next(),
+          onPressed: isLoading ? null : () => context.read<AudioPlayerCubit>().previous(),
         ),
       ],
     );

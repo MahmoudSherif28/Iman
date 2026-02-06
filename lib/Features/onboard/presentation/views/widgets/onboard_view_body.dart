@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iman/Core/services/shared_prefrences_sengelton.dart';
+import 'package:iman/Core/services/shared_preferences_singleton.dart';
 import 'package:iman/Features/home/presentation/views/home_view.dart';
 import 'package:iman/constants.dart';
 
@@ -172,7 +172,7 @@ class _OnBoardViewBodyState extends State<OnBoardViewBody> {
                       ),
                       onPressed: () {
                         if (currentIndex == onboardingData.length - 1) {
-                          Prefs.setBool(isOnboadingViewSeenKey, true);
+                          Prefs.setBool(isOnboardingViewSeenKey, true);
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

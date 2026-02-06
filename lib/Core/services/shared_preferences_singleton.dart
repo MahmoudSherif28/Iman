@@ -1,12 +1,20 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Lightweight wrapper around [SharedPreferences] using the singleton pattern.
+///
+/// Call [Prefs.init] once during app startup before using any other method.
 class Prefs {
+  Prefs._();
+
   static late SharedPreferences _instance;
+
+  /// Initialises the [SharedPreferences] instance. Must be called before any
+  /// other [Prefs] method (typically in `main()`).
   static Future<void> init() async {
     _instance = await SharedPreferences.getInstance();
   }
 
-  static setBool(String key, bool value) async {
+  static Future<void> setBool(String key, bool value) async {
     await _instance.setBool(key, value);
   }
 
@@ -50,3 +58,4 @@ class Prefs {
     await _instance.remove(key);
   }
 }
+

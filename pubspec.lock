@@ -5,10 +5,10 @@ packages:
     dependency: "direct main"
     description:
       name: android_alarm_manager_plus
-      sha256: d243b5abd9e656fafd1d46f39e43196dd60df33aace1b11e04ecf01d6c6046f9
+      sha256: "591b97ceaaa8db69776a32bc1ea2fed8f83c3dadfa7b7e95351abfc0894361e7"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.8"
+    version: "5.0.0"
   animated_splash_screen:
     dependency: "direct main"
     description:

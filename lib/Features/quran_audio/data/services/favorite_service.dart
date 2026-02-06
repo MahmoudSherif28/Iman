@@ -1,4 +1,4 @@
-import 'package:iman/Core/services/shared_prefrences_sengelton.dart';
+import 'package:iman/Core/services/shared_preferences_singleton.dart';
 
 class FavoriteService {
   static const String _favoriteRecitersKey = 'favorite_reciters';

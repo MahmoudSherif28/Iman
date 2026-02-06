@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iman/Features/prayer_times/data/repo/prayer_times_repo.dart';
 import 'package:iman/Features/prayer_times/data/models/prayer_times_model.dart';
-import 'package:iman/Features/home/data/models/payer_time_model.dart';
+import 'package:iman/Features/home/data/models/prayer_time_model.dart';
 import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_states.dart';
 
 /// مكعب أوقات الصلاة

@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:iman/Features/qibla/data/models/location_model.dart';
+import 'package:iman/Features/qibla/data/repos/qiblah_calculator_repos/qiblah_calculator_repo.dart';
 
-import 'package:iman/Features/qibla/data/repos/qiblah%20calaculator%20repos/qiblah_calculator_repo.dart';
-
+/// Concrete implementation of [QiblaCalculatorService] using the Haversine formula.
 class QiblaCalculatorServiceImpl implements QiblaCalculatorService {
   static const double kaabaLatitude = 21.422487;
   static const double kaabaLongitude = 39.826206;
@@ -93,3 +93,4 @@ class QiblaCalculatorServiceImpl implements QiblaCalculatorService {
   double _degreesToRadians(double degrees) => degrees * math.pi / 180.0;
   double _radiansToDegrees(double radians) => radians * 180.0 / math.pi;
 }
+

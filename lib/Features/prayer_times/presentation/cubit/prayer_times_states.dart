@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:iman/Features/prayer_times/data/models/prayer_times_model.dart';
-import 'package:iman/Features/home/data/models/payer_time_model.dart';
+import 'package:iman/Features/home/data/models/prayer_time_model.dart';
 
 /// الحالات الأساسية لمكعب أوقات الصلاة
 abstract class PrayerTimesStates extends Equatable {

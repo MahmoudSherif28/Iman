@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iman/Core/utils/app_colors.dart';
 import 'package:iman/Features/home/presentation/views/widgets/higri_date.dart';
 import 'package:iman/Features/home/presentation/views/widgets/prayer_list.dart';
 import 'package:iman/Features/home/presentation/views/widgets/worship_category_grid.dart';
@@ -10,7 +11,7 @@ class HomeViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFFF5F5F5),
+      color: AppColors.surface,
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 30.h),
@@ -40,7 +41,7 @@ class HomeViewBody extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.category_rounded,
-                      color: const Color(0xFF05B576),
+                      color: AppColors.primary,
                       size: 18.sp,
                     ),
                     SizedBox(width: 4.w),
@@ -49,14 +50,14 @@ class HomeViewBody extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
-                        color:Colors.black,
+                        color: AppColors.contentPrimary,
                       ),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 16.0.h),
-              WorshipCategoriesGrid(),
+              const WorshipCategoriesGrid(),
             ],
           ),
         ),

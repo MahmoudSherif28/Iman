@@ -1,5 +1,5 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:iman/Core/services/shared_prefrences_sengelton.dart';
+import 'package:iman/Core/services/shared_preferences_singleton.dart';
 import 'package:iman/Features/prayer_times/data/models/prayer_times_model.dart';
 import 'package:iman/Features/prayer_times/presentation/adhan_audio_service.dart';
 

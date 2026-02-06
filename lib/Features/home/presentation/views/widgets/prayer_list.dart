@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iman/Core/services/getit_service.dart';
+import 'package:iman/Core/utils/app_colors.dart';
 import 'package:iman/Features/prayer_times/data/repo/prayer_times_repo.dart';
 import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_cubit.dart';
 import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_states.dart';
-import 'package:iman/Features/home/data/models/payer_time_model.dart';
+import 'package:iman/Features/home/data/models/prayer_time_model.dart';
 import 'package:iman/Features/home/presentation/views/widgets/prayer_list_item.dart';
 import 'package:iman/generated/l10n.dart';
 
@@ -32,7 +33,7 @@ class _PrayerListBody extends StatelessWidget {
       builder: (context, state) {
         if (state is PrayerTimesLoading) {
           return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF05B576)),
+            child: CircularProgressIndicator(color: AppColors.primary),
           );
         }
 
@@ -150,7 +151,7 @@ class _PrayerListBody extends StatelessWidget {
               children: [
                 Icon(
                   Icons.access_time_rounded,
-                  color: const Color(0xFF05B576),
+                  color: AppColors.primary,
                   size: 18.sp,
                 ),
                 SizedBox(width: 4.w),
@@ -159,7 +160,7 @@ class _PrayerListBody extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    color:  Colors.black,
+                    color: AppColors.contentPrimary,
                   ),
                 ),
               ],
@@ -169,11 +170,11 @@ class _PrayerListBody extends StatelessWidget {
         // شريط الصلوات
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.background,
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withValues(alpha: 0.1),
+                color: AppColors.contentTertiary.withValues(alpha: 0.1),
                 blurRadius: 8.r,
                 offset: const Offset(0, 2),
               ),

@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
-import 'package:iman/Core/errors/location_excaption.dart';
+import 'package:iman/Core/errors/location_exception.dart';
 import 'package:iman/Features/qibla/data/models/location_model.dart';
 
-import 'package:iman/Features/qibla/data/repos/location%20repos/location_repo.dart';
-import 'package:iman/Features/qibla/data/repos/qiblah%20calaculator%20repos/qiblah_calculator_repo.dart';
+import 'package:iman/Features/qibla/data/repos/location_repos/location_repo.dart';
+import 'package:iman/Features/qibla/data/repos/qiblah_calculator_repos/qiblah_calculator_repo.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 
 part 'qiblah_state.dart';

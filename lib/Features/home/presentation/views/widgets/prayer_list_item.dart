@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
-import 'package:iman/Features/home/data/models/payer_time_model.dart';
+import 'package:iman/Features/home/data/models/prayer_time_model.dart';
 
 class PrayerTimeListItem extends StatelessWidget {
   final PrayerTime time;

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:iman/Features/quran_audio/data/services/favorite_service.dart';
 
@@ -118,7 +119,7 @@ class QuranAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler 
         _saveCurrentPosition();
       });
     } catch (e) {
-      print('Error loading playlist: $e');
+      debugPrint('Error loading playlist: $e');
       rethrow;
     }
   }
