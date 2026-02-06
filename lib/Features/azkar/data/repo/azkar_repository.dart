@@ -1,0 +1,775 @@
+import 'package:flutter/material.dart';
+import 'package:iman/generated/l10n.dart';
+import '../models/azkar_model.dart';
+import '../services/custom_azkar_service.dart';
+
+class AzkarRepository {
+  List<AzkarCategory> getCategories(BuildContext context) {
+    final localizations = S.of(context);
+
+    return [
+      AzkarCategory(
+        id: 'morning',
+        titleKey: localizations.azkar_category_morning,
+        imageAsset: 'assets/images/doaa.png',
+      ),
+      AzkarCategory(
+        id: 'evening',
+        titleKey: localizations.azkar_category_evening,
+        imageAsset: 'assets/images/doaa.png',
+      ),
+      AzkarCategory(
+        id: 'after_prayer',
+        titleKey: localizations.azkar_category_after_prayer,
+        imageAsset: 'assets/images/doaa.png',
+      ),
+      AzkarCategory(
+        id: 'before_sleep',
+        titleKey: localizations.azkar_category_before_sleep,
+        imageAsset: 'assets/images/doaa.png',
+      ),
+      AzkarCategory(
+        id: 'general',
+        titleKey: localizations.azkar_category_general,
+        imageAsset: 'assets/images/doaa.png',
+      ),
+      AzkarCategory(
+        id: 'dua',
+        titleKey: localizations.azkar_category_dua,
+        imageAsset: 'assets/images/doaa.png',
+      ),
+      AzkarCategory(
+        id: 'my_azkar',
+        titleKey: 'أذكارى',
+        imageAsset: 'assets/images/doaa.png',
+      ),
+    ];
+  }
+
+  Future<List<AzkarItem>> getAzkarItems(
+    BuildContext context,
+    String categoryId,
+  ) async {
+    switch (categoryId) {
+      case 'morning':
+        return [
+          AzkarItem(
+            id: 'morning_1',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(1),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'morning_2',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(2),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'morning_3',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(3),
+            count: 3,
+          ),
+          AzkarItem(
+            id: 'morning_4',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(4),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'morning_5',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(5),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'morning_6',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(6),
+            count: 4,
+          ),
+          AzkarItem(
+            id: 'morning_7',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(7),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'morning_8',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(8),
+            count: 7,
+          ),
+          AzkarItem(
+            id: 'morning_9',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(9),
+            count: 3,
+          ),
+          AzkarItem(
+            id: 'morning_10',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(10),
+            count: 3,
+          ),
+          AzkarItem(
+            id: 'morning_11',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(11),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'morning_12',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(12),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'morning_13',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(13),
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'morning_14',
+            categoryId: categoryId,
+            textKey: _getMorningAzkarText(14),
+            count: 100,
+          ),
+        ];
+      case 'evening':
+        return [
+          AzkarItem(
+            id: 'evening_1',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(1),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'evening_2',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(2),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'evening_3',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(3),
+            count: 3,
+          ),
+          AzkarItem(
+            id: 'evening_4',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(4),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'evening_5',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(5),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'evening_6',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(6),
+            count: 4,
+          ),
+          AzkarItem(
+            id: 'evening_7',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(7),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'evening_8',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(8),
+            count: 7,
+          ),
+          AzkarItem(
+            id: 'evening_9',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(9),
+            count: 3,
+          ),
+          AzkarItem(
+            id: 'evening_10',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(10),
+            count: 3,
+          ),
+          AzkarItem(
+            id: 'evening_11',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(11),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'evening_12',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(12),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'evening_13',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(13),
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'evening_14',
+            categoryId: categoryId,
+            textKey: _getEveningAzkarText(14),
+            count: 100,
+          ),
+        ];
+      case 'after_prayer':
+        return [
+          AzkarItem(
+            id: 'after_prayer_1',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(1),
+            count: 3,
+          ),
+          AzkarItem(
+            id: 'after_prayer_2',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(2),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'after_prayer_3',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(3),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'after_prayer_4',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(4),
+            count: 33,
+          ),
+          AzkarItem(
+            id: 'after_prayer_5',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(5),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'after_prayer_6',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(6),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'after_prayer_7',
+            categoryId: categoryId,
+            textKey: _getAfterPrayerAzkarText(7),
+            count: 1,
+          ),
+        ];
+      case 'before_sleep':
+        return [
+          AzkarItem(
+            id: 'before_sleep_1',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(1),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_2',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(2),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_3',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(3),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_4',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(4),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_5',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(5),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_6',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(6),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_7',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(7),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_8',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(8),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_9',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(9),
+            count: 34,
+          ),
+          AzkarItem(
+            id: 'before_sleep_10',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(10),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_11',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(11),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_12',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(12),
+            count: 3,
+          ),
+          AzkarItem(
+            id: 'before_sleep_13',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(13),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_14',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(14),
+            count: 1,
+          ),
+          AzkarItem(
+            id: 'before_sleep_15',
+            categoryId: categoryId,
+            textKey: _getBeforeSleepAzkarText(15),
+            count: 1,
+          ),
+        ];
+      case 'general':
+        return [
+          AzkarItem(
+            id: 'general_1',
+            categoryId: categoryId,
+            textKey: "استغفر الله",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_2',
+            categoryId: categoryId,
+            textKey: "الحمد لله",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_3',
+            categoryId: categoryId,
+            textKey: "لَا إِلَهَ إِلَّا اللَّهُ",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_4',
+            categoryId: categoryId,
+            textKey: "سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ العَظِيمِ",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_5',
+            categoryId: categoryId,
+            textKey:
+                "اللهم أصبحنا نشهدك ونشهد حملة عرشك وملائكتك وجميع خلقك أنك أنت الله، لا إله إلا أنت وحدك لا شريك لك، وأن محمدًا عبدك ورسولك،",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_6',
+            categoryId: categoryId,
+            textKey:
+                "لا إلهَ إلاّ اللهُ وحدَهُ لا شريكَ لهُ، لهُ المُلكُ ولهُ الحمدُ وهوَ على كلّ شيءٍ قديرٌ",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'general_7',
+            categoryId: categoryId,
+            textKey:
+                "اللهم صل وسلم وبارك على سيدنا محمد وعلى آله وصحبه أجمعين وسلم تسليما كثيرا إلى يوم الدين",
+            count: 100,
+          ),
+        ];
+      case 'dua':
+        return [
+          AzkarItem(
+            id: 'dua_1',
+            categoryId: categoryId,
+            textKey:
+                "دعاء طلب المغفرة\n\n﴿رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ﴾\n(الأعراف: 23)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_2',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الهداية والثبات\n\n﴿رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً ۚ إِنَّكَ أَنتَ الْوَهَّابُ﴾\n(آل عمران: 8)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_3',
+            categoryId: categoryId,
+            textKey:
+                "دعاء التوفيق في الأمور\n\n﴿رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي﴾\n(طه: 25–26)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_4',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الرزق\n\n﴿رَبِّ إِنِّي لِمَا أَنزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ﴾\n(القصص: 24)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_5',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الصبر والفرج\n\n﴿رَبِّ أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ﴾\n(الأنبياء: 83)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_6',
+            categoryId: categoryId,
+            textKey:
+                "دعاء دخول الجنة\n\n﴿رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ﴾\n(البقرة: 201)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_7',
+            categoryId: categoryId,
+            textKey:
+                "دعاء التوبة\n\n﴿رَبِّ اغْفِرْ لِي وَتُبْ عَلَيَّ إِنَّكَ أَنتَ التَّوَّابُ الرَّحِيمُ﴾\n(التوبة: 118)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_8',
+            categoryId: categoryId,
+            textKey:
+                "دعاء تثبيت الإيمان\n\n﴿رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِينَ﴾\n(الأعراف: 126)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_9',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الكرب والهم\n\n«لا إله إلا الله العظيم الحليم، لا إله إلا الله رب العرش العظيم،\nلا إله إلا الله رب السماوات ورب الأرض ورب العرش الكريم».\n(متفق عليه)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_10',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الهمّ والحزن\n\n«اللهم إني أعوذ بك من الهم والحَزَن، وأعوذ بك من العجز والكسل،\nوأعوذ بك من الجبن والبخل، وأعوذ بك من غلبة الدين وقهر الرجال».\n(رواه البخاري)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_11',
+            categoryId: categoryId,
+            textKey:
+                "دعاء من خاف شيئًا\n\n«اللهم إني أعوذ بك من شر نفسي، ومن شر كل دابةٍ أنت آخذ بناصيتها،\nإن ربي على صراط مستقيم».\n(رواه مسلم)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_12',
+            categoryId: categoryId,
+            textKey:
+                "دعاء طلب المغفرة\n\n«اللهم اغفر لي خطيئتي وجهلي، وإسرافي في أمري،\nوما أنت أعلم به مني، اللهم اغفر لي جدي وهزلي،\nوخطئي وعمدي، وكل ذلك عندي».\n(رواه البخاري ومسلم)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_13',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الرزق\n\n«اللهم اكفني بحلالك عن حرامك، وأغنني بفضلك عمّن سواك».\n(رواه الترمذي)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_14',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الاستخارة\n\n«اللهم إني أستخيرك بعلمك، وأستقدرك بقدرتك،\nوأسألك من فضلك العظيم، فإنك تقدر ولا أقدر،\nوتعلم ولا أعلم، وأنت علام الغيوب،\nاللهم إن كنت تعلم أن هذا الأمر (وتسمي حاجتك)\nخير لي في ديني ومعاشي وعاقبة أمري،\nفاقدره لي ويسّره لي، ثم بارك لي فيه،\nوإن كنت تعلم أنه شر لي في ديني ومعاشي وعاقبة أمري،\nفاصرفه عني واصرفني عنه، واقدر لي الخير حيث كان ثم أرضني به».\n(رواه البخاري)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_15',
+            categoryId: categoryId,
+            textKey:
+                "دعاء عند المرض\n\n«اللهم رب الناس، أذهب البأس، اشفِ أنت الشافي،\nلا شفاء إلا شفاؤك، شفاءً لا يغادر سقماً».\n(متفق عليه)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_16',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الفرج واليسر\n\n«اللهم لا سهل إلا ما جعلته سهلاً، وأنت تجعل الحَزْن إذا شئت سهلاً».\n(رواه ابن حبان)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_17',
+            categoryId: categoryId,
+            textKey:
+                "دعاء التوفيق والسداد\n\n«اللهم إني أسألك التوفيق في القول والعمل،\nوالسداد في الرأي، والهداية في كل أمر».\n(مأثور)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_18',
+            categoryId: categoryId,
+            textKey:
+                "دعاء السفر\n\n«اللهم إنا نسألك في سفرنا هذا البر والتقوى،\nومن العمل ما ترضى، اللهم هوّن علينا سفرنا هذا،\nواطوِ عنا بُعده، اللهم أنت الصاحب في السفر،\nوالخليفة في الأهل».\n(رواه مسلم)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_19',
+            categoryId: categoryId,
+            textKey:
+                "دعاء فتح الأبواب المغلقة\n\n«اللهم افتح لي أبواب رحمتك، وارزقني من حيث لا أحتسب،\nويسّر لي كل أمر عسير».",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_20',
+            categoryId: categoryId,
+            textKey:
+                "دعاء التوفيق في العمل والدراسة\n\n«اللهم لا علم لنا إلا ما علمتنا، فعلمنا ما ينفعنا،\nوانفعنا بما علمتنا، وزدنا علمًا، ووفقنا لما تحب وترضى».",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_21',
+            categoryId: categoryId,
+            textKey:
+                "دعاء التيسير\n\n«اللهم يسر لي أمري واشرح لي صدري،\nواجعل لي من كل ضيق مخرجًا ومن كل هم فرجًا».",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_22',
+            categoryId: categoryId,
+            textKey:
+                "دعاء طلب البركة\n\n«اللهم بارك لي في وقتي، ورزقي، وجهدي،\nواجعل عملي هذا خالصًا لوجهك الكريم».",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_23',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الرزق الحلال\n\n«اللهم ارزقني رزقًا حلالًا طيبًا واسعًا مباركًا فيه،\nواكفني بحلالك عن حرامك، وبفضلك عمّن سواك».",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_24',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الفرج من الكرب\n\n«اللهم فرّج همي، ويسّر أمري،\nوارزقني من حيث لا أحتسب، إنك على كل شيء قدير».",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_25',
+            categoryId: categoryId,
+            textKey:
+                "دعاء النجاح والتوفيق\n\n«اللهم وفقني لما تحب وترضى،\nوسدد خطاي، وحقق لي الخير حيث كان،\nواجعلني من عبادك المخلصين».",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_26',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الشفاء\n\n«اللهم اشفِ مرضانا ومرضى المسلمين،\nاللهم عافِ المبتلين، وارفع الضر عن كل مبتلى،\nواشفِ أنت الشافي، لا شفاء إلا شفاؤك».",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_27',
+            categoryId: categoryId,
+            textKey:
+                "دعاء تفريج الهم\n\n«اللهم إني عبدك، ابن عبدك، ابن أمتك،\nناصيتي بيدك، ماضٍ فيّ حكمك، عدلٌ فيّ قضاؤك،\nأسألك بكل اسم هو لك، سميت به نفسك،\nأو أنزلته في كتابك، أو علمته أحدًا من خلقك،\nأن تجعل القرآن ربيع قلبي، ونور صدري،\nوجلاء حزني، وذهاب همي وغمي».\n(رواه أحمد)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_28',
+            categoryId: categoryId,
+            textKey:
+                "دعاء التوبة والمغفرة\n\n«اللهم اغفر لي ذنبي كله، دقه وجله،\nأوله وآخره، علانيته وسره».\n(رواه مسلم)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_29',
+            categoryId: categoryId,
+            textKey:
+                "دعاء الثبات بعد التوبة\n\n«اللهم يا مقلب القلوب، ثبت قلبي على دينك».\n(رواه الترمذي)",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_30',
+            categoryId: categoryId,
+            textKey:
+                "دعاء حسن الخاتمة\n\n«اللهم اجعل خير أعمالي خواتيمها،\nوخير أيامي يوم ألقاك».",
+            count: 100,
+          ),
+          AzkarItem(
+            id: 'dua_31',
+            categoryId: categoryId,
+            textKey:
+                "دعاء القبول والمغفرة\n\n«اللهم تقبل منا أعمالنا، واغفر ذنوبنا،\nواستر عيوبنا، وبارك لنا في أعمارنا،\nواجعلنا من المقبولين عندك».",
+            count: 100,
+          ),
+        ];
+      case 'my_azkar':
+        return await _getCustomAzkarItems(categoryId);
+      default:
+        return [];
+    }
+  }
+
+  Future<List<AzkarItem>> _getCustomAzkarItems(String categoryId) async {
+    final customAzkarService = CustomAzkarService();
+    final customAzkarList = await customAzkarService.getCustomAzkarList();
+    return customAzkarService.convertToAzkarItems(customAzkarList);
+  }
+
+  // دوال للحصول على النصوص العربية مباشرة
+  String _getMorningAzkarText(int index) {
+    switch (index) {
+      case 1:
+        return "آية الكرسي\n\nاللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ\nلَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ\nلَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ\nمَنْ ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ\nيَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ\nوَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ\nوَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ\nوَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ\n(البقرة: 255)";
+      case 2:
+        return "آخر آيتين من سورة البقرة\n\nآمَنَ الرَّسُولُ بِمَا أُنزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ\nكُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ\nلَا نُفَرِّقُ بَيْنَ أَحَدٍ مِّن رُّسُلِهِ\nوَقَالُوا سَمِعْنَا وَأَطَعْنَا\nغُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ\nلَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا\nلَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ\nرَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا\nرَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا\nرَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ\nوَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا\nأَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ\n(البقرة: 285-286)";
+      case 3:
+        return "سورة الإخلاص والمعوذتين (3 مرات)\n\nسورة الإخلاص\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ\nاللَّهُ الصَّمَدُ\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nوَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ\n\nسورة الفلق\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ\nمِن شَرِّ مَا خَلَقَ\nوَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ\nوَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ\nوَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\n\nسورة الناس\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nمَلِكِ النَّاسِ\nإِلَٰهِ النَّاسِ\nمِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nمِنَ الْجِنَّةِ وَالنَّاسِ";
+      case 4:
+        return "أصبحنا وأصبح الملك لله\n\nأصبحنا وأصبح الملك لله، والحمد لله،\nلا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير،\nرب أسألك خير هذا اليوم وخير ما بعده،\nوأعوذ بك من شر هذا اليوم وشر ما بعده،\nرب أعوذ بك من الكسل وسوء الكبر،\nرب أعوذ بك من عذاب في النار وعذاب في القبر.";
+      case 5:
+        return "اللهم بك أصبحنا وبك أمسينا\n\nاللهم بك أصبحنا وبك أمسينا، وبك نحيا وبك نموت وإليك النشور.";
+      case 6:
+        return "اللهم إني أصبحت أشهدك (4 مرات)\n\nاللهم إني أصبحت أشهدك، وأشهد حملة عرشك،\nوملائكتك وجميع خلقك أنك أنت الله،\nلا إله إلا أنت وحدك لا شريك لك،\nوأن محمداً عبدك ورسولك.";
+      case 7:
+        return "اللهم ما أصبح بي من نعمة\n\nاللهم ما أصبح بي من نعمة أو بأحد من خلقك فمنك وحدك لا شريك لك،\nفلك الحمد ولك الشكر.";
+      case 8:
+        return "حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم (7 مرات)";
+      case 9:
+        return "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم (3 مرات)";
+      case 10:
+        return "رضيت بالله رباً وبالإسلام ديناً وبمحمد ﷺ نبياً (3 مرات)";
+      case 11:
+        return "يا حي يا قيوم برحمتك أستغيث\n\nأصلح لي شأني كله، ولا تكلني إلى نفسي طرفة عين.";
+      case 12:
+        return "أصبحنا على فطرة الإسلام\n\nأصبحنا على فطرة الإسلام،\nوعلى كلمة الإخلاص،\nوعلى دين نبينا محمد ﷺ،\nوعلى ملة أبينا إبراهيم حنيفاً مسلماً وما كان من المشركين.";
+      case 13:
+        return "سبحان الله وبحمده (100 مرة)";
+      case 14:
+        return "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير (100 مرة)";
+      default:
+        return "";
+    }
+  }
+
+  String _getEveningAzkarText(int index) {
+    switch (index) {
+      case 1:
+        return "آية الكرسي\n\nاللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ\nلَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ\nلَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ\nمَنْ ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ\nيَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ\nوَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ\nوَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ\nوَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ\n(البقرة: 255)";
+      case 2:
+        return "آخر آيتين من سورة البقرة\n\nآمَنَ الرَّسُولُ بِمَا أُنزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ\nكُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ\nلَا نُفَرِّقُ بَيْنَ أَحَدٍ مِّن رُّسُلِهِ\nوَقَالُوا سَمِعْنَا وَأَطَعْنَا\nغُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ\nلَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا\nلَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ\nرَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا\nرَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا\nرَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ\nوَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا\nأَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ";
+      case 3:
+        return "سورة الإخلاص والمعوذتين (3 مرات)\n\nسورة الإخلاص\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ\nاللَّهُ الصَّمَدُ\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nوَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ\n\nسورة الفلق\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ\nمِن شَرِّ مَا خَلَقَ\nوَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ\nوَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ\nوَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\n\nسورة الناس\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nمَلِكِ النَّاسِ\nإِلَٰهِ النَّاسِ\nمِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nمِنَ الْجِنَّةِ وَالنَّاسِ";
+      case 4:
+        return "أمسينا وأمسى الملك لله\n\nأمسينا وأمسى الملك لله، والحمد لله،\nلا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير،\nرب أسألك خير هذه الليلة وخير ما بعدها،\nوأعوذ بك من شر هذه الليلة وشر ما بعدها،\nرب عوذ بك من الكسل وسوء الكبر،\nرب عوذ بك من عذاب في النار وعذاب في القبر.";
+      case 5:
+        return "اللهم بك أمسينا وبك أصبحنا\n\nاللهم بك أمسينا وبك أصبحنا، وبك نحيا وبك نموت وإليك المصير.";
+      case 6:
+        return "اللهم إني أمسيت أشهدك (4 مرات)\n\nاللهم إني أمسيت أشهدك، وأشهد حملة عرشك،\nوملائكتك وجميع خلقك أنك أنت الله،\nلا إله إلا أنت وحدك لا شريك لك،\nوأن محمداً عبدك ورسولك.";
+      case 7:
+        return "اللهم ما أمسى بي من نعمة\n\nاللهم ما أمسى بي من نعمة أو بأحد من خلقك فمنك وحدك لا شريك لك،\nفلك الحمد ولك الشكر.";
+      case 8:
+        return "حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم (7 مرات)";
+      case 9:
+        return "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم (3 مرات)";
+      case 10:
+        return "رضيت بالله رباً وبالإسلام ديناً وبمحمد ﷺ نبياً (3 مرات)";
+      case 11:
+        return "يا حي يا قيوم برحمتك أستغيث\n\nأصلح لي شأني كله، ولا تكلني إلى نفسي طرفة عين.";
+      case 12:
+        return "أمسينا على فطرة الإسلام\n\nأمسينا على فطرة الإسلام،\nوعلى كلمة الإخلاص،\nوعلى دين نبينا محمد ﷺ،\nوعلى ملة أبينا إبراهيم حنيفاً مسلماً وما كان من المشركين.";
+      case 13:
+        return "سبحان الله وبحمده (100 مرة)";
+      case 14:
+        return "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير (100 مرة)";
+      default:
+        return "";
+    }
+  }
+
+  String _getAfterPrayerAzkarText(int index) {
+    switch (index) {
+      case 1:
+        return "الاستغفار\n\nأستغفر الله (3)";
+      case 2:
+        return "الدعاء\n\nاللهم أنت السلام، ومنك السلام، تباركت يا ذا الجلال والإكرام.";
+      case 3:
+        return "التوحيد\n\nلا إله إلا الله وحده لا شريك له،\nله الملك وله الحمد وهو على كل شيء قدير،\nاللهم لا مانع لما أعطيت، ولا معطي لما منعت،\nولا ينفع ذا الجد منك الجد.";
+      case 4:
+        return "تسبيح دبر كل صلاة\n\nسبحان الله (33 مرة)\nالحمد لله (33 مرة)\nالله أكبر (33 مرة)\nلا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير (1 مرة).";
+      case 5:
+        return "آية الكرسي\n\nاللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ\nلَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ\nلَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ\nمَنْ ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ\nيَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ\nوَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ\nوَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ\nوَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ\n(البقرة: 255)";
+      case 6:
+        return "سور الإخلاص والمعوذتين\n\nسورة الإخلاص\n\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ\nاللَّهُ الصَّمَدُ\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nوَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ\n\nسورة الفلق (3 مرات)\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ\nمِن شَرِّ مَا خَلَقَ\nوَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ\nوَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ\nوَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\n\nسورة الناس (3 مرات)\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nمَلِكِ النَّاسِ\nإِلَٰهِ النَّاسِ\nمِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nمِنَ الْجِنَّةِ وَالنَّاسِ";
+      case 7:
+        return "ذكر بعد الصلاة\n\nلا إله إلا الله وحده لا شريك له،\nله الملك وله الحمد،\nيحيي ويميت وهو على كل شيء قدير.";
+      default:
+        return "";
+    }
+  }
+
+  String _getBeforeSleepAzkarText(int index) {
+    switch (index) {
+      case 1:
+        return "اللهم باسمك أموت وأحيا.\n(تقال مرة واحدة)";
+      case 2:
+        return "اللهم أنت خلقت نفسي وأنت تتوفاها، لك مماتها ومحياها،\nاللهم إن توفيتها فاغفر لها، وإن أحييتها فاحفظها،\nاللهم إني أسألك العافية.\n(مرة واحدة)";
+      case 3:
+        return "اللهم رب السماوات ورب الأرض ورب العرش العظيم،\nربنا ورب كل شيء، فالق الحب والنوى،\nمنزّل التوراة والإنجيل والفرقان،\nأعوذ بك من شر كل شيء أنت آخذ بناصيته،\nأنت الأول فليس قبلك شيء،\nوأنت الآخر فليس بعدك شيء،\nوأنت الظاهر فليس فوقك شيء،\nاقضِ عنا الدين، وأغننا من الفقر.\n(مرة واحدة)";
+      case 4:
+        return "اللهم إني أعوذ بوجهك الكريم وكلماتك التامة\nمن شر ما أنت آخذ بناصيته،\nاللهم أنت تكشف المغرم والمأثم،\nاللهم لا يُهزم جندك،\nولا يُخلف وعدك،\nولا ينفع ذا الجد منك الجد،\nسبحانك وبحمدك.\n(مرة واحدة)";
+      case 5:
+        return "باسمك ربي وضعت جنبي، وبك أرفعه،\nإن أمسكت نفسي فارحمها،\nوإن أرسلتها فاحفظها بما تحفظ به عبادك الصالحين.\n(مرة واحدة)";
+      case 6:
+        return "باسمك اللهم أموت وأحيا.\n(مرة واحدة)";
+      case 7:
+        return "الحمد لله الذي أطعمنا وسقانا، وكفانا وآوانا،\nفكم ممن لا كافي له ولا مؤوي.\n(مرة واحدة)";
+      case 8:
+        return "اللهم قِني عذابك يوم تبعث عبادك.\n(مرة واحدة)";
+      case 9:
+        return "سبحان الله (33 مرة)\nالحمد لله (33 مرة)\nالله أكبر (34 مرة)";
+      case 10:
+        return "اللهم إني أسلمت نفسي إليك،\nووجهت وجهي إليك،\nوألجأت ظهري إليك،\nوفوضت أمري إليك،\nرغبة ورهبة إليك،\nلا ملجأ ولا منجا منك إلا إليك،\nآمنت بكتابك الذي أنزلت،\nونبيك الذي أرسلت.\n(مرة واحدة)";
+      case 11:
+        return "لا إله إلا الله وحده لا شريك له،\nله الملك وله الحمد، وهو على كل شيء قدير،\nالحمد لله، سبحان الله،\nولا إله إلا الله، والله أكبر،\nولا حول ولا قوة إلا بالله.\n(مرة واحدة)\nومن قالها ثم قال: اللهم اغفر لي ودعا — استُجيب له،\nوإن توضأ وصلّى، قُبِلت صلاته.";
+      case 12:
+        return "سورة الإخلاص (3 مرات)\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ\nاللَّهُ الصَّمَدُ\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nوَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ\n\nسورة الفلق (3 مرات)\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ\nمِن شَرِّ مَا خَلَقَ\nوَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ\nوَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ\nوَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\n\nسورة الناس (3 مرات)\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nمَلِكِ النَّاسِ\nإِلَٰهِ النَّاسِ\nمِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nمِنَ الْجِنَّةِ وَالنَّاسِ";
+      case 13:
+        return "سورة الكافرون (مرة واحدة)\nبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ يَا أَيُّهَا الْكَافِرُونَ\nلَا أَعْبُدُ مَا تَعْبُدُونَ\nوَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ\nوَلَا أَنَا عَابِدٌ مَّا عَبَدتُّمْ\nوَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ\nلَكُمْ دِينُكُمْ وَلِيَ دِينِ";
+      case 14:
+        return "آية الكرسي (مرة واحدة)\nاللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ\nلَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ\nلَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ\nمَنْ ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ\nيَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ\nوَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ\nوَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ\nوَلَا يَئُودُهُ حِفْظُهُمَا\nوَهُوَ الْعَلِيُّ الْعَظِيمُ";
+      case 15:
+        return "آخر آيتين من سورة البقرة (مرة واحدة)\nآمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ\nكُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ\nلَا نُفَرِّقُ بَيْنَ أَحَدٍ مِّن رُّسُلِهِ\nوَقَالُوا سَمِعْنَا وَأَطَعْنَا\nغُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ\nلَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا\nلَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ\nرَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا\nرَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا\nرَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ\nوَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا\nأَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ";
+      default:
+        return "";
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -80,9 +80,9 @@ abstract class AppTextStyles {
   );
 
   static TextStyle regular15 = TextStyle(
-    fontSize: 15.04,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w400,
-    height: 1.73.h,
+    height: 1.73,
   );
 
   static TextStyle regular14 = TextStyle(
@@ -92,8 +92,7 @@ abstract class AppTextStyles {
   );
 
   static TextStyle regular13 = TextStyle(
-    fontSize: 13.28.sp,
-    fontFamily: 'Almarai',
+    fontSize: 13.sp,
     fontWeight: FontWeight.w400,
     letterSpacing: -0.28.sp,
   );

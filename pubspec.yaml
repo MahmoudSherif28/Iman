@@ -1,5 +1,5 @@
 name: iman
-description: "A new Flutter project."
+description: "Islamic APP"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -11,31 +11,66 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_screenutil: null
+  http: ^1.2.0
+  geolocator: ^11.0.0
   cupertino_icons: ^1.0.8
+  provider: ^6.1.2
+  animated_splash_screen: ^1.3.0
+  flutter_compass: ^0.8.0
+  vector_math: ^2.1.4
+
   intl: ^0.20.2
   flutter_localizations:
     sdk: flutter
+  flutter_svg: ^2.2.1
+  shared_preferences: ^2.5.3
+  flutter_bloc: ^9.1.1
+  dartz: ^0.10.1
+  equatable: ^2.0.5
+  get_it: ^8.2.0
+  permission_handler: ^11.3.0
+  hijri: ^3.0.0
+  just_audio: ^0.9.40
+  audio_service: ^0.18.12
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  android_alarm_manager_plus: ^5.0.0
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.14.4"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/Logo.png"
+  min_sdk_android: 21
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
-    - assets/fonts/
+    - assets/images/
+    - assets/sound/
+    - assets/json/
 
   fonts:
     - family: IBM Plex Sans Arabic
       fonts:
-        - asset: assets/fonts/IBMPlexSansArabic/IBMPlexSansArabic-Regular.ttf
-        - asset: assets/fonts/IBMPlexSansArabic/IBMPlexSansArabic-Medium.ttf
+        - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSansArabic-Medium.ttf
           weight: 500
-        - asset: assets/fonts/IBMPlexSansArabic/IBMPlexSansArabic-SemiBold.ttf
+        - asset: assets/fonts/IBMPlexSansArabic-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/IBMPlexSansArabic/IBMPlexSansArabic-Bold.ttf
+        - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
           weight: 700
+    # خط مصحف مجمع الملك فهد - عثماني حفص (لعرض نص القرآن)
+    - family: KFGQPC Uthmanic Script HAFS
+      fonts:
+        - asset: assets/fonts/KFGQPC_Uthmanic_Script_HAFS.otf
 flutter_intl:
   enabled: true

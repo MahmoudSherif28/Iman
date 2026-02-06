@@ -3,6 +3,32 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    // Force Kotlin stdlib version to match the Kotlin plugin version
+    configurations.all {
+        resolutionStrategy {
+            force("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.24")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.24")
+        }
+    }
+}
+
+// إعداد JVM Toolchain لحل مشكلة التوافق
+subprojects {
+    afterEvaluate {
+        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+
+        // إعداد إضافي لحل مشكلة flutter_qiblah
+        tasks.withType<JavaCompile> {
+            sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+            targetCompatibility = JavaVersion.VERSION_1_8.toString()
+        }
+    }
 }
 
 val newBuildDir: Directory =
