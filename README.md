@@ -149,9 +149,9 @@ flutter gen-l10n
 
 ## 📱 Download
 
-Download the latest release APK and install it directly on your Android device:
+Download the latest release APK (v1.2.0) and install it directly on your Android device:
 
-[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/MahmoudSherif28/Iman/releases/latest/download/Iman.apk)
+[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](releases/Iman.apk)
 
 > **How to install:** Download the APK → Open it on your Android device → Allow installation from unknown sources if prompted → Install & enjoy!
 
