@@ -12,7 +12,9 @@ A comprehensive **Islamic companion app** built with Flutter that provides Musli
 | **Adhan Scheduler** | Automatic adhan notifications scheduled with `android_alarm_manager_plus`. |
 | **Qibla Compass** | Real-time Qibla direction using the device compass and geolocation. |
 | **Quran Reader** | Full Mushaf (Uthmanic script, Hafs narration) with page-by-page navigation and Tasmee' mode. |
+| **Khatma Planner** | Plan your Quran completion with scheduled daily reminders. Set the number of khatmas, duration, and notification times. Receive instant confirmation with scheduled times and daily page count. |
 | **Quran Audio** | Browse reciters, stream Quran audio in background via `audio_service`. |
+| **Surah Download** | Download surahs for offline listening with real-time progress notifications (0-100%) and automatic completion alerts. Downloads saved to device storage. |
 | **Azkar & Du'a** | Categorised supplications (morning, evening, after prayer, before sleep, etc.) with a personal *My Azkar* list. |
 | **Hijri Calendar** | Current Hijri date displayed on the home screen. |
 | **Onboarding** | First-launch walkthrough introducing the app. |
@@ -86,6 +88,49 @@ Each feature is split into **data** (models, repositories) and **presentation** 
 
 ---
 
+## 🎯 Feature Highlights
+
+### Khatma Planner
+
+Plan your Quran completion (Khatma) with smart daily reminders:
+
+1. **Set Your Goals** — Choose the number of khatmas you want to complete and the duration (in days).
+2. **Schedule Notifications** — Add one or more daily notification times when you want to be reminded.
+3. **Instant Confirmation** — Receive an immediate notification showing:
+   - Your scheduled reminder times
+   - Number of pages to read daily
+   - Total duration
+4. **Daily Reminders** — Get notified at your chosen times with the Ayah range you need to read.
+
+**How to Use:**
+- Open **Mushaf Reader** → Settings (⚙️) → **Khatma Planner**
+- Enter number of khatmas and duration
+- Add notification times
+- Save and start your journey!
+
+### Surah Download with Progress Tracking
+
+Download your favorite surahs for offline listening with a complete progress experience:
+
+1. **Real-Time Progress** — See download progress from 0% to 100% in your notification bar
+2. **Smart Updates** — Progress updates every 5% to avoid overwhelming notifications
+3. **Completion Alert** — Automatic success notification when download completes
+4. **Error Handling** — Clear error messages with guidance if something goes wrong
+5. **Storage Management** — Files saved to device's Download folder for easy access
+
+**How to Use:**
+- Open **Audio Player** → Play any surah
+- Tap the download icon (⬇️) in the app bar
+- Grant audio/storage permission when prompted
+- Watch the progress in your notifications!
+
+**Required Permissions:**
+- **Android 13+** — "Music and audio" permission (READ_MEDIA_AUDIO)
+- **Android 10-12** — Storage permission
+- **Android 9 and below** — External storage permission
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -149,9 +194,9 @@ flutter gen-l10n
 
 ## 📱 Download
 
-Download the latest release APK and install it directly on your Android device:
+Download the latest release APK (v1.3.0) and install it directly on your Android device:
 
-[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/MahmoudSherif28/Iman/releases/latest/download/Iman.apk)
+[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/MahmoudSherif28/Iman/releases/download/v1.3.0/Iman-v1.3.0.apk)
 
 > **How to install:** Download the APK → Open it on your Android device → Allow installation from unknown sources if prompted → Install & enjoy!
 

@@ -9,6 +9,8 @@ import 'package:iman/Features/Splash/presentation/views/splash_screen_view.dart'
 import 'package:iman/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'package:iman/Core/services/notification_service.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -17,6 +19,7 @@ void main() async {
   ]);
   await Prefs.init();
   setupGetIt();
+  await NotificationService().init();
   await AndroidAlarmManager.initialize();
   runApp(const MyApp());
 }

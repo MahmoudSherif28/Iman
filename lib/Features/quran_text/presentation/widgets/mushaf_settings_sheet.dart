@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iman/Features/quran_text/presentation/widgets/khatma_planner_dialog.dart';
 
 class MushafSettingsSheet extends StatelessWidget {
   final bool isDarkMode;
@@ -108,6 +109,35 @@ class MushafSettingsSheet extends StatelessWidget {
               color: isDarkMode ? Colors.white54 : Colors.grey,
             ),
             onTap: onBookmarksView,
+          ),
+          
+          Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
+
+          // Khatma Planner
+          ListTile(
+            leading: Icon(
+              Icons.calendar_month,
+              color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
+            ),
+            title: Text(
+              'تخطيط الخاتمة',
+              style: TextStyle(
+                fontFamily: 'IBM Plex Sans Arabic',
+                fontSize: 16.sp,
+                color: isDarkMode ? Colors.white : Colors.black87,
+              ),
+            ),
+            trailing: Icon(
+              Icons.chevron_right,
+              color: isDarkMode ? Colors.white54 : Colors.grey,
+            ),
+            onTap: () {
+              Navigator.pop(context); // Close sheet
+              showDialog(
+                context: context,
+                builder: (context) => const KhatmaPlannerDialog(),
+              );
+            },
           ),
           
           if (onDownloadForOffline != null) ...[
