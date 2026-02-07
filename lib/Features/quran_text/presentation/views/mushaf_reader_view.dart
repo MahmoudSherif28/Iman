@@ -8,6 +8,7 @@ import 'package:iman/Features/quran_text/presentation/widgets/mushaf_navigation_
 import 'package:iman/Features/quran_text/presentation/widgets/mushaf_settings_sheet.dart';
 import 'package:iman/Features/quran_text/presentation/widgets/mushaf_bookmark_list.dart';
 import 'package:iman/Features/quran_text/presentation/widgets/surah_index_dialog.dart';
+import 'package:iman/Features/home/presentation/views/home_view.dart';
 
 class MushafReaderView extends StatefulWidget {
   final int initialPage;
@@ -27,7 +28,7 @@ class MushafReaderView extends StatefulWidget {
 class _MushafReaderViewState extends State<MushafReaderView> {
   final MushafPageService _pageService = MushafPageService();
   final MushafBookmarkService _bookmarkService = MushafBookmarkService();
-  final PageController _pageController = PageController();
+  PageController? _pageController;
   
   int _currentPage = 1;
   bool _isDarkMode = false;
@@ -41,19 +42,18 @@ class _MushafReaderViewState extends State<MushafReaderView> {
   void initState() {
     super.initState();
     _currentPage = widget.initialPage;
-    _pageController.addListener(_onPageChanged);
     _loadInitialData();
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _pageController?.dispose();
     super.dispose();
   }
 
   void _onPageChanged() {
-    if (_pageController.page != null) {
-      final newPage = _pageController.page!.round() + 1;
+    if (_pageController?.page != null) {
+      final newPage = _pageController!.page!.round() + 1;
       if (newPage != _currentPage) {
         setState(() {
           _currentPage = newPage;
@@ -73,7 +73,7 @@ class _MushafReaderViewState extends State<MushafReaderView> {
     } else {
       // انتهى من آيات الصفحة: الانتقال للصفحة التالية
       if (_currentPage < 604) {
-        _pageController.nextPage(
+        _pageController!.nextPage(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
@@ -85,20 +85,26 @@ class _MushafReaderViewState extends State<MushafReaderView> {
     setState(() {
       _isLoading = true;
     });
-    
+
+    // If no explicit page was requested, restore the last-read position.
+    int startPage = widget.initialPage;
+    if (startPage <= 1) {
+      final savedPage = await _bookmarkService.getLastReadPosition();
+      if (savedPage != null && savedPage >= 1 && savedPage <= 604) {
+        startPage = savedPage;
+        _currentPage = startPage;
+      }
+    }
+
+    _pageController = PageController(initialPage: startPage - 1);
+    _pageController!.addListener(_onPageChanged);
+
     await _loadPageData();
     await _checkBookmarkStatus();
-    
+
     setState(() {
       _isLoading = false;
     });
-    
-    // Jump to initial page if not page 1
-    if (widget.initialPage > 1) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _pageController.jumpToPage(widget.initialPage - 1);
-      });
-    }
   }
 
   Future<void> _loadPageData() async {
@@ -126,12 +132,34 @@ class _MushafReaderViewState extends State<MushafReaderView> {
   Future<void> _toggleBookmark() async {
     if (_isBookmarked) {
       await _bookmarkService.removeBookmark(_currentPage);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'تم إزالة الحفظ',
+              style: TextStyle(fontFamily: 'IBM Plex Sans Arabic'),
+            ),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
     } else {
       final surahName = _currentPageData?.metadata.surahNameArabic ?? 'صفحة';
       await _bookmarkService.saveBookmark(
         _currentPage,
         '$surahName - صفحة $_currentPage',
       );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'تم حفظ الصفحة بنجاح',
+              style: TextStyle(fontFamily: 'IBM Plex Sans Arabic'),
+            ),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
     }
     await _checkBookmarkStatus();
   }
@@ -148,7 +176,7 @@ class _MushafReaderViewState extends State<MushafReaderView> {
       builder: (context) => MushafNavigationDialog(
         currentPage: _currentPage,
         onPageSelected: (page) {
-          _pageController.jumpToPage(page - 1);
+          _pageController!.jumpToPage(page - 1);
           Navigator.of(context).pop();
         },
       ),
@@ -183,7 +211,7 @@ class _MushafReaderViewState extends State<MushafReaderView> {
       context: context,
       builder: (context) => SurahIndexDialog(
         onSurahSelected: (pageNumber) {
-          _pageController.jumpToPage(pageNumber - 1);
+          _pageController!.jumpToPage(pageNumber - 1);
         },
       ),
     );
@@ -194,6 +222,16 @@ class _MushafReaderViewState extends State<MushafReaderView> {
     return Scaffold(
       backgroundColor: _isDarkMode ? const Color(0xFF1A1A1A) : const Color(0xFFFFF9F0),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeView()),
+            );
+          },
+        ),
         backgroundColor: _isDarkMode ? const Color(0xFF2A2A2A) : const Color(0xFF39210F),
         foregroundColor: _isDarkMode ? Colors.white70 : Colors.white,
         title: _currentPageData != null
@@ -255,7 +293,7 @@ class _MushafReaderViewState extends State<MushafReaderView> {
                     // Page view
                     Expanded(
                       child: PageView.builder(
-                        controller: _pageController,
+                        controller: _pageController!,
                         reverse: false, // سحب لليسار = التقدم للصفحة التالية
                         itemCount: 604,
                         physics: const BouncingScrollPhysics(),
