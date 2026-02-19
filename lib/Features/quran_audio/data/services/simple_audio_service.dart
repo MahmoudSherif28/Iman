@@ -5,7 +5,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:iman/Features/quran_audio/data/models/moshaf_model.dart';
 import 'package:iman/Features/quran_audio/data/models/surah_model.dart';
-import 'package:iman/Features/quran_audio/data/services/downloads_storage_service.dart';
 import 'package:iman/Features/quran_audio/data/services/quran_audio_handler.dart';
 
 class SimpleAudioService {
@@ -14,9 +13,6 @@ class SimpleAudioService {
   SimpleAudioService._internal();
 
   QuranAudioHandler? _audioHandler;
-
-  static String getSurahRelativePath(int reciterId) => 'Iman/Quran/$reciterId';
-  static String getSurahFileName(int surahNumber) => '$surahNumber.mp3';
 
   Future<QuranAudioHandler> _initAudioHandler() async {
     if (_audioHandler == null) {
@@ -50,26 +46,6 @@ class SimpleAudioService {
     return '${reciterDir.path}/$surahNumber.mp3';
   }
 
-  static Future<String?> getSurahLocalId(int reciterId, int surahNumber) async {
-    final fileName = getSurahFileName(surahNumber);
-
-    if (Platform.isAndroid) {
-      final found = await DownloadsStorageService.findInDownloads(
-        relativePath: getSurahRelativePath(reciterId),
-        fileName: fileName,
-      );
-      if (found != null && found.isNotEmpty) return found;
-
-      final legacyPath = await getSurahFilePath(reciterId, surahNumber);
-      if (await File(legacyPath).exists()) return legacyPath;
-      return null;
-    }
-
-    final path = await getSurahFilePath(reciterId, surahNumber);
-    if (await File(path).exists()) return path;
-    return null;
-  }
-
   Future<void> loadAndPlayPlaylist({
     required int reciterId,
     required String reciterName,
@@ -87,11 +63,11 @@ class SimpleAudioService {
 
     final playlist = await Future.wait(sortedSurahNumbers.map((surahNumber) async {
       final surah = SurahModel.fromNumber(surahNumber);
-      final localId = await getSurahLocalId(reciterId, surahNumber);
-      final isDownloaded = localId != null;
+      final localPath = await getSurahFilePath(reciterId, surahNumber);
+      final isDownloaded = await File(localPath).exists();
 
       return MediaItem(
-        id: isDownloaded ? localId : moshaf.getSurahUrl(surahNumber),
+        id: isDownloaded ? localPath : moshaf.getSurahUrl(surahNumber),
         title: surah.arabicName,
         artist: reciterName,
         extras: {'surahNumber': surahNumber, 'reciterId': reciterId},

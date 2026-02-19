@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
@@ -26,12 +29,76 @@ class _SurahsListViewState extends State<SurahsListView> {
   final TextEditingController _searchController = TextEditingController();
   List<int> _allSurahs = [];
   List<int> _filteredSurahs = [];
+  final Set<int> _downloadedSurahs = {};
+  final Set<int> _downloadingSurahs = {};
 
   @override
   void initState() {
     super.initState();
     _initializeSurahs();
     _searchController.addListener(_filterSurahs);
+    _checkDownloads();
+  }
+
+  Future<void> _checkDownloads() async {
+    for (final surahNumber in _allSurahs) {
+      final path = await SimpleAudioService.getSurahFilePath(
+          widget.reciterId, surahNumber);
+      if (await File(path).exists()) {
+        if (mounted) {
+          setState(() {
+            _downloadedSurahs.add(surahNumber);
+          });
+        }
+      }
+    }
+  }
+
+  Future<void> _downloadSurah(int surahNumber) async {
+    final storageGranted = await Permission.storage.request().isGranted;
+    final manageGranted = await Permission.manageExternalStorage.request().isGranted;
+    if (!storageGranted && !manageGranted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('يحتاج التطبيق إذن للوصول إلى مجلد التحميل')),
+      );
+      return;
+    }
+    setState(() {
+      _downloadingSurahs.add(surahNumber);
+    });
+
+    try {
+      final url = widget.moshaf.getSurahUrl(surahNumber);
+      final savePath = await SimpleAudioService.getSurahFilePath(
+          widget.reciterId, surahNumber);
+
+      // Create a temporary file path
+      final tempPath = '$savePath.tmp';
+
+      await Dio().download(url, tempPath);
+      
+      // Rename temp file to actual file
+      await File(tempPath).rename(savePath);
+
+      if (mounted) {
+        setState(() {
+          _downloadedSurahs.add(surahNumber);
+          _downloadingSurahs.remove(surahNumber);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('تم تحميل سورة ${SurahModel.fromNumber(surahNumber).arabicName} بنجاح')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _downloadingSurahs.remove(surahNumber);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('فشل التحميل: $e')),
+        );
+      }
+    }
   }
 
   @override

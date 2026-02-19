@@ -96,7 +96,7 @@ class QuranAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler 
     queue.add(_playlist);
 
     final audioSources = _playlist
-        .map((item) => AudioSource.uri(_toUri(item.id), tag: item))
+        .map((item) => AudioSource.uri(Uri.parse(item.id), tag: item))
         .toList();
 
     try {
@@ -165,13 +165,6 @@ class QuranAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler 
   bool get isPlaying => _player.playing;
   Duration get position => _player.position;
   Duration? get duration => _player.duration;
-
-  Uri _toUri(String id) {
-    if (id.startsWith('http://') || id.startsWith('https://') || id.startsWith('content://')) {
-      return Uri.parse(id);
-    }
-    return Uri.file(id);
-  }
 
   @override
   Future<void> onTaskRemoved() async {

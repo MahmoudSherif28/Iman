@@ -6,13 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
 import 'package:iman/Core/services/getit_service.dart'; // Import getIt
-import 'package:iman/Features/quran_audio/data/services/downloads_storage_service.dart';
+import 'package:iman/Core/services/notification_service.dart';
 import 'package:iman/Features/quran_audio/data/services/simple_audio_service.dart';
 import 'package:iman/Features/quran_audio/presentation/cubit/audio_player_cubit.dart';
 import 'package:iman/Features/quran_audio/presentation/cubit/audio_player_state.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:iman/Core/services/notification_service.dart';
 
 class AudioPlayerView extends StatelessWidget {
   const AudioPlayerView({super.key});
@@ -40,86 +38,6 @@ class _AudioPlayerViewBody extends StatelessWidget {
     }
     return '${twoDigits(minutes)}:${twoDigits(seconds)}';
   }
-
-
-  Future<bool> _ensureDownloadsAccess(BuildContext context) async {
-    if (!Platform.isAndroid) return true;
-
-    // Check if we need legacy storage permission (Android 9 and below)
-    final needsLegacyPermission = await DownloadsStorageService.needsLegacyStoragePermission();
-    
-    if (needsLegacyPermission) {
-      // For Android 9 and below, request storage permission
-      var status = await Permission.storage.status;
-      if (!status.isGranted) {
-        status = await Permission.storage.request();
-        if (!status.isGranted) {
-          if (context.mounted) {
-            final shouldOpenSettings = await _showPermissionDialog(
-              context,
-              'يحتاج التطبيق إذن الوصول للتخزين لحفظ السور.\nاضغط "فتح الإعدادات" لمنح الإذن.',
-            );
-            if (shouldOpenSettings) {
-              await openAppSettings();
-            }
-          }
-          return false;
-        }
-      }
-      return true;
-    }
-
-    // For Android 10-12, try storage permission
-    var storageStatus = await Permission.storage.status;
-    if (!storageStatus.isGranted) {
-      storageStatus = await Permission.storage.request();
-    }
-    
-    if (storageStatus.isGranted) return true;
-
-    // For Android 13+ (API 33+), use audio permission (READ_MEDIA_AUDIO)
-    var audioStatus = await Permission.audio.status;
-    if (!audioStatus.isGranted) {
-      audioStatus = await Permission.audio.request();
-      
-      if (!audioStatus.isGranted) {
-        // Show dialog to open settings
-        if (context.mounted) {
-          final shouldOpenSettings = await _showPermissionDialog(
-            context,
-            'يحتاج التطبيق إذن "الملفات الصوتية" لحفظ السور.\n\nاضغط "فتح الإعدادات" ← الأذونات ← الموسيقى والصوت ← امنح الإذن.',
-          );
-          if (shouldOpenSettings) {
-            await openAppSettings();
-          }
-        }
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  Future<bool> _showPermissionDialog(BuildContext context, String message) async {
-    return await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('إذن مطلوب'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('إلغاء'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('فتح الإعدادات'),
-          ),
-        ],
-      ),
-    ) ?? false;
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -188,114 +106,102 @@ class _AudioPlayerViewBody extends StatelessWidget {
   }
 
   Future<void> _downloadCurrentSurah(BuildContext context, AudioPlayerState state) async {
+    final storageGranted = await Permission.storage.request().isGranted;
+    final manageGranted = await Permission.manageExternalStorage.request().isGranted;
+    // On Android 13+, notification permission might be needed
+    await Permission.notification.request();
+
+    if (!storageGranted && !manageGranted) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('يحتاج التطبيق إذن للوصول إلى مجلد التحميل')),
+        );
+      }
+      return;
+    }
+
     final mediaItem = state.mediaItem!;
     final extras = mediaItem.extras ?? {};
     final reciterId = extras['reciterId'] as int?;
     final surahNumber = extras['surahNumber'] as int?;
+
     if (reciterId == null || surahNumber == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تعذر تحديد معلومات السورة الحالية')),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تعذر تحديد معلومات السورة الحالية')),
+        );
+      }
       return;
     }
 
-    const int downloadNotificationId = 1000;
-    int lastReportedProgress = 0;
-
     try {
-      final hasAccess = await _ensureDownloadsAccess(context);
-      if (!hasAccess) return;
-
-      final already = await SimpleAudioService.getSurahLocalId(reciterId, surahNumber);
-      if (already != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('هذه السورة محملة بالفعل')),
-        );
+      final savePath = await SimpleAudioService.getSurahFilePath(reciterId, surahNumber);
+      final file = File(savePath);
+      if (await file.exists()) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('هذه السورة محملة بالفعل')),
+          );
+        }
         return;
       }
 
       final urlOrPath = mediaItem.id;
       if (!urlOrPath.startsWith('http')) {
-        // Already local but file missing (edge case)
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('تعذر التحميل: المسار ليس رابطًا')),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('تعذر التحميل: المسار ليس رابطًا')),
+          );
+        }
         return;
       }
 
-      final tempDir = await getTemporaryDirectory();
-      final fileName = SimpleAudioService.getSurahFileName(surahNumber);
-      final tempPath = '${tempDir.path}/surah_${reciterId}_$surahNumber.part';
+      final tempPath = '$savePath.tmp';
+      final notificationId = surahNumber; // Use Surah number as ID
+      final notificationService = NotificationService();
 
-      // Show initial progress notification
-      await NotificationService().showProgressNotification(
-        id: downloadNotificationId,
-        title: 'جاري تحميل السورة',
-        body: '${mediaItem.title} - 0%',
+      // Show initial notification
+      await notificationService.showProgressNotification(
+        id: notificationId,
+        title: 'جاري تحميل ${mediaItem.title}',
+        body: 'التحميل 0%',
         progress: 0,
         maxProgress: 100,
       );
 
-      // Download with progress tracking
       await Dio().download(
         urlOrPath,
         tempPath,
-        onReceiveProgress: (received, total) async {
+        onReceiveProgress: (received, total) {
           if (total != -1) {
-            final progress = ((received / total) * 100).toInt();
-            
-            // Update notification every 5% to avoid excessive updates
-            if (progress - lastReportedProgress >= 5 || progress == 100) {
-              lastReportedProgress = progress;
-              await NotificationService().updateProgressNotification(
-                id: downloadNotificationId,
-                title: 'جاري تحميل السورة',
-                body: '${mediaItem.title} - $progress%',
-                progress: progress,
-                maxProgress: 100,
-              );
-            }
+            final progress = (received / total * 100).toInt();
+            notificationService.updateProgressNotification(
+              id: notificationId,
+              title: 'جاري تحميل ${mediaItem.title}',
+              body: 'التحميل $progress%',
+              progress: progress,
+              maxProgress: 100,
+            );
           }
         },
       );
 
-      // Save to downloads directory
-      if (Platform.isAndroid) {
-        await DownloadsStorageService.saveToDownloads(
-          sourcePath: tempPath,
-          relativePath: SimpleAudioService.getSurahRelativePath(reciterId),
-          fileName: fileName,
-        );
-        await File(tempPath).delete().catchError((_) {});
-      } else {
-        final savePath = await SimpleAudioService.getSurahFilePath(reciterId, surahNumber);
-        await File(tempPath).rename(savePath);
-      }
+      await File(tempPath).rename(savePath);
 
       // Show completion notification
-      await NotificationService().completeProgressNotification(
-        id: downloadNotificationId,
-        title: 'تم التحميل بنجاح ✅',
-        body: 'تم تحميل ${mediaItem.title} وحفظها في مجلد التحميلات',
+      await notificationService.completeProgressNotification(
+        id: notificationId,
+        title: 'اكتمل التحميل',
+        body: 'تم تحميل سورة ${mediaItem.title} بنجاح',
       );
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('تم تحميل السورة: ${mediaItem.title} بنجاح')),
         );
+        // Refresh state or UI if needed (the existing logic just downloads)
       }
     } catch (e) {
-      // Cancel progress notification and show error
-      await NotificationService().cancelNotification(downloadNotificationId);
-      
-      await NotificationService().showImmediateNotification(
-        id: downloadNotificationId,
-        title: 'فشل التحميل ❌',
-        body: 'حدث خطأ أثناء تحميل ${mediaItem.title}',
-        channelId: 'download_channel',
-        channelName: 'Downloads',
-      );
-
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('فشل التحميل: $e')),
