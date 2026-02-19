@@ -1,8 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/Core/utils/app_text_style.dart';
 import 'package:iman/Core/services/getit_service.dart'; // Import getIt
+import 'package:iman/Core/services/notification_service.dart';
 import 'package:iman/Features/quran_audio/data/services/simple_audio_service.dart';
 import 'package:iman/Features/quran_audio/presentation/cubit/audio_player_cubit.dart';
 import 'package:iman/Features/quran_audio/presentation/cubit/audio_player_state.dart';
@@ -49,6 +53,18 @@ class _AudioPlayerViewBody extends StatelessWidget {
           icon: const Icon(Icons.keyboard_arrow_down),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
+            builder: (context, state) {
+              final canDownload = state.mediaItem != null;
+              return IconButton(
+                icon: const Icon(Icons.download),
+                tooltip: 'تحميل السورة الحالية',
+                onPressed: canDownload ? () => _promptDownload(context, state) : null,
+              );
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
         builder: (context, state) {
@@ -62,6 +78,136 @@ class _AudioPlayerViewBody extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> _promptDownload(BuildContext context, AudioPlayerState state) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('تأكيد التحميل'),
+          content: const Text('هل تريد تحميل السورة الحالية على جهازك؟'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('إلغاء'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('تحميل'),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed == true) {
+      await _downloadCurrentSurah(context, state);
+    }
+  }
+
+  Future<void> _downloadCurrentSurah(BuildContext context, AudioPlayerState state) async {
+    final storageGranted = await Permission.storage.request().isGranted;
+    final manageGranted = await Permission.manageExternalStorage.request().isGranted;
+    // On Android 13+, notification permission might be needed
+    await Permission.notification.request();
+
+    if (!storageGranted && !manageGranted) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('يحتاج التطبيق إذن للوصول إلى مجلد التحميل')),
+        );
+      }
+      return;
+    }
+
+    final mediaItem = state.mediaItem!;
+    final extras = mediaItem.extras ?? {};
+    final reciterId = extras['reciterId'] as int?;
+    final surahNumber = extras['surahNumber'] as int?;
+
+    if (reciterId == null || surahNumber == null) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تعذر تحديد معلومات السورة الحالية')),
+        );
+      }
+      return;
+    }
+
+    try {
+      final savePath = await SimpleAudioService.getSurahFilePath(reciterId, surahNumber);
+      final file = File(savePath);
+      if (await file.exists()) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('هذه السورة محملة بالفعل')),
+          );
+        }
+        return;
+      }
+
+      final urlOrPath = mediaItem.id;
+      if (!urlOrPath.startsWith('http')) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('تعذر التحميل: المسار ليس رابطًا')),
+          );
+        }
+        return;
+      }
+
+      final tempPath = '$savePath.tmp';
+      final notificationId = surahNumber; // Use Surah number as ID
+      final notificationService = NotificationService();
+
+      // Show initial notification
+      await notificationService.showProgressNotification(
+        id: notificationId,
+        title: 'جاري تحميل ${mediaItem.title}',
+        body: 'التحميل 0%',
+        progress: 0,
+        maxProgress: 100,
+      );
+
+      await Dio().download(
+        urlOrPath,
+        tempPath,
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            final progress = (received / total * 100).toInt();
+            notificationService.updateProgressNotification(
+              id: notificationId,
+              title: 'جاري تحميل ${mediaItem.title}',
+              body: 'التحميل $progress%',
+              progress: progress,
+              maxProgress: 100,
+            );
+          }
+        },
+      );
+
+      await File(tempPath).rename(savePath);
+
+      // Show completion notification
+      await notificationService.completeProgressNotification(
+        id: notificationId,
+        title: 'اكتمل التحميل',
+        body: 'تم تحميل سورة ${mediaItem.title} بنجاح',
+      );
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('تم تحميل السورة: ${mediaItem.title} بنجاح')),
+        );
+        // Refresh state or UI if needed (the existing logic just downloads)
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('فشل التحميل: $e')),
+        );
+      }
+    }
   }
 
   Widget _buildErrorView(String? message) {

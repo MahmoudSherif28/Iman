@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iman/Features/quran_text/presentation/views/dua_khatam_view.dart';
+import 'package:iman/Features/quran_text/presentation/widgets/khatma_planner_dialog.dart';
 
 class MushafSettingsSheet extends StatelessWidget {
   final bool isDarkMode;
@@ -19,130 +21,190 @@ class MushafSettingsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(24.w),
-      decoration: BoxDecoration(
-        color: isDarkMode ? const Color(0xFF2A2A2A) : Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.r),
-          topRight: Radius.circular(20.r),
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(24.w),
+        decoration: BoxDecoration(
+          color: isDarkMode ? const Color(0xFF2A2A2A) : Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'إعدادات المصحف',
-            style: TextStyle(
-              fontFamily: 'IBM Plex Sans Arabic',
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white : Colors.black87,
-            ),
-          ),
-          SizedBox(height: 24.h),
-          
-          // Dark Mode Toggle
-          ListTile(
-            leading: Icon(
-              isDarkMode ? Icons.dark_mode : Icons.light_mode,
-              color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
-            ),
-            title: Text(
-              'الوضع الليلي',
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'إعدادات المصحف',
               style: TextStyle(
                 fontFamily: 'IBM Plex Sans Arabic',
-                fontSize: 16.sp,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
                 color: isDarkMode ? Colors.white : Colors.black87,
               ),
             ),
-            trailing: Switch(
-              value: isDarkMode,
-              onChanged: (value) => onDarkModeToggle(),
-              activeTrackColor: const Color(0xFF39210F),
-            ),
-          ),
-          
-          Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
-          
-          // Surah Index
-          ListTile(
-            leading: Icon(
-              Icons.list_alt,
-              color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
-            ),
-            title: Text(
-              'فهرس السور',
-              style: TextStyle(
-                fontFamily: 'IBM Plex Sans Arabic',
-                fontSize: 16.sp,
-                color: isDarkMode ? Colors.white : Colors.black87,
-              ),
-            ),
-            trailing: Icon(
-              Icons.chevron_right,
-              color: isDarkMode ? Colors.white54 : Colors.grey,
-            ),
-            onTap: onSurahIndex,
-          ),
-          
-          Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
-          
-          // View Bookmarks
-          ListTile(
-            leading: Icon(
-              Icons.bookmarks,
-              color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
-            ),
-            title: Text(
-              'العلامات المرجعية',
-              style: TextStyle(
-                fontFamily: 'IBM Plex Sans Arabic',
-                fontSize: 16.sp,
-                color: isDarkMode ? Colors.white : Colors.black87,
-              ),
-            ),
-            trailing: Icon(
-              Icons.chevron_right,
-              color: isDarkMode ? Colors.white54 : Colors.grey,
-            ),
-            onTap: onBookmarksView,
-          ),
-          
-          if (onDownloadForOffline != null) ...[
-            Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
+            SizedBox(height: 24.h),
+            
+            // Dark Mode Toggle
             ListTile(
               leading: Icon(
-                Icons.download_rounded,
+                isDarkMode ? Icons.dark_mode : Icons.light_mode,
                 color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
               ),
               title: Text(
-                'تحميل المصحف للاستخدام بدون إنترنت',
+                'الوضع الليلي',
                 style: TextStyle(
                   fontFamily: 'IBM Plex Sans Arabic',
                   fontSize: 16.sp,
                   color: isDarkMode ? Colors.white : Colors.black87,
                 ),
               ),
-              subtitle: Text(
-                'حفظ كل الصفحات (604) على الجهاز',
+              trailing: Switch(
+                value: isDarkMode,
+                onChanged: (value) => onDarkModeToggle(),
+                activeTrackColor: const Color(0xFF39210F),
+              ),
+            ),
+            
+            Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
+            
+            // Surah Index
+            ListTile(
+              leading: Icon(
+                Icons.list_alt,
+                color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
+              ),
+              title: Text(
+                'فهرس السور',
                 style: TextStyle(
                   fontFamily: 'IBM Plex Sans Arabic',
-                  fontSize: 12.sp,
-                  color: isDarkMode ? Colors.white54 : Colors.grey,
+                  fontSize: 16.sp,
+                  color: isDarkMode ? Colors.white : Colors.black87,
                 ),
               ),
               trailing: Icon(
                 Icons.chevron_right,
                 color: isDarkMode ? Colors.white54 : Colors.grey,
               ),
-              onTap: onDownloadForOffline,
+              onTap: onSurahIndex,
             ),
+            
+            Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
+            
+            // View Bookmarks
+            ListTile(
+              leading: Icon(
+                Icons.bookmarks,
+                color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
+              ),
+              title: Text(
+                'العلامات المرجعية',
+                style: TextStyle(
+                  fontFamily: 'IBM Plex Sans Arabic',
+                  fontSize: 16.sp,
+                  color: isDarkMode ? Colors.white : Colors.black87,
+                ),
+              ),
+              trailing: Icon(
+                Icons.chevron_right,
+                color: isDarkMode ? Colors.white54 : Colors.grey,
+              ),
+              onTap: onBookmarksView,
+            ),
+            
+            Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
+      
+            // Khatma Planner
+            ListTile(
+              leading: Icon(
+                Icons.calendar_month,
+                color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
+              ),
+              title: Text(
+                'تخطيط الخاتمة',
+                style: TextStyle(
+                  fontFamily: 'IBM Plex Sans Arabic',
+                  fontSize: 16.sp,
+                  color: isDarkMode ? Colors.white : Colors.black87,
+                ),
+              ),
+              trailing: Icon(
+                Icons.chevron_right,
+                color: isDarkMode ? Colors.white54 : Colors.grey,
+              ),
+              onTap: () {
+                Navigator.pop(context); // Close sheet
+                showDialog(
+                  context: context,
+                  builder: (context) => const KhatmaPlannerDialog(),
+                );
+              },
+            ),
+            
+            Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
+      
+            // Dua Khatam
+            ListTile(
+              leading: Icon(
+                Icons.menu_book_rounded,
+                color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
+              ),
+              title: Text(
+                'دعاء الختم',
+                style: TextStyle(
+                  fontFamily: 'IBM Plex Sans Arabic',
+                  fontSize: 16.sp,
+                  color: isDarkMode ? Colors.white : Colors.black87,
+                ),
+              ),
+              trailing: Icon(
+                Icons.chevron_right,
+                color: isDarkMode ? Colors.white54 : Colors.grey,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const DuaKhatamView()),
+                );
+              },
+            ),
+            
+            if (onDownloadForOffline != null) ...[
+              Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
+              ListTile(
+                leading: Icon(
+                  Icons.download_rounded,
+                  color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
+                ),
+                title: Text(
+                  'تحميل المصحف للاستخدام بدون إنترنت',
+                  style: TextStyle(
+                    fontFamily: 'IBM Plex Sans Arabic',
+                    fontSize: 16.sp,
+                    color: isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
+                subtitle: Text(
+                  'حفظ كل الصفحات (604) على الجهاز',
+                  style: TextStyle(
+                    fontFamily: 'IBM Plex Sans Arabic',
+                    fontSize: 12.sp,
+                    color: isDarkMode ? Colors.white54 : Colors.grey,
+                  ),
+                ),
+                trailing: Icon(
+                  Icons.chevron_right,
+                  color: isDarkMode ? Colors.white54 : Colors.grey,
+                ),
+                onTap: onDownloadForOffline,
+              ),
+            ],
+            
+            SizedBox(height: 24.h),
           ],
-          
-          SizedBox(height: 24.h),
-        ],
+        ),
       ),
     );
   }

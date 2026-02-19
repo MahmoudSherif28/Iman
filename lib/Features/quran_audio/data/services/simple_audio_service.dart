@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:iman/Features/quran_audio/data/models/moshaf_model.dart';
 import 'package:iman/Features/quran_audio/data/models/surah_model.dart';
 import 'package:iman/Features/quran_audio/data/services/quran_audio_handler.dart';
@@ -35,6 +37,15 @@ class SimpleAudioService {
     return _audioHandler!;
   }
 
+  static Future<String> getSurahFilePath(int reciterId, int surahNumber) async {
+    final downloadsDir = await _getDownloadsDirectory();
+    final reciterDir = Directory('$downloadsDir/Iman/Quran/$reciterId');
+    if (!await reciterDir.exists()) {
+      await reciterDir.create(recursive: true);
+    }
+    return '${reciterDir.path}/$surahNumber.mp3';
+  }
+
   Future<void> loadAndPlayPlaylist({
     required int reciterId,
     required String reciterName,
@@ -50,15 +61,18 @@ class SimpleAudioService {
       sortedSurahNumbers = List.generate(114, (i) => i + 1);
     }
 
-    final playlist = sortedSurahNumbers.map((surahNumber) {
+    final playlist = await Future.wait(sortedSurahNumbers.map((surahNumber) async {
       final surah = SurahModel.fromNumber(surahNumber);
+      final localPath = await getSurahFilePath(reciterId, surahNumber);
+      final isDownloaded = await File(localPath).exists();
+
       return MediaItem(
-        id: moshaf.getSurahUrl(surahNumber),
+        id: isDownloaded ? localPath : moshaf.getSurahUrl(surahNumber),
         title: surah.arabicName,
         artist: reciterName,
         extras: {'surahNumber': surahNumber, 'reciterId': reciterId},
       );
-    }).toList();
+    }));
     
     // Find the correct index in the sorted list
     final initialSurahNumber = sortedSurahNumbers[initialIndex];
@@ -67,6 +81,24 @@ class SimpleAudioService {
 
     await handler.loadPlaylist(playlist, initialIndex: actualInitialIndex);
     await play();
+  }
+
+  static Future<String> _getDownloadsDirectory() async {
+    // Try known public Downloads path on Android
+    final downloadsPath = '/storage/emulated/0/Download';
+    final dir = Directory(downloadsPath);
+    if (await dir.exists()) {
+      // Do not request permissions here; only return the path
+      return downloadsPath;
+    }
+    // Fallback to external storage app-specific directory
+    final extDir = await getExternalStorageDirectory();
+    if (extDir != null) {
+      return extDir.path;
+    }
+    // Final fallback to app documents directory
+    final docs = await getApplicationDocumentsDirectory();
+    return docs.path;
   }
 
   Future<void> play() async => (await _initAudioHandler()).play();

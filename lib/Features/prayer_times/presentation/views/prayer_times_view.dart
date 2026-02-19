@@ -72,7 +72,7 @@ class _PrayerTimesViewBodyState extends State<_PrayerTimesViewBody> {
           if (state is PrayerTimesError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.errorMessage),
+                content: const Text('يرجي تفعيل خدمة الموقع'),
                 backgroundColor: Colors.red,
                 duration: const Duration(seconds: 5),
               ),
