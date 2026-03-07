@@ -13,6 +13,7 @@ A comprehensive **Islamic companion app** built with Flutter that provides Musli
 | **Qibla Compass** | Real-time Qibla direction using the device compass and geolocation. |
 | **Quran Reader** | Full Mushaf (Uthmanic script, Hafs narration) with page-by-page navigation and Tasmee' mode. |
 | **Quran Audio** | Browse reciters, stream Quran audio in background via `audio_service`. |
+| **Quran Tafsir** | Read verse-by-verse explanations from multiple tafsir books such as Tafsir Ibn Kathir, Tafsir Al-Tabari, Tafsir Al-Qurtubi, and Tafsir Al-Saadi. |
 | **Azkar & Du'a** | Categorised supplications (morning, evening, after prayer, before sleep, etc.) with a personal *My Azkar* list. |
 | **Hijri Calendar** | Current Hijri date displayed on the home screen. |
 | **Onboarding** | First-launch walkthrough introducing the app. |
