@@ -8,7 +8,9 @@ import 'package:iman/Features/quran_text/presentation/widgets/mushaf_navigation_
 import 'package:iman/Features/quran_text/presentation/widgets/mushaf_settings_sheet.dart';
 import 'package:iman/Features/quran_text/presentation/widgets/mushaf_bookmark_list.dart';
 import 'package:iman/Features/quran_text/presentation/widgets/surah_index_dialog.dart';
+import 'package:iman/Features/quran_text/presentation/views/tafsir_books_view.dart';
 import 'package:iman/Features/home/presentation/views/home_view.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class MushafReaderView extends StatefulWidget {
   final int initialPage;
@@ -42,11 +44,13 @@ class _MushafReaderViewState extends State<MushafReaderView> {
   void initState() {
     super.initState();
     _currentPage = widget.initialPage;
+    WakelockPlus.enable();
     _loadInitialData();
   }
 
   @override
   void dispose() {
+    WakelockPlus.disable();
     _pageController?.dispose();
     super.dispose();
   }
@@ -61,8 +65,23 @@ class _MushafReaderViewState extends State<MushafReaderView> {
         });
         _loadPageData();
         _bookmarkService.saveLastReadPosition(_currentPage);
+        _checkBookmarkStatus();
+
+        // pre-load الصفحتين المجاورتين في الخلفية لتجنب التأخر عند السحب التالي
+        _pageService.preloadPage(newPage - 1);
+        _pageService.preloadPage(newPage + 1);
+        _pageService.preloadPage(newPage + 2);
       }
     }
+  }
+
+  String _toArabicDigits(int number) {
+    const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    return number
+        .toString()
+        .split('')
+        .map((d) => arabicDigits[int.parse(d)])
+        .join();
   }
 
   void _onTasmeeMicPressed() {
@@ -101,6 +120,11 @@ class _MushafReaderViewState extends State<MushafReaderView> {
 
     await _loadPageData();
     await _checkBookmarkStatus();
+
+    // pre-load الصفحتين التاليتين في الخلفية منذ البداية
+    _pageService.preloadPage(startPage + 1);
+    _pageService.preloadPage(startPage + 2);
+    if (startPage > 1) _pageService.preloadPage(startPage - 1);
 
     setState(() {
       _isLoading = false;
@@ -202,6 +226,18 @@ class _MushafReaderViewState extends State<MushafReaderView> {
             ),
           );
         },
+        onTafsirTap: () {
+          if (_currentPageData == null) return;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TafsirBooksView(
+                pageNumber: _currentPage,
+                isDarkMode: _isDarkMode,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -280,7 +316,7 @@ class _MushafReaderViewState extends State<MushafReaderView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'جزء ${_currentPageData?.juz ?? 1}  •  صفحة $_currentPage',
+                            'جزء ${_toArabicDigits(_currentPageData?.juz ?? 1)}  •  صفحة ${_toArabicDigits(_currentPage)}',
                             style: TextStyle(
                               fontFamily: 'IBM Plex Sans Arabic',
                               fontSize: 14.sp,
@@ -294,9 +330,11 @@ class _MushafReaderViewState extends State<MushafReaderView> {
                     Expanded(
                       child: PageView.builder(
                         controller: _pageController!,
-                        reverse: false, // سحب لليسار = التقدم للصفحة التالية
+                        reverse: false,
                         itemCount: 604,
                         physics: const BouncingScrollPhysics(),
+                        // pre-render الصفحة المجاورة بشكل مسبق لتجنب عرضها من الصفر
+                        allowImplicitScrolling: true,
                         itemBuilder: (context, index) {
                           final isCurrentPage = (index + 1) == _currentPage;
                           return MushafPageLoader(

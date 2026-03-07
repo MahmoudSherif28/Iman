@@ -9,6 +9,7 @@ import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_cubit
 import 'package:iman/Features/prayer_times/presentation/cubit/prayer_times_states.dart';
 import 'package:iman/Features/prayer_times/presentation/widget/prayer_time_card.dart';
 import 'package:iman/Features/prayer_times/presentation/adhan_scheduler.dart';
+import 'package:iman/Core/services/notification_service.dart';
 
 class PrayerTimesView extends StatelessWidget {
   const PrayerTimesView({super.key});
@@ -80,6 +81,7 @@ class _PrayerTimesViewBodyState extends State<_PrayerTimesViewBody> {
           }
           if (state is PrayerTimesLoaded) {
             if (Prefs.getBool(kEnableAdhanPrefKey)) {
+              NotificationService().requestPermissions();
               AdhanScheduler().scheduleForToday(state.prayerTimes);
             }
           }
@@ -187,6 +189,7 @@ class _PrayerTimesViewBodyState extends State<_PrayerTimesViewBody> {
                       });
                       await Prefs.setBool(kEnableAdhanPrefKey, val);
                       if (val) {
+                        await NotificationService().requestPermissions();
                         await AdhanScheduler().scheduleForToday(state.prayerTimes);
                       } else {
                         await AdhanScheduler().cancelAll();

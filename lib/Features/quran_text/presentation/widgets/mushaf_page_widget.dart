@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iman/constants.dart';
 import 'package:iman/Features/quran_text/data/models/quran_page_model.dart';
 
+/// Widget يعرض صفحة واحدة من المصحف.
+/// مُغلَّف بـ [RepaintBoundary] لعزل إعادة الرسم عن بقية الشاشة.
 class MushafPageWidget extends StatelessWidget {
   final MushafPageModel pageData;
   final bool isDarkMode;
-  /// وضع التسميع: إخفاء الآيات وإظهارها واحدة تلو الأخرى
   final bool isTasmeeMode;
-  /// عدد الآيات المظهرة في وضع التسميع (٠ = كل الآيات مخفية)
   final int revealedVerseCount;
 
   const MushafPageWidget({
@@ -21,22 +21,34 @@ class MushafPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      decoration: BoxDecoration(
-        color: isDarkMode ? const Color(0xFF1A1A1A) : const Color(0xFFFFF9F0),
-      ),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: _buildPageContent(),
+    // RepaintBoundary: يمنع إعادة رسم هذه الصفحة عند تغيير state خارجها
+    return RepaintBoundary(
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDarkMode ? const Color(0xFF1A1A1A) : const Color(0xFFFFF9F0),
+        ),
+        child: InteractiveViewer(
+          minScale: 0.9,
+          maxScale: 2.5,
+          panEnabled: true,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 0.86.sw),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: _buildPageContent(),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  /// تجميع الآيات حسب السور وعرض اسم السورة + البسملة عند بداية سورة جديدة في منتصف الصفحة
   List<Widget> _buildPageContent() {
     final children = <Widget>[];
     final verses = pageData.verses;
@@ -47,29 +59,29 @@ class MushafPageWidget extends StatelessWidget {
 
     // وضع التسميع: لا شيء مظهر
     if (isTasmeeMode && revealedVerseCount == 0) {
-      children.add(SizedBox(height: 80.h));
-      children.add(Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Text(
-            'اضغط الميكروفون لبدء التسميع',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'IBM Plex Sans Arabic',
-              fontSize: 20.sp,
-              color: isDarkMode ? Colors.white70 : const Color(0xFF39210F),
+      children
+        ..add(SizedBox(height: 80.h))
+        ..add(Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            child: Text(
+              'اضغط الميكروفون لبدء التسميع',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'IBM Plex Sans Arabic',
+                fontSize: 20.sp,
+                color: isDarkMode ? Colors.white70 : const Color(0xFF39210F),
+              ),
             ),
           ),
-        ),
-      ));
-      children.add(SizedBox(height: 60.h));
+        ))
+        ..add(SizedBox(height: 60.h));
       return children;
     }
 
-    // وضع التسميع: عرض أول N آيات فقط
     final int maxVerses = isTasmeeMode ? revealedVerseCount : verses.length;
 
-    // تجميع الآيات حسب السورة (سور متتالية على الصفحة)
+    // تجميع الآيات حسب السورة
     final groups = <List<PageVerseModel>>[];
     List<PageVerseModel> current = [verses.first];
     for (int i = 1; i < verses.length; i++) {
@@ -94,7 +106,6 @@ class MushafPageWidget extends StatelessWidget {
 
       if (versesShown >= maxVerses) break;
 
-      // عند بداية سورة في منتصف الصفحة: عرض اسم السورة ثم البسملة ثم الآيات
       if (isNewSurahMidPage) {
         children.add(SizedBox(height: 16.h));
         children.add(_buildSurahHeader(firstVerse.surahName));
@@ -113,9 +124,11 @@ class MushafPageWidget extends StatelessWidget {
       }
 
       final remaining = maxVerses - versesShown;
-      final groupToShow = remaining >= group.length ? group : group.sublist(0, remaining);
+      final groupToShow =
+          remaining >= group.length ? group : group.sublist(0, remaining);
       versesShown += groupToShow.length;
-      children.add(_buildVersesForGroup(groupToShow));
+      // كل مجموعة آيات في RepaintBoundary مستقل
+      children.add(RepaintBoundary(child: _buildVersesForGroup(groupToShow)));
     }
 
     children.add(SizedBox(height: 60.h));
@@ -129,7 +142,8 @@ class MushafPageWidget extends StatelessWidget {
         color: isDarkMode ? const Color(0xFF2A2A2A) : const Color(0xFFEEE5D5),
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: isDarkMode ? const Color(0xFF3A3A3A) : const Color(0xFFCCBBAA),
+          color:
+              isDarkMode ? const Color(0xFF3A3A3A) : const Color(0xFFCCBBAA),
           width: 1,
         ),
       ),
@@ -164,9 +178,9 @@ class MushafPageWidget extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildVersesForGroup(List<PageVerseModel> group) {
+    // نبني TextSpan واحداً لكل المجموعة —
+    // نستبدل WidgetSpan (Container ثقيل) برمز الآية دائري بسيط عبر TextSpan مباشر
     return RichText(
       textAlign: TextAlign.justify,
       textDirection: TextDirection.rtl,
@@ -179,10 +193,11 @@ class MushafPageWidget extends StatelessWidget {
                 fontFamily: kQuranFontFamily,
                 fontSize: 24.sp,
                 color: isDarkMode ? Colors.white : Colors.black87,
-                height: 2.2,
-                wordSpacing: 2,
+                height: 2.0,
+                wordSpacing: 1,
               ),
             ),
+            // رقم الآية الأصلي كـ WidgetSpan
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: Container(
@@ -190,19 +205,25 @@ class MushafPageWidget extends StatelessWidget {
                 padding: EdgeInsets.all(8.r),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isDarkMode ? const Color(0xFF2A2A2A) : const Color(0xFFEEE5D5),
+                  color: isDarkMode
+                      ? const Color(0xFF2A2A2A)
+                      : const Color(0xFFEEE5D5),
                   border: Border.all(
-                    color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
+                    color: isDarkMode
+                        ? Colors.white70
+                        : const Color(0xFF39210F),
                     width: 1.5,
                   ),
                 ),
                 child: Text(
-                  '${verse.verseNumber}',
+                  _toArabicDigits(verse.verseNumber),
                   style: TextStyle(
                     fontFamily: 'IBM Plex Sans Arabic',
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
+                    color: isDarkMode
+                        ? Colors.white70
+                        : const Color(0xFF39210F),
                   ),
                 ),
               ),
@@ -211,5 +232,14 @@ class MushafPageWidget extends StatelessWidget {
         }).toList(),
       ),
     );
+  }
+
+  String _toArabicDigits(int number) {
+    const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    return number
+        .toString()
+        .split('')
+        .map((d) => arabicDigits[int.parse(d)])
+        .join();
   }
 }
