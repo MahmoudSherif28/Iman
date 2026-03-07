@@ -9,6 +9,7 @@ class MushafSettingsSheet extends StatelessWidget {
   final VoidCallback onBookmarksView;
   final VoidCallback onSurahIndex;
   final VoidCallback? onDownloadForOffline;
+  final VoidCallback? onTafsirTap;
 
   const MushafSettingsSheet({
     super.key,
@@ -17,6 +18,7 @@ class MushafSettingsSheet extends StatelessWidget {
     required this.onBookmarksView,
     required this.onSurahIndex,
     this.onDownloadForOffline,
+    this.onTafsirTap,
   });
 
   @override
@@ -88,6 +90,34 @@ class MushafSettingsSheet extends StatelessWidget {
                 color: isDarkMode ? Colors.white54 : Colors.grey,
               ),
               onTap: onSurahIndex,
+            ),
+            
+            Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
+
+            // Tafsir (أسفل فهرس السور مباشرة)
+            ListTile(
+              leading: Icon(
+                Icons.menu_book_rounded,
+                color: isDarkMode ? const Color(0xFFFFD700) : const Color(0xFF39210F),
+              ),
+              title: Text(
+                'التفسير',
+                style: TextStyle(
+                  fontFamily: 'IBM Plex Sans Arabic',
+                  fontSize: 16.sp,
+                  color: isDarkMode ? Colors.white : Colors.black87,
+                ),
+              ),
+              trailing: Icon(
+                Icons.chevron_right,
+                color: isDarkMode ? Colors.white54 : Colors.grey,
+              ),
+              onTap: onTafsirTap == null
+                  ? null
+                  : () {
+                      Navigator.pop(context);
+                      onTafsirTap!();
+                    },
             ),
             
             Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
@@ -170,7 +200,7 @@ class MushafSettingsSheet extends StatelessWidget {
                 );
               },
             ),
-            
+
             if (onDownloadForOffline != null) ...[
               Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
               ListTile(

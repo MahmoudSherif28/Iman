@@ -14,6 +14,16 @@ class MushafPageService {
   List<SurahModel>? _cachedSurahs;
   Map<String, dynamic>? _pageMapping;
 
+  /// Cache للـ MushafPageModel المحسوبة بالفعل — يمنع إعادة الحساب عند العودة لصفحة مزودة
+  final Map<int, MushafPageModel> _pageCache = {};
+
+  /// pre-load صفحة في الخلفية (بدون await) لتحميل الصفحات المجاورة
+  void preloadPage(int pageNumber) {
+    if (pageNumber < 1 || pageNumber > 604) return;
+    if (_pageCache.containsKey(pageNumber)) return; // مُحملة مسبقاً
+    getPage(pageNumber); // تشغيل في الخلفية بدون await
+  }
+
   /// Ensure data is loaded
   Future<void> _ensureDataLoaded() async {
     if (_cachedSurahs == null) {
@@ -34,6 +44,11 @@ class MushafPageService {
       throw ArgumentError('Page number must be between 1 and 604');
     }
 
+    // إرجاع فوري من الـ cache إن وُجد الصفحة مسبقاً
+    if (_pageCache.containsKey(pageNumber)) {
+      return _pageCache[pageNumber]!;
+    }
+
     await _ensureDataLoaded();
 
     // Get verses for this page from the mapping file
@@ -42,17 +57,21 @@ class MushafPageService {
     // Calculate metadata
     final metadata = _getPageMetadata(pageNumber, verses);
 
-    // Determine Juz and Hizb (Can be improved with exact mapping, but using approximation/calculcation from Mapping utils for now)
+    // Determine Juz and Hizb
     final int juz = MushafPageMapping.getJuzForPage(pageNumber);
     final int hizb = MushafPageMapping.getHizbForPage(pageNumber);
 
-    return MushafPageModel(
+    final model = MushafPageModel(
       pageNumber: pageNumber,
       juz: juz,
       hizb: hizb,
       verses: verses,
       metadata: metadata,
     );
+
+    // تخزين في الـ cache للاستخدام المستقبلي
+    _pageCache[pageNumber] = model;
+    return model;
   }
 
   List<PageVerseModel> _getVersesForPage(int pageNumber) {
@@ -82,11 +101,8 @@ class MushafPageService {
       // Remove Basmalah if it's the first verse of a Surah (except Al-Fatiha and At-Tawbah)
       // The Basmalah is displayed separately in the UI
       if (verseId == 1 && surahId != 1 && surahId != 9) {
-          text = _removeBasmalah(text);
+        text = _removeBasmalah(text);
       }
-      
-      // Clean Uthmani display symbols (if necessary, matching previous logic)
-      text = stripUthmaniDisplaySymbols(text);
 
       pageVerses.add(PageVerseModel(
         surahId: surahId,
