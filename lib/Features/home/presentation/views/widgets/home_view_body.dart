@@ -4,6 +4,10 @@ import 'package:iman/Core/utils/app_colors.dart';
 import 'package:iman/Features/home/presentation/views/widgets/higri_date.dart';
 import 'package:iman/Features/home/presentation/views/widgets/prayer_list.dart';
 import 'package:iman/Features/home/presentation/views/widgets/worship_category_grid.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const _privacyPolicyUrl =
+    'https://raw.githack.com/MahmoudSherif28/Iman/gh-pages/index.html';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
@@ -58,6 +62,27 @@ class HomeViewBody extends StatelessWidget {
               ),
               SizedBox(height: 16.0.h),
               const WorshipCategoriesGrid(),
+              SizedBox(height: 16.0.h),
+              Center(
+                child: TextButton.icon(
+                  onPressed: () => launchUrl(
+                    Uri.parse(_privacyPolicyUrl),
+                    mode: LaunchMode.externalApplication,
+                  ),
+                  icon: Icon(
+                    Icons.privacy_tip_outlined,
+                    size: 16.sp,
+                    color: AppColors.contentTertiary,
+                  ),
+                  label: Text(
+                    'سياسة الخصوصية',
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: AppColors.contentTertiary,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

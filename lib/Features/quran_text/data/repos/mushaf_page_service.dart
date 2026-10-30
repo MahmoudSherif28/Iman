@@ -13,6 +13,7 @@ class MushafPageService {
 
   List<SurahModel>? _cachedSurahs;
   Map<String, dynamic>? _pageMapping;
+  Map<String, dynamic>? _pageLines;
 
   /// Cache للـ MushafPageModel المحسوبة بالفعل — يمنع إعادة الحساب عند العودة لصفحة مزودة
   final Map<int, MushafPageModel> _pageCache = {};
@@ -35,6 +36,11 @@ class MushafPageService {
     if (_pageMapping == null) {
       final String mappingResponse = await rootBundle.loadString('assets/json/mushaf_page_verses.json');
       _pageMapping = json.decode(mappingResponse);
+    }
+
+    if (_pageLines == null) {
+      final String linesResponse = await rootBundle.loadString('assets/json/mushaf_lines.json');
+      _pageLines = json.decode(linesResponse);
     }
   }
 
@@ -67,6 +73,7 @@ class MushafPageService {
       hizb: hizb,
       verses: verses,
       metadata: metadata,
+      lines: _getLinesForPage(pageNumber),
     );
 
     // تخزين في الـ cache للاستخدام المستقبلي
@@ -115,6 +122,40 @@ class MushafPageService {
     }
 
     return pageVerses;
+  }
+
+  /// Lines format (assets/json/mushaf_lines.json):
+  /// "page": [{"t":"h","s":surahId} | {"t":"b"} | {"t":"a","w":[[surahId, verseId, "words", hasEnd]]}]
+  List<MushafLine> _getLinesForPage(int pageNumber) {
+    final List<dynamic>? rawLines = _pageLines?[pageNumber.toString()];
+    if (rawLines == null) return [];
+
+    return rawLines.map((raw) {
+      switch (raw['t']) {
+        case 'h':
+          final int surahId = raw['s'];
+          return MushafLine(
+            type: MushafLineType.surahHeader,
+            surahId: surahId,
+            surahName: _cachedSurahs!.firstWhere((s) => s.id == surahId).name,
+          );
+        case 'b':
+          return const MushafLine(type: MushafLineType.basmala);
+        default:
+          return MushafLine(
+            type: MushafLineType.ayah,
+            segments: (raw['w'] as List<dynamic>).map((seg) {
+              final String words = seg[2];
+              return MushafLineSegment(
+                surahId: seg[0],
+                verseNumber: seg[1],
+                words: words.isEmpty ? const [] : words.split(' '),
+                hasEndMarker: seg[3] == 1,
+              );
+            }).toList(),
+          );
+      }
+    }).toList();
   }
 
   String _removeBasmalah(String text) {

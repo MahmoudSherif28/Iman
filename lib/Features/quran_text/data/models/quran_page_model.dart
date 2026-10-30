@@ -5,12 +5,16 @@ class MushafPageModel {
   final List<PageVerseModel> verses;
   final PageMetadata metadata;
 
+  /// سطور الصفحة كما في المصحف الورقي (١٥ سطراً، والصفحتان ١ و٢ ثمانية أسطر)
+  final List<MushafLine> lines;
+
   MushafPageModel({
     required this.pageNumber,
     required this.juz,
     required this.hizb,
     required this.verses,
     required this.metadata,
+    this.lines = const [],
   });
 
   factory MushafPageModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +39,42 @@ class MushafPageModel {
       'metadata': metadata.toJson(),
     };
   }
+}
+
+enum MushafLineType { ayah, surahHeader, basmala }
+
+/// سطر واحد من صفحة المصحف
+class MushafLine {
+  final MushafLineType type;
+
+  /// للعنوان: رقم السورة واسمها
+  final int surahId;
+  final String surahName;
+
+  /// لسطر الآيات: أجزاء الآيات الموجودة على السطر بالترتيب
+  final List<MushafLineSegment> segments;
+
+  const MushafLine({
+    required this.type,
+    this.surahId = 0,
+    this.surahName = '',
+    this.segments = const [],
+  });
+}
+
+/// جزء من آية على سطر واحد، مع علامة نهاية الآية إن كانت الآية تنتهي على هذا السطر
+class MushafLineSegment {
+  final int surahId;
+  final int verseNumber;
+  final List<String> words;
+  final bool hasEndMarker;
+
+  const MushafLineSegment({
+    required this.surahId,
+    required this.verseNumber,
+    required this.words,
+    required this.hasEndMarker,
+  });
 }
 
 class PageVerseModel {
