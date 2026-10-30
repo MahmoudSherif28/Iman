@@ -84,14 +84,7 @@ class SimpleAudioService {
   }
 
   static Future<String> _getDownloadsDirectory() async {
-    // Try known public Downloads path on Android
-    final downloadsPath = '/storage/emulated/0/Download';
-    final dir = Directory(downloadsPath);
-    if (await dir.exists()) {
-      // Do not request permissions here; only return the path
-      return downloadsPath;
-    }
-    // Fallback to external storage app-specific directory
+    // App-specific external storage: لا يحتاج أي أذونات تخزين
     final extDir = await getExternalStorageDirectory();
     if (extDir != null) {
       return extDir.path;

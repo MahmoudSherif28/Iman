@@ -7,9 +7,9 @@ allprojects {
     // Force Kotlin stdlib version to match the Kotlin plugin version
     configurations.all {
         resolutionStrategy {
-            force("org.jetbrains.kotlin:kotlin-stdlib:2.1.0")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0")
+            force("org.jetbrains.kotlin:kotlin-stdlib:2.2.20")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.20")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.20")
         }
     }
 }
@@ -18,8 +18,8 @@ allprojects {
 subprojects {
     afterEvaluate {
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            kotlinOptions {
-                jvmTarget = "17"
+            compilerOptions {
+                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
             }
         }
 

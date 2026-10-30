@@ -1,4 +1,4 @@
-package com.example.iman
+package com.imanapp.iman
 
 import com.ryanheise.audioservice.AudioServiceActivity
 
