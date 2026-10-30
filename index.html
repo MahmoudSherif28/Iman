@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سياسة الخصوصية — تطبيق إيمان</title>
+<meta name="description" content="سياسة الخصوصية لتطبيق إيمان: القرآن الكريم، مواقيت الصلاة، الأذكار واتجاه القبلة.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f7f6;
+    --surface: #ffffff;
+    --text: #23302b;
+    --muted: #5b6b65;
+    --line: #e3ebe7;
+    --green: #06b576;
+    --green-deep: #04603f;
+    --gold: #e3b43c;
+    --chip: #e8f7f0;
+    --shadow: 0 10px 30px rgba(4, 96, 63, .08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1513;
+      --surface: #16201d;
+      --text: #e6efeb;
+      --muted: #9fb2ab;
+      --line: #24322d;
+      --green: #3fd49a;
+      --green-deep: #0b3d2c;
+      --gold: #f2c94c;
+      --chip: #1b2c26;
+      --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "IBM Plex Sans Arabic", system-ui, sans-serif;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hero {
+    background: radial-gradient(120% 140% at 80% 0%, #0bc285 0%, #058a5c 45%, #033d2a 100%);
+    color: #fff;
+    padding: 56px 16px 96px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+  .hero img {
+    width: 112px; height: 112px;
+    border-radius: 28px;
+    box-shadow: 0 14px 40px rgba(0,0,0,.3);
+    border: 3px solid rgba(255,255,255,.35);
+    position: relative; z-index: 1;
+  }
+  .brand {
+    font-family: "Aref Ruqaa", serif;
+    font-size: 54px;
+    line-height: 1.2;
+    margin: 14px 0 0;
+    color: #ffe39a;
+    position: relative; z-index: 1;
+  }
+  .hero h1 {
+    margin: 6px 0 4px;
+    font-size: 26px;
+    font-weight: 700;
+    position: relative; z-index: 1;
+  }
+  .hero p { margin: 0; opacity: .85; position: relative; z-index: 1; }
+  .lang {
+    position: absolute; top: 16px; inset-inline-start: 16px; z-index: 2;
+    display: flex; gap: 4px;
+    background: rgba(255,255,255,.14);
+    border-radius: 999px; padding: 4px;
+  }
+  .lang button {
+    border: 0; background: transparent; color: #fff;
+    font: inherit; font-size: 14px; font-weight: 600;
+    padding: 4px 14px; border-radius: 999px; cursor: pointer;
+  }
+  .lang button[aria-pressed="true"] { background: #fff; color: var(--green-deep); }
+
+  main {
+    max-width: 820px;
+    margin: -64px auto 0;
+    padding: 0 16px 48px;
+    position: relative;
+  }
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .pill {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .pill svg { width: 30px; height: 30px; color: var(--green); }
+  .pill strong { font-size: 16px; }
+  .pill span { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+  section.card {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 24px 24px 18px;
+    margin-bottom: 16px;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+  section.card h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  section.card h2 .num {
+    flex: none;
+    width: 32px; height: 32px; border-radius: 10px;
+    display: grid; place-items: center;
+    background: var(--chip); color: var(--green);
+    font-size: 15px;
+  }
+  section.card p { margin: 0 0 10px; color: var(--text); }
+  ul.list { list-style: none; padding: 0; margin: 0 0 8px; }
+  ul.list li {
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  ul.list li:first-child { border-top: 0; }
+  ul.list .dot {
+    flex: none; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--gold); margin-top: 10px;
+  }
+  .muted { color: var(--muted); }
+  code {
+    direction: ltr; unicode-bidi: embed;
+    background: var(--chip); color: var(--green);
+    padding: 1px 8px; border-radius: 6px; font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+  .contact {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green); color: #fff; text-decoration: none;
+    padding: 10px 20px; border-radius: 12px; font-weight: 600;
+    margin: 4px 0 8px;
+    direction: ltr;
+  }
+  footer { text-align: center; color: var(--muted); font-size: 14px; padding: 8px 16px 32px; }
+
+  [data-lang="en"] { display: none; }
+  body.en [data-lang="ar"] { display: none; }
+  body.en [data-lang="en"] { display: revert; }
+  body.en main, body.en .hero h1, body.en .hero p { direction: ltr; text-align: left; }
+  body.en .hero h1, body.en .hero p { text-align: center; }
+
+  @media (min-width: 760px) {
+    .summary { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .brand { font-size: 44px; }
+    .hero h1 { font-size: 22px; }
+    section.card { padding: 20px 18px 14px; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-set="ar" aria-pressed="true">عربي</button>
+    <button type="button" data-set="en" aria-pressed="false">English</button>
+  </div>
+  <img src="icon.png" alt="أيقونة تطبيق إيمان" width="112" height="112">
+  <div class="brand">إيمان</div>
+  <h1 data-lang="ar">سياسة الخصوصية</h1>
+  <h1 data-lang="en">Privacy Policy</h1>
+  <p data-lang="ar">آخر تحديث: ٣٠ أكتوبر ٢٠٢٦</p>
+  <p data-lang="en">Last updated: October 30, 2026</p>
+</header>
+
+<main>
+  <div class="summary">
+    <div class="pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>
+      <strong data-lang="ar">بدون إعلانات</strong><strong data-lang="en">No ads</strong>
+      <span data-lang="ar">لا يعرض التطبيق أي إعلانات.</span><span data-lang="en">The app shows no advertising.</span>
+    </div>
+    <div class="pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+      <strong data-lang="ar">بدون تتبع</strong><strong data-lang="en">No tracking</strong>
+      <span data-lang="ar">لا توجد أدوات تحليل أو تتبع.</span><span data-lang="en">No analytics or trackers.</span>
+    </div>
+    <div class="pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <strong data-lang="ar">الموقع للمواقيت فقط</strong><strong data-lang="en">Location for prayer times</strong>
+      <span data-lang="ar">لحساب مواقيت الصلاة واتجاه القبلة.</span><span data-lang="en">Used only for prayer times and Qibla.</span>
+    </div>
+    <div class="pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18h2"/></svg>
+      <strong data-lang="ar">بياناتك على جهازك</strong><strong data-lang="en">Your data stays on device</strong>
+      <span data-lang="ar">لا حسابات ولا خوادم خاصة بنا.</span><span data-lang="en">No accounts, no servers of ours.</span>
+    </div>
+  </div>
+
+  <!-- العربية -->
+  <div data-lang="ar">
+    <section class="card">
+      <h2><span class="num">١</span>من نحن</h2>
+      <p>«إيمان» تطبيق إسلامي مجاني يضم المصحف الشريف، مواقيت الصلاة والأذان، الأذكار والأدعية، واتجاه القبلة. توضح هذه الصفحة البيانات التي يستخدمها التطبيق وكيف نتعامل معها.</p>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">٢</span>البيانات التي يستخدمها التطبيق</h2>
+      <ul class="list">
+        <li><span class="dot"></span><div><strong>الموقع الجغرافي</strong><br>يُطلب إذن الموقع فقط لحساب مواقيت الصلاة واتجاه القبلة. تُرسل الإحداثيات إلى خدمة <code>api.aladhan.com</code> لحساب المواقيت لحظياً، ولا نحتفظ بها على أي خادم. يمكنك رفض الإذن في أي وقت، وستتوقف حينها المواقيت التلقائية والقبلة فقط.</div></li>
+        <li><span class="dot"></span><div><strong>بيانات محفوظة على جهازك فقط</strong><br>آخر صفحة قرأتها، العلامات، الأذكار التي تضيفها، والتلاوات التي تحمّلها. لا تغادر هذه البيانات جهازك، وتُحذف بالكامل عند حذف التطبيق.</div></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">٣</span>الخدمات الخارجية</h2>
+      <p class="muted">يتصل التطبيق بهذه الخدمات لتقديم محتواه، ولا يرسل لها أي بيانات شخصية غير ما ذُكر أعلاه:</p>
+      <ul class="list">
+        <li><span class="dot"></span><div><code>api.aladhan.com</code> — حساب مواقيت الصلاة.</div></li>
+        <li><span class="dot"></span><div><code>mp3quran.net</code> — تشغيل وتحميل تلاوات القرآن الكريم.</div></li>
+        <li><span class="dot"></span><div><code>api.alquran.cloud</code> — نصوص التفسير.</div></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">٤</span>الأذونات ولماذا نحتاجها</h2>
+      <ul class="list">
+        <li><span class="dot"></span><div><strong>الموقع:</strong> مواقيت الصلاة واتجاه القبلة.</div></li>
+        <li><span class="dot"></span><div><strong>الإشعارات والمنبهات الدقيقة:</strong> تنبيه الأذان في وقته بالضبط.</div></li>
+        <li><span class="dot"></span><div><strong>التشغيل في الخلفية:</strong> الاستماع للقرآن والشاشة مغلقة.</div></li>
+        <li><span class="dot"></span><div><strong>الإنترنت:</strong> جلب المواقيت والتلاوات والتفسير.</div></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">٥</span>ما لا نفعله</h2>
+      <ul class="list">
+        <li><span class="dot"></span><div>لا نطلب اسمك أو بريدك أو أي تسجيل دخول.</div></li>
+        <li><span class="dot"></span><div>لا نعرض إعلانات ولا نستخدم أدوات تحليل أو تتبع.</div></li>
+        <li><span class="dot"></span><div>لا نبيع أي بيانات ولا نشاركها مع أي طرف لأغراض تسويقية.</div></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">٦</span>الأطفال</h2>
+      <p>التطبيق مناسب لجميع الأعمار، ولا يجمع بيانات شخصية من أي مستخدم.</p>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">٧</span>التغييرات على هذه السياسة</h2>
+      <p>قد نحدّث هذه السياسة عند إضافة ميزات جديدة، وسيظهر تاريخ آخر تحديث أعلى الصفحة.</p>
+    </section>
+
+    <section class="card">
+      <h2><span class="num">٨</span>تواصل معنا</h2>
+      <p>لأي استفسار عن الخصوصية أو التطبيق:</p>
+      <a class="contact" href="mailto:mahmsherif28@gmail.com">mahmsherif28@gmail.com</a>
+    </section>
+  </div>
+
+  <!-- English -->
+  <div data-lang="en">
+    <section class="card">
+      <h2><span class="num">1</span>About</h2>
+      <p>Iman is a free Islamic app with the Holy Quran, prayer times and adhan, azkar and du'as, and a Qibla compass. This page explains what data the app uses and how.</p>
+    </section>
+    <section class="card">
+      <h2><span class="num">2</span>Data the app uses</h2>
+      <ul class="list">
+        <li><span class="dot"></span><div><strong>Location</strong><br>Requested only to calculate prayer times and the Qibla direction. Coordinates are sent to <code>api.aladhan.com</code> to compute prayer times and are not stored on any server of ours. You can deny the permission at any time.</div></li>
+        <li><span class="dot"></span><div><strong>On-device data</strong><br>Last read page, bookmarks, your custom azkar and downloaded recitations stay on your device and are removed when you uninstall the app.</div></li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2><span class="num">3</span>Third-party services</h2>
+      <ul class="list">
+        <li><span class="dot"></span><div><code>api.aladhan.com</code> — prayer times.</div></li>
+        <li><span class="dot"></span><div><code>mp3quran.net</code> — Quran recitations.</div></li>
+        <li><span class="dot"></span><div><code>api.alquran.cloud</code> — tafsir texts.</div></li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2><span class="num">4</span>Permissions</h2>
+      <ul class="list">
+        <li><span class="dot"></span><div><strong>Location:</strong> prayer times and Qibla.</div></li>
+        <li><span class="dot"></span><div><strong>Notifications &amp; exact alarms:</strong> adhan alerts on time.</div></li>
+        <li><span class="dot"></span><div><strong>Background playback:</strong> listening to the Quran with the screen off.</div></li>
+        <li><span class="dot"></span><div><strong>Internet:</strong> prayer times, recitations and tafsir.</div></li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2><span class="num">5</span>What we don't do</h2>
+      <ul class="list">
+        <li><span class="dot"></span><div>No accounts, names or emails collected.</div></li>
+        <li><span class="dot"></span><div>No ads, analytics or trackers.</div></li>
+        <li><span class="dot"></span><div>No data is sold or shared for marketing.</div></li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2><span class="num">6</span>Children</h2>
+      <p>The app is suitable for all ages and collects no personal data from anyone.</p>
+    </section>
+    <section class="card">
+      <h2><span class="num">7</span>Changes</h2>
+      <p>We may update this policy as features are added; the date at the top shows the latest revision.</p>
+    </section>
+    <section class="card">
+      <h2><span class="num">8</span>Contact</h2>
+      <a class="contact" href="mailto:mahmsherif28@gmail.com">mahmsherif28@gmail.com</a>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <span data-lang="ar">© ٢٠٢٦ تطبيق إيمان</span>
+  <span data-lang="en">© 2026 Iman App</span>
+</footer>
+
+<script>
+  (function () {
+    var buttons = document.querySelectorAll('.lang button');
+    function setLang(lang) {
+      document.body.classList.toggle('en', lang === 'en');
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === lang)); });
+      try { localStorage.setItem('iman-privacy-lang', lang); } catch (e) {}
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.set); }); });
+    var saved = null;
+    try { saved = localStorage.getItem('iman-privacy-lang'); } catch (e) {}
+    if (location.hash === '#en' || saved === 'en') setLang('en');
+  })();
+</script>
+</body>
+</html>
